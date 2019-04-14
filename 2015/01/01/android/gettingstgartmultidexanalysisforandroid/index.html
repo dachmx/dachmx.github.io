@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Getting Start Analysizing Multidex of Android | Dachmx web log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="IntroduceAs the Android platform has continued to grow, so has the size of Android apps. When your application and the libraries it references reach a certain size, you encounter build errors that ind">
+<meta name="keywords" content="multidex,hot fix,nuwa,fix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Getting Start Analysizing Multidex of Android">
+<meta property="og:url" content="http://dachmx.github.io/2015/01/01/android/gettingstgartmultidexanalysisforandroid/index.html">
+<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:description" content="IntroduceAs the Android platform has continued to grow, so has the size of Android apps. When your application and the libraries it references reach a certain size, you encounter build errors that ind">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-14T09:40:14.270Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Getting Start Analysizing Multidex of Android">
+<meta name="twitter:description" content="IntroduceAs the Android platform has continued to grow, so has the size of Android apps. When your application and the libraries it references reach a certain size, you encounter build errors that ind">
+  
+    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dachmx web log</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">just record and just share</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dachmx.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android/gettingstgartmultidexanalysisforandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/01/android/gettingstgartmultidexanalysisforandroid/" class="article-date">
+  <time datetime="2014-12-31T16:00:00.000Z" itemprop="datePublished">2015-01-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Getting Start Analysizing Multidex of Android
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduce"><a href="#Introduce" class="headerlink" title="Introduce"></a>Introduce</h2><p>As the Android platform has continued to grow, so has the size of Android apps. When your application and the libraries it references reach a certain size, you encounter build errors that indicate your app has reached a limit of the Android app build architecture. Earlier versions of the build system report this error as follows:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Conversion to Dalvik format failed:</span><br><span class="line">Unable to execute dex: method ID not in [<span class="number">0</span>, <span class="number">0xffff</span>]: <span class="number">65536</span></span><br></pre></td></tr></table></figure></p>
+<p>More recent versions of the Android build system display a different error, which is an indication of the same problem:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">trouble writing output:</span><br><span class="line">Too many field references: <span class="number">131000</span>; max is <span class="number">65536</span>.</span><br><span class="line">You may <span class="keyword">try</span> using --multi-dex option.</span><br></pre></td></tr></table></figure>
+<p>Both these error conditions display a common number: 65,536. This number is significant in that it represents the total number of references that can be invoked by the code within a single Dalvik Executable (dex) bytecode file. If you have built an Android app and received this error, then congratulations, you have a lot of code! This document explains how to move past this limitation and continue building your app.</p>
+<blockquote>
+<blockquote>
+<p>Note: The guidance provided in this document supersedes the guidance given in the Android Developers blog post Custom Class Loading in Dalvik.</p>
+</blockquote>
+</blockquote>
+<h3 id="About-the-64K-Reference-Limit"><a href="#About-the-64K-Reference-Limit" class="headerlink" title="About the 64K Reference Limit"></a>About the 64K Reference Limit</h3><p>Android application (APK) files contain executable bytecode files in the form of Dalvik Executable (DEX) files, which contain the compiled code used to run your app. The Dalvik Executable specification limits the total number of methods that can be referenced within a single DEX file to 65,536—including Android framework methods, library methods, and methods in your own code. In the context of computer science, the term Kilo, K, denotes 1024 (or 2^10). Because 65,536 is equal to 64 X 1024, this limit is referred to as the ‘64K reference limit’.</p>
+<p>Getting past this limit requires that you configure your app build process to generate more than one DEX file, known as a multidex configuration.</p>
+<h3 id="Multidex-support-prior-to-Android-5-0"><a href="#Multidex-support-prior-to-Android-5-0" class="headerlink" title="Multidex support prior to Android 5.0"></a>Multidex support prior to Android 5.0</h3><p>Versions of the platform prior to Android 5.0 (API level 21) use the Dalvik runtime for executing app code. By default, Dalvik limits apps to a single classes.dex bytecode file per APK. In order to get around this limitation, you can use the multidex support library, which becomes part of the primary DEX file of your app and then manages access to the additional DEX files and the code they contain.</p>
+<blockquote>
+<blockquote>
+<p>Note: If your project is configured for multidex with minSdkVersion 20 or lower, and you deploy to target devices running Android 4.4 (API level 20) or lower, Android Studio disables Instant Run.</p>
+</blockquote>
+</blockquote>
+<h3 id="Multidex-support-for-Android-5-0-and-higher"><a href="#Multidex-support-for-Android-5-0-and-higher" class="headerlink" title="Multidex support for Android 5.0 and higher"></a>Multidex support for Android 5.0 and higher</h3><p>Android 5.0 (API level 21) and higher uses a runtime called ART which natively supports loading multiple dex files from application APK files. ART performs pre-compilation at application install time which scans for classes(..N).dex files and compiles them into a single .oat file for execution by the Android device. For more information on the Android 5.0 runtime, see Introducing ART.</p>
+<blockquote>
+<blockquote>
+<p>Note: While using Instant Run, Android Studio automatically configures your app for multidex when your app’s minSdkVersion is set to 21 or higher. Because Instant Run only works with the debug version of your app, you still need to configure your release build for multidex to avoid the 64K limit.</p>
+</blockquote>
+</blockquote>
+<h3 id="Avoiding-the-64K-Limit"><a href="#Avoiding-the-64K-Limit" class="headerlink" title="Avoiding the 64K Limit"></a>Avoiding the 64K Limit</h3><p>Before configuring your app to enable use of 64K or more method references, you should take steps to reduce the total number of references called by your app code, including methods defined by your app code or included libraries. The following strategies can help you avoid hitting the dex reference limit:</p>
+<p>Review your app’s direct and transitive dependencies - Ensure any large library dependency you include in your app is used in a manner that outweighs the amount of code being added to the application. A common anti-pattern is to include a very large library because a few utility methods were useful. Reducing your app code dependencies can often help you avoid the dex reference limit.<br>Remove unused code with ProGuard - Configure the ProGuard settings for your app to run ProGuard and ensure you have shrinking enabled for release builds. Enabling shrinking ensures you are not shipping unused code with your APKs.</p>
+<p>Using these techniques can help you avoid the build configuration changes required to enable more method references in your app. These steps can also decrease the size of your APKs, which is particularly important for markets where bandwidth costs are high</p>
+<h2 id="Configuring-Your-App-for-Multidex-with-Gradle"><a href="#Configuring-Your-App-for-Multidex-with-Gradle" class="headerlink" title="Configuring Your App for Multidex with Gradle"></a>Configuring Your App for Multidex with Gradle</h2><p>The Android plugin for Gradle available in Android SDK Build Tools 21.1 and higher supports multidex as part of your build configuration. Make sure you update the Android SDK Build Tools tools and the Android Support Repository to the latest version using the SDK Manager before attempting to configure your app for multidex.</p>
+<p>Setting up your app development project to use a multidex configuration requires that you make a few modifications to your app development project. In particular you need to perform the following steps:</p>
+<ul>
+<li><p>Change your Gradle build configuration to enable multidex</p>
+</li>
+<li><p>Modify your manifest to reference the MultiDexApplication class</p>
+</li>
+</ul>
+<p>Modify the module-level build.gradle file configuration to include the support library and enable multidex output, as shown in the following code snippet:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    compileSdkVersion <span class="number">21</span></span><br><span class="line">    buildToolsVersion <span class="string">"21.1.0"</span></span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        ...</span><br><span class="line">        minSdkVersion <span class="number">14</span></span><br><span class="line">        targetSdkVersion <span class="number">21</span></span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Enabling multidex support.</span></span><br><span class="line">        multiDexEnabled <span class="keyword">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">  compile <span class="string">'com.android.support:multidex:1.0.0'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In your manifest add the MultiDexApplication class from the multidex support library to the application element.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">manifest</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">package</span>=<span class="string">"com.example.android.multidex.myapplication"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">application</span></span></span><br><span class="line"><span class="tag">        <span class="attr">...</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:name</span>=<span class="string">"android.support.multidex.MultiDexApplication"</span>&gt;</span></span><br><span class="line">        ...</span><br><span class="line">    <span class="tag">&lt;/<span class="name">application</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>When these configuration settings are added to an app, the Android build tools construct a primary dex (classes.dex) and supporting (classes2.dex, classes3.dex) as needed. The build system will then package them into an APK file for distribution.</p>
+<blockquote>
+<blockquote>
+<p>Note: If your app uses extends the Application class, you can override the attachBaseContext() method and call MultiDex.install(this) to enable multidex. For more information, see the MultiDexApplication reference documentation.</p>
+</blockquote>
+</blockquote>
+<h3 id="Limitations-of-the-multidex-support-library"><a href="#Limitations-of-the-multidex-support-library" class="headerlink" title="Limitations of the multidex support library"></a>Limitations of the multidex support library</h3><p>The multidex support library has some known limitations that you should be aware of and test for when you incorporate it into your app build configuration:</p>
+<p>The installation of .dex files during startup onto a device’s data partition is complex and can result in Application Not Responding (ANR) errors if the secondary dex files are large. In this case, you should apply code shrinking techniques with ProGuard to minimize the size of dex files and remove unused portions of code.</p>
+<p>Applications that use multidex may not start on devices that run versions of the platform earlier than Android 4.0 (API level 14) due to a Dalvik linearAlloc bug (Issue 22586). If you are targeting API levels earlier than 14, make sure to perform testing with these versions of the platform as your application can have issues at startup or when particular groups of classes are loaded. Code shrinking can reduce or possibly eliminate these potential issues.</p>
+<p>Applications using a multidex configuration that make very large memory allocation requests may crash during run time due to a Dalvik linearAlloc limit (Issue 78035). The allocation limit was increased in Android 4.0 (API level 14), but apps may still run into this limit on Android versions prior to Android 5.0 (API level 21).</p>
+<p>There are complex requirements regarding what classes are needed in the primary dex file when executing in the Dalvik runtime. The Android build tooling updates handle the Android requirements, but it is possible that other included libraries have additional dependency requirements including the use of introspection or invocation of Java methods from native code. Some libraries may not be able to be used until the multidex build tools are updated to allow you to specify classes that must be included in the primary dex file.</p>
+<h3 id="Optimizing-Multidex-Development-Builds"><a href="#Optimizing-Multidex-Development-Builds" class="headerlink" title="Optimizing Multidex Development Builds"></a>Optimizing Multidex Development Builds</h3><p>A multidex configuration requires significantly increased build processing time because the build system must make complex decisions about what classes must be included in the primary DEX file and what classes can be included in secondary DEX files. This means that routine builds performed as part of the development process with multidex typically take longer and can potentially slow your development process.</p>
+<p>In order to mitigate the typically longer build times for multidex output, you should create two variations on your build output using the Android plugin for Gradle productFlavors: a development flavor and a production flavor.</p>
+<p>For the development flavor, set a minimum SDK version of 21. This setting generates multidex output much faster using the ART-supported format. For the release flavor, set a minimum SDK version which matches your actual minimum support level. This setting generates a multidex APK that is compatible with more devices, but takes longer to build.</p>
+<p>The following build configuration sample demonstrates the how to set up these flavors in a Gradle build file:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    productFlavors &#123;</span><br><span class="line">        <span class="comment">// Define separate dev and prod product flavors.</span></span><br><span class="line">        dev &#123;</span><br><span class="line">            <span class="comment">// dev utilizes minSDKVersion = 21 to allow the Android gradle plugin</span></span><br><span class="line">            <span class="comment">// to pre-dex each module and produce an APK that can be tested on</span></span><br><span class="line">            <span class="comment">// Android Lollipop without time consuming dex merging processes.</span></span><br><span class="line">            minSdkVersion <span class="number">21</span></span><br><span class="line">        &#125;</span><br><span class="line">        prod &#123;</span><br><span class="line">            <span class="comment">// The actual minSdkVersion for the application.</span></span><br><span class="line">            minSdkVersion <span class="number">14</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">          ...</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            runProguard <span class="keyword">true</span></span><br><span class="line">            <span class="function">proguardFiles <span class="title">getDefaultProguardFile</span><span class="params">(<span class="string">'proguard-android.txt'</span>)</span>,</span></span><br><span class="line"><span class="function">                                                 'proguard-rules.pro'</span></span><br><span class="line"><span class="function">        &#125;</span></span><br><span class="line"><span class="function">    &#125;</span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function">dependencies </span>&#123;</span><br><span class="line">  compile <span class="string">'com.android.support:multidex:1.0.0'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>After you have completed this configuration change, you can use the devDebug variant of your app, which combines the attributes of the dev productFlavor and the debug buildType. Using this target creates a debug app with proguard disabled, multidex enabled, and minSdkVersion set to Android API level 21. These settings cause the Android gradle plugin to do the following:</p>
+<p>Build each module of the application (including dependencies) as separate dex files. This is commonly referred to as pre-dexing.</p>
+<p>Include each dex file in the APK without modification.</p>
+<p>Most importantly, the module dex files will not be combined, and so the long-running calculation to determine the contents of the primary dex file is avoided.<br>These settings result in fast, incremental builds, because only the dex files of modified modules are recomputed and repackaged into the APK file. The APK that results from these builds can be used to test on Android 5.0 devices only. However, by implementing the configuration as a flavor, you preserve the ability to perform normal builds with the release-appropriate minimum SDK level and proguard settings.</p>
+<p>You can also build the other variants, including a prodDebug variant build, which takes longer to build, but can be used for testing outside of development. Within the configuration shown, the prodRelease variant would be the final testing and release version. If you are executing gradle tasks from the command line, you can use standard commands with DevDebug appended to the end (such as ./gradlew installDevDebug). For more information about using flavors with Gradle tasks, see the Gradle Plugin User Guide.</p>
+<blockquote>
+<blockquote>
+<p>Tip: You can also provide a custom manifest, or a custom application class for each flavor, allowing you to use the support library MultiDexApplication class, or calling MultiDex.install() only for the variants that need it.</p>
+</blockquote>
+</blockquote>
+<h3 id="Using-Build-Variants-in-Android-Studio"><a href="#Using-Build-Variants-in-Android-Studio" class="headerlink" title="Using Build Variants in Android Studio"></a>Using Build Variants in Android Studio</h3><p>Build variants can be very useful for managing the build process when using multidex. Android Studio allows you to select these build variants in the user interface.</p>
+<p>To have Android Studio build the “devDebug” variant of your app:</p>
+<blockquote>
+<blockquote>
+<p>Note: The option to open this window is only available after you have successfully synchronized Android Studio with your Gradle build file using the Tools &gt; Android &gt; Sync Project with Gradle Files command.</p>
+</blockquote>
+</blockquote>
+<h3 id="Testing-Multidex-Apps"><a href="#Testing-Multidex-Apps" class="headerlink" title="Testing Multidex Apps"></a>Testing Multidex Apps</h3><p>When writing instrumentation tests for multidex apps, no additional configuration is required. AndroidJUnitRunner supports multidex out of the box, as long as you use MultiDexApplication or override the attachBaseContext() method in your custom Application object and call MultiDex.install(this) to enable multidex.</p>
+<p>Alternatively, you can override the onCreate() method in AndroidJUnitRunner:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle arguments)</span> </span>&#123;</span><br><span class="line">    MultiDex.install(getTargetContext());</span><br><span class="line">    <span class="keyword">super</span>.onCreate(arguments);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<blockquote>
+<p>Note: Use of multidex for creating a test APK is not currently supported.</p>
+</blockquote>
+</blockquote>
+<p>extends reading:</p>
+<p><a href="https://github.com/jasonross/Nuwa" target="_blank" rel="noopener">Nuwa</a></p>
+<p><a href="https://github.com/dodola/RocooFix" target="_blank" rel="noopener">RocooFix</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/01/01/android/gettingstgartmultidexanalysisforandroid/" data-id="cjugo67wn000nnkuwn7uqpd3s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fix/">fix</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/multidex/">multidex</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nuwa/">nuwa</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/01/09/android/analysisonlayoutofandroid/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Analysis on Layout for Android
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/12/10/android/analysisonaddingwindowsandviews/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">The Process of adding for View and Windows of Android</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DI/">DI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IoC/">IoC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monitor/">Monitor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aar/">aar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad/">ad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptation/">adaptation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aidl/">aidl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/allegrograph/">allegrograph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analysis/">analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apk/">apk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/application/">application</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/architecture/">architecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asm/">asm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automatic/">automatic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/back/">back</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootloader/">bootloader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cayley/">cayley</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cipher/">cipher</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/click/">click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commontool/">commontool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/construct/">construct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data/">data</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debugging/">debugging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearn/">deeplearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dev/">dev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dex/">dex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/diary/">diary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastboot/">fastboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastlane/">fastlane</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flockdb/">flockdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontend/">frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph/">graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hacking/">hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hotfix/">hotfix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/inaction/">inaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/infinitegraph/">infinitegraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmlr/">jmlr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kylin/">kylin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/library/">library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/local/">local</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/looper/">looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ml/">ml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mood/">mood</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-dimensional/">multi-dimensional</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multidex/">multidex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neo4j/">neo4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netty/">netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nio/">nio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuomi/">nuomi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuwa/">nuwa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optimization/">optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/permission/">permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/platform/">platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/production/">production</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protection/">protection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/queue/">queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recovery/">recovery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/">remote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responsive/">responsive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restful/">restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retrofit/">retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reversing/">reversing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rom/">rom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/safe-mode/">safe mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroller/">scroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secure/">secure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sourcecode/">sourcecode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springframework/">springframework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusbar/">statusbar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svd/">svd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svm/">svm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp-ip/">tcp/ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tech/">tech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/title-bar/">title bar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmall/">tmall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/touch/">touch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/update/">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view/">view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/viewpager/">viewpager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webview/">webview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/IoC/" style="font-size: 10px;">IoC</a> <a href="/tags/Monitor/" style="font-size: 10px;">Monitor</a> <a href="/tags/ReactiveX/" style="font-size: 10px;">ReactiveX</a> <a href="/tags/aar/" style="font-size: 11.43px;">aar</a> <a href="/tags/ad/" style="font-size: 10px;">ad</a> <a href="/tags/adaptation/" style="font-size: 10px;">adaptation</a> <a href="/tags/advice/" style="font-size: 10px;">advice</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/aidl/" style="font-size: 11.43px;">aidl</a> <a href="/tags/algorithm/" style="font-size: 17.14px;">algorithm</a> <a href="/tags/allegrograph/" style="font-size: 10px;">allegrograph</a> <a href="/tags/analysis/" style="font-size: 12.86px;">analysis</a> <a href="/tags/android/" style="font-size: 11.43px;">android</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/apk/" style="font-size: 10px;">apk</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/application/" style="font-size: 10px;">application</a> <a href="/tags/architecture/" style="font-size: 12.86px;">architecture</a> <a href="/tags/asm/" style="font-size: 10px;">asm</a> <a href="/tags/asynchronous/" style="font-size: 10px;">asynchronous</a> <a href="/tags/auto/" style="font-size: 11.43px;">auto</a> <a href="/tags/automatic/" style="font-size: 11.43px;">automatic</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/back/" style="font-size: 10px;">back</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bird-view/" style="font-size: 11.43px;">bird view</a> <a href="/tags/bitmap/" style="font-size: 10px;">bitmap</a> <a href="/tags/bootloader/" style="font-size: 10px;">bootloader</a> <a href="/tags/bootrap/" style="font-size: 10px;">bootrap</a> <a href="/tags/cayley/" style="font-size: 10px;">cayley</a> <a href="/tags/cipher/" style="font-size: 10px;">cipher</a> <a href="/tags/click/" style="font-size: 10px;">click</a> <a href="/tags/commontool/" style="font-size: 11.43px;">commontool</a> <a href="/tags/construct/" style="font-size: 10px;">construct</a> <a href="/tags/ctf/" style="font-size: 11.43px;">ctf</a> <a href="/tags/ctrip/" style="font-size: 10px;">ctrip</a> <a href="/tags/data/" style="font-size: 10px;">data</a> <a href="/tags/data-analysis/" style="font-size: 12.86px;">data analysis</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/debugging/" style="font-size: 11.43px;">debugging</a> <a href="/tags/deep-learning/" style="font-size: 10px;">deep learning</a> <a href="/tags/deeplearn/" style="font-size: 11.43px;">deeplearn</a> <a href="/tags/design/" style="font-size: 11.43px;">design</a> <a href="/tags/dev/" style="font-size: 10px;">dev</a> <a href="/tags/dex/" style="font-size: 10px;">dex</a> <a href="/tags/diary/" style="font-size: 11.43px;">diary</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/fastlane/" style="font-size: 10px;">fastlane</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/flockdb/" style="font-size: 10px;">flockdb</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/frontend/" style="font-size: 10px;">frontend</a> <a href="/tags/gettingstart/" style="font-size: 20px;">gettingstart</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/graphics/" style="font-size: 11.43px;">graphics</a> <a href="/tags/hacking/" style="font-size: 11.43px;">hacking</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/high-concurrency/" style="font-size: 12.86px;">high concurrency</a> <a href="/tags/hot-fix/" style="font-size: 10px;">hot fix</a> <a href="/tags/hotfix/" style="font-size: 10px;">hotfix</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/ibinder/" style="font-size: 11.43px;">ibinder</a> <a href="/tags/inaction/" style="font-size: 10px;">inaction</a> <a href="/tags/infinitegraph/" style="font-size: 10px;">infinitegraph</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jmlr/" style="font-size: 10px;">jmlr</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kylin/" style="font-size: 10px;">kylin</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/learning/" style="font-size: 11.43px;">learning</a> <a href="/tags/library/" style="font-size: 10px;">library</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/linux/" style="font-size: 12.86px;">linux</a> <a href="/tags/live/" style="font-size: 11.43px;">live</a> <a href="/tags/local/" style="font-size: 10px;">local</a> <a href="/tags/looper/" style="font-size: 10px;">looper</a> <a href="/tags/machine-learning/" style="font-size: 15.71px;">machine learning</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/ml/" style="font-size: 11.43px;">ml</a> <a href="/tags/mobile/" style="font-size: 11.43px;">mobile</a> <a href="/tags/mood/" style="font-size: 11.43px;">mood</a> <a href="/tags/multi-classification/" style="font-size: 10px;">multi-classification</a> <a href="/tags/multi-dimensional/" style="font-size: 10px;">multi-dimensional</a> <a href="/tags/multidex/" style="font-size: 10px;">multidex</a> <a href="/tags/mvc/" style="font-size: 15.71px;">mvc</a> <a href="/tags/neo4j/" style="font-size: 10px;">neo4j</a> <a href="/tags/net/" style="font-size: 18.57px;">net</a> <a href="/tags/netty/" style="font-size: 15.71px;">netty</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/nio/" style="font-size: 10px;">nio</a> <a href="/tags/nuomi/" style="font-size: 10px;">nuomi</a> <a href="/tags/nuwa/" style="font-size: 10px;">nuwa</a> <a href="/tags/optimization/" style="font-size: 10px;">optimization</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/permission/" style="font-size: 10px;">permission</a> <a href="/tags/platform/" style="font-size: 14.29px;">platform</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/production/" style="font-size: 10px;">production</a> <a href="/tags/protection/" style="font-size: 10px;">protection</a> <a href="/tags/queue/" style="font-size: 10px;">queue</a> <a href="/tags/react-native/" style="font-size: 10px;">react native</a> <a href="/tags/recovery/" style="font-size: 10px;">recovery</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a> <a href="/tags/request/" style="font-size: 11.43px;">request</a> <a href="/tags/responsive/" style="font-size: 10px;">responsive</a> <a href="/tags/restful/" style="font-size: 15.71px;">restful</a> <a href="/tags/retrofit/" style="font-size: 11.43px;">retrofit</a> <a href="/tags/reversing/" style="font-size: 11.43px;">reversing</a> <a href="/tags/rom/" style="font-size: 10px;">rom</a> <a href="/tags/safe-mode/" style="font-size: 10px;">safe mode</a> <a href="/tags/scroller/" style="font-size: 11.43px;">scroller</a> <a href="/tags/secure/" style="font-size: 11.43px;">secure</a> <a href="/tags/security/" style="font-size: 10px;">security</a> <a href="/tags/service/" style="font-size: 11.43px;">service</a> <a href="/tags/shell/" style="font-size: 11.43px;">shell</a> <a href="/tags/sklearn/" style="font-size: 11.43px;">sklearn</a> <a href="/tags/sourcecode/" style="font-size: 10px;">sourcecode</a> <a href="/tags/spring/" style="font-size: 18.57px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springframework/" style="font-size: 18.57px;">springframework</a> <a href="/tags/statusbar/" style="font-size: 10px;">statusbar</a> <a href="/tags/support-vector-machine/" style="font-size: 12.86px;">support vector machine</a> <a href="/tags/svd/" style="font-size: 10px;">svd</a> <a href="/tags/svm/" style="font-size: 12.86px;">svm</a> <a href="/tags/tcp-ip/" style="font-size: 10px;">tcp/ip</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/tensorflow/" style="font-size: 12.86px;">tensorflow</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/title-bar/" style="font-size: 10px;">title bar</a> <a href="/tags/tmall/" style="font-size: 10px;">tmall</a> <a href="/tags/touch/" style="font-size: 10px;">touch</a> <a href="/tags/update/" style="font-size: 10px;">update</a> <a href="/tags/view/" style="font-size: 10px;">view</a> <a href="/tags/viewpager/" style="font-size: 10px;">viewpager</a> <a href="/tags/webview/" style="font-size: 11.43px;">webview</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/writeup/" style="font-size: 11.43px;">writeup</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/10/ml/AdaptationBasedonGeneralizedDiscrepancy/">Adaptation Based on Generalized Discrepancy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/31/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/02/mathalg/matrixcompletionandlowranksvdviafastalternatingleastsquares/">Matrix Completion and Low-Rank SVD via Fast Alternating Least Squares (JMLR)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 dachmx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo and dachmx</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

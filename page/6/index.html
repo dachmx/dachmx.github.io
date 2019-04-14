@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Dachmx web log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dachmx web log">
+<meta property="og:url" content="http://dachmx.github.io/page/6/index.html">
+<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dachmx web log">
+  
+    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dachmx web log</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">just record and just share</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dachmx.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-ml/gettingstartusingsklearnofsvm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/03/10/ml/gettingstartusingsklearnofsvm/" class="article-date">
+  <time datetime="2014-03-09T16:00:00.000Z" itemprop="datePublished">2014-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/03/10/ml/gettingstartusingsklearnofsvm/">Getting Start Using SVM Module of Sklearn</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>SVN principle is more complex, but the idea is very simple, one sentence is summarized, that is, through a kernel function, the data in the high-dimensional space to find an optimal hyperplane, can separate the two types of data.</p>
+<p>For different data sets, the classification of different kernel functions may be completely different. There are several optional kernel functions:</p>
+<p>Linear function: a linear function of the form K (x, y) = x * y;</p>
+<p>Polynomial function: A polynomial function of the form K (x, y) = [(x · y) +1] ^ d;</p>
+<p>Radial basis function: an exponential function of the form K (x, y) = exp (- | x-y | ^ 2 / d ^ 2)</p>
+<p>Sigmoid function: is the Sigmoid function mentioned in the previous article.</p>
+<h2 id="Code-using-Lib-Sklearn"><a href="#Code-using-Lib-Sklearn" class="headerlink" title="Code using Lib Sklearn"></a>Code using Lib Sklearn</h2><p>codes as follows:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> scipy <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">data   = []</span><br><span class="line">labels = []</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"data\\1.txt"</span>) <span class="keyword">as</span> ifile:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> ifile:</span><br><span class="line">            tokens = line.strip().split(<span class="string">' '</span>)</span><br><span class="line">            data.append([float(tk) <span class="keyword">for</span> tk <span class="keyword">in</span> tokens[:<span class="number">-1</span>]])</span><br><span class="line">            labels.append(tokens[<span class="number">-1</span>])</span><br><span class="line">x = np.array(data)</span><br><span class="line">labels = np.array(labels)</span><br><span class="line">y = np.zeros(labels.shape)</span><br><span class="line">y[labels==<span class="string">'fat'</span>]=<span class="number">1</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = <span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line">h = <span class="number">.02</span>  </span><br><span class="line"><span class="comment"># create a mesh to plot in</span></span><br><span class="line">x_min, x_max = x_train[:, <span class="number">0</span>].min() - <span class="number">0.1</span>, x_train[:, <span class="number">0</span>].max() + <span class="number">0.1</span></span><br><span class="line">y_min, y_max = x_train[:, <span class="number">1</span>].min() - <span class="number">1</span>, x_train[:, <span class="number">1</span>].max() + <span class="number">1</span></span><br><span class="line">xx, yy = np.meshgrid(np.arange(x_min, x_max, h),</span><br><span class="line">                     np.arange(y_min, y_max, h))</span><br><span class="line"></span><br><span class="line"><span class="string">''' SVM '''</span></span><br><span class="line"><span class="comment"># title for the plots</span></span><br><span class="line">titles = [<span class="string">'LinearSVC (linear kernel)'</span>,</span><br><span class="line">          <span class="string">'SVC with polynomial (degree 3) kernel'</span>,</span><br><span class="line">          <span class="string">'SVC with RBF kernel'</span>,</span><br><span class="line">          <span class="string">'SVC with Sigmoid kernel'</span>]</span><br><span class="line">clf_linear  = svm.SVC(kernel=<span class="string">'linear'</span>).fit(x, y)</span><br><span class="line"><span class="comment">#clf_linear  = svm.LinearSVC().fit(x, y)</span></span><br><span class="line">clf_poly    = svm.SVC(kernel=<span class="string">'poly'</span>, degree=<span class="number">3</span>).fit(x, y)</span><br><span class="line">clf_rbf     = svm.SVC().fit(x, y)</span><br><span class="line">clf_sigmoid = svm.SVC(kernel=<span class="string">'sigmoid'</span>).fit(x, y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, clf <span class="keyword">in</span> enumerate((clf_linear, clf_poly, clf_rbf, clf_sigmoid)):</span><br><span class="line">    answer = clf.predict(np.c_[xx.ravel(), yy.ravel()])</span><br><span class="line">    print(clf)</span><br><span class="line">    print(np.mean( answer == y_train))</span><br><span class="line">    print(answer)</span><br><span class="line">    print(y_train)</span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">2</span>, <span class="number">2</span>, i + <span class="number">1</span>)</span><br><span class="line">    plt.subplots_adjust(wspace=<span class="number">0.4</span>, hspace=<span class="number">0.4</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Put the result into a color plot</span></span><br><span class="line">    z = answer.reshape(xx.shape)</span><br><span class="line">    plt.contourf(xx, yy, z, cmap=plt.cm.Paired, alpha=<span class="number">0.8</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Plot also the training points</span></span><br><span class="line">    plt.scatter(x_train[:, <span class="number">0</span>], x_train[:, <span class="number">1</span>], c=y_train, cmap=plt.cm.Paired)</span><br><span class="line">    plt.xlabel(<span class="string">u'height'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">u'body weight'</span>)</span><br><span class="line">    plt.xlim(xx.min(), xx.max())</span><br><span class="line">    plt.ylim(yy.min(), yy.max())</span><br><span class="line">    plt.xticks(())</span><br><span class="line">    plt.yticks(())</span><br><span class="line">    plt.title(titles[i])</span><br><span class="line">    </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/03/10/ml/gettingstartusingsklearnofsvm/" data-id="cjugo7oog000szsuwtfum5jme" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svm/">svm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/gettingknowbitmapandbitmapresoucesofandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/03/05/android/gettingknowbitmapandbitmapresoucesofandroid/" class="article-date">
+  <time datetime="2014-03-04T16:00:00.000Z" itemprop="datePublished">2014-03-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/03/05/android/gettingknowbitmapandbitmapresoucesofandroid/">Getting Konw the Bitmap of Android</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduce"><a href="#Introduce" class="headerlink" title="Introduce"></a>Introduce</h2><p>Bitmap is used frequently, and too many classes about it to know for us. Now, these classes will be summaried in this article.</p>
+<h2 id="Summary-about-Bitmap-of-Android"><a href="#Summary-about-Bitmap-of-Android" class="headerlink" title="Summary about Bitmap of Android"></a>Summary about Bitmap of Android</h2><p>BitmapDrawable is a bitmap package. Directly to the file, that is, an original bitmap package. In Xml mode, the original bitmap can be a series of processing, such as anti-aliasing, stretching, alignment and so on.</p>
+<p>To understand the use of BitmapDrawable, but also need to understand Bitmap, BitmapFactory and other categories. Bitmap represents an original bitmap, and can be a series of bitmap transform operation. BitmapFactory provides a set of methods for generating a Bitmap object. Used in the Canvas.</p>
+<p>Learn about drawing and bitmap conversion later. BitmapDrawable relatively simple to use, that is, in the other direct reference to the xml file on it, but should pay attention to the definitions in the xml BitmapDrawable the use and meaning of the various properties.</p>
+<p>Bitmap, BitmapDrawable, BitmapFactory, BitmapShader</p>
+<h3 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h3><p>Gets a bitmap from bitmapdrawable</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Resources res=getResources();  </span><br><span class="line">Drawable drawable = res.getDrawable(R.drawable.myimage);  </span><br><span class="line"><span class="comment">//Drawable </span></span><br><span class="line">BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  </span><br><span class="line"></span><br><span class="line">Bitmap bitmap=bitmapDrawable.getBitmap();</span><br></pre></td></tr></table></figure>
+<h3 id="BitmapFactory"><a href="#BitmapFactory" class="headerlink" title="BitmapFactory"></a>BitmapFactory</h3><p>The BitmapFactory class provides methods for creating Bitmap objects, which are used to parse and create Bitmap objects from different data sources, as follows:</p>
+<ol>
+<li><p>decodeFile (String pathName); Used to parse from the file specified by the given path to create a Bitmap object</p>
+</li>
+<li><p>decodeFileDescriptor (FileDescriptor fd); from the FileDescriptor corresponding to the file resolution, create a bitmap object</p>
+</li>
+<li><p>decodeResource (Resource res, int id); Used to parse the specified resource from the specified resource, creating a bitmap object</p>
+</li>
+<li><p>decodeStream (InputStream in); Used to parse from the specified input stream, creating a different bitmap object</p>
+</li>
+</ol>
+<p>The first method is the final implementation, the latter two are only the first method of the package.</p>
+<p>The second method can be cut from the specified area in the source Bitmap (x, y, width, height) to extract a cut;</p>
+<p>The third method is to scale the source Bitmap to a dstWidth x dstHeight Bitmap.</p>
+<p>Set the Rotate (via setRotate ()) or Scale (via setScale ()) of the Matrix to pass in the first method to rotate or scale.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//example</span></span><br><span class="line">ImageView imgView = (ImageView)findViewById(R.id.image3);  </span><br><span class="line"></span><br><span class="line">imgView.setImageBitmap(BitmapFactory.decodeResource(<span class="keyword">this</span>.getResources(), R.drawable.icon) );</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/03/05/android/gettingknowbitmapandbitmapresoucesofandroid/" data-id="cjugo67w7000enkuwnlpcrb3g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/graphics/">graphics</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/abirdviewofnettyinarchitecturedev" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/01/10/architecture/abirdviewofnettyinarchitecturedev/" class="article-date">
+  <time datetime="2014-01-09T16:00:00.000Z" itemprop="datePublished">2014-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/01/10/architecture/abirdviewofnettyinarchitecturedev/">A Bird&#39;s View of Netty</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>Netty is a NIO client server framework which enables quick and easy development of network applications such as protocol servers and clients. It greatly simplifies and streamlines network programming such as TCP and UDP socket server.</p>
+<p>‘Quick and easy’ doesn’t mean that a resulting application will suffer from a maintainability or a performance issue. Netty has been designed carefully with the experiences earned from the implementation of a lot of protocols such as FTP, SMTP, HTTP, and various binary and text-based legacy protocols. As a result, Netty has succeeded to find a way to achieve ease of development, performance, stability, and flexibility without a compromise.</p>
+<p><img src="http://netty.io/images/components.png" alt="netty architecture"></p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><h3 id="Design"><a href="#Design" class="headerlink" title="Design"></a>Design</h3><p>Unified API for various transport types - blocking and non-blocking socket</p>
+<p>Based on a flexible and extensible event model which allows clear separation of concerns</p>
+<p>Highly customizable thread model - single thread, one or more thread pools such as SEDA</p>
+<p>True connectionless datagram socket support (since 3.1)</p>
+<h3 id="Ease-of-use"><a href="#Ease-of-use" class="headerlink" title="Ease of use"></a>Ease of use</h3><p>Well-documented Javadoc, user guide and examples</p>
+<p>No additional dependencies, JDK 5 (Netty 3.x) or 6 (Netty 4.x) is enough</p>
+<blockquote>
+<blockquote>
+<p>Note: Some components such as HTTP/2 might have more requirements. Please refer to the Requirements page for more information.</p>
+</blockquote>
+</blockquote>
+<h3 id="Performance"><a href="#Performance" class="headerlink" title="Performance"></a>Performance</h3><p>Better throughput, lower latency</p>
+<p>Less resource consumption</p>
+<p>Minimized unnecessary memory copy</p>
+<p>Security</p>
+<p>Complete SSL/TLS and StartTLS support</p>
+<h3 id="Community"><a href="#Community" class="headerlink" title="Community"></a>Community</h3><p>Release early, release often</p>
+<p>The author has been writing similar frameworks since 2003 and he still finds your feed back precious!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/01/10/architecture/abirdviewofnettyinarchitecturedev/" data-id="cjugo7onm0001zsuw8gyzk3ec" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/netty/">netty</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nio/">nio</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/gettingstartspringmvcrestful" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/01/10/architecture/gettingstartspringmvcrestful/" class="article-date">
+  <time datetime="2014-01-09T16:00:00.000Z" itemprop="datePublished">2014-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/01/10/architecture/gettingstartspringmvcrestful/">Getting Start Using Spring MVC</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>reference on <a href="https://spring.io/guides/gs/serving-web-content/" target="_blank" rel="noopener">Serving Web Content with Spring MVC</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/01/10/architecture/gettingstartspringmvcrestful/" data-id="cjugo7onu0009zsuwtprgndf1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mvc/">mvc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/restful/">restful</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springframework/">springframework</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/abirdeyeviewofspringframework" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/01/10/architecture/abirdeyeviewofspringframework/" class="article-date">
+  <time datetime="2014-01-09T16:00:00.000Z" itemprop="datePublished">2014-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/01/10/architecture/abirdeyeviewofspringframework/">A Bird&#39;s View of Spring Framework</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><h3 id="Desc-of-Spring-Framework"><a href="#Desc-of-Spring-Framework" class="headerlink" title="Desc of Spring Framework"></a>Desc of Spring Framework</h3><p>The Spring Framework is an application framework and inversion of control container for the Java platform. The framework’s core features can be used by any Java application, but there are extensions for building web applications on top of the Java EE platform. Although the framework does not impose any specific programming model, it has become popular in the Java community as an alternative to, replacement for, or even addition to the Enterprise JavaBeans (EJB) model. The Spring Framework is open source.</p>
+<h3 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h3><p>The Spring Framework includes several modules that provide a range of services:</p>
+<ul>
+<li>Spring Core Container: this is the base module of Spring and provides spring containers (BeanFactory and ApplicationContext).</li>
+<li>Aspect-oriented programming: enables implementing cross-cutting concerns.</li>
+<li>Authentication and authorization: configurable security processes that support a range of standards, protocols, tools and practices via the Spring Security sub-project (formerly Acegi Security System for Spring).</li>
+<li>Convention over configuration: a rapid application development solution for Spring-based enterprise applications is offered in the Spring Roo module</li>
+<li>Data access: working with relational database management systems on the Java platform using JDBC and object-relational mapping tools and with NoSQL databases</li>
+<li>Inversion of control container: configuration of application components and lifecycle management of Java objects, done mainly via dependency injection</li>
+<li>Messaging: configurative registration of message listener objects for transparent message-consumption from message queues via JMS, improvement of message sending over standard JMS APIs</li>
+<li>Model–view–controller: an HTTP- and servlet-based framework providing hooks for extension and customization for web applications and RESTful Web services.</li>
+<li>Remote access framework: configurative RPC-style marshalling of Java objects over networks supporting RMI, CORBA and HTTP-based protocols including Web services (SOAP)</li>
+<li>Transaction management: unifies several transaction management APIs and coordinates transactions for Java objects</li>
+<li>Remote management: configurative exposure and management of Java objects for local or remote configuration via JMX</li>
+<li>Testing: support classes for writing unit tests and integration tests</li>
+</ul>
+<h2 id="Concept"><a href="#Concept" class="headerlink" title="Concept"></a>Concept</h2><h3 id="Inversion-of-control-container-dependency-injection"><a href="#Inversion-of-control-container-dependency-injection" class="headerlink" title="Inversion of control container (dependency injection)"></a>Inversion of control container (dependency injection)</h3><pre><code>Central to the Spring Framework is its inversion of control (IoC) container, which provides a consistent means of configuring and managing Java objects using reflection. The container is responsible for managing object lifecycles of specific objects: creating these objects, calling their initialization methods, and configuring these objects by wiring them together.
+</code></pre><p>Objects created by the container are also called managed objects or beans. The container can be configured by loading XML files or detecting specific Java annotations on configuration classes. These data sources contain the bean definitions that provide the information required to create the beans.</p>
+<p>Objects can be obtained by means of either dependency lookup or dependency injection. Dependency lookup is a pattern where a caller asks the container object for an object with a specific name or of a specific type. Dependency injection is a pattern where the container passes objects by name to other objects, via either constructors, properties, or factory methods.</p>
+<p>In many cases one need not use the container when using other parts of the Spring Framework, although using it will likely make an application easier to configure and customize. The Spring container provides a consistent mechanism to configure applications and integrates with almost all Java environments, from small-scale applications to large enterprise applications.</p>
+<p>The container can be turned into a partially compliant EJB 3.0 container by means of the Pitchfork project. Some criticize the Spring Framework for not complying with standards. However, SpringSource doesn’t see EJB 3 compliance as a major goal, and claims that the Spring Framework and the container allow for more powerful programming models. You do not create an object, but describe how they should be created, by defining it in the Spring configuration file. You do not call services and components, but tell which services and components must be called, by defining them in the Spring configuration files. This makes the code easy to maintain and easier to test through IoC.</p>
+<h3 id="Aspect-oriented-programming-framework-edit"><a href="#Aspect-oriented-programming-framework-edit" class="headerlink" title="Aspect-oriented programming framework[edit]"></a>Aspect-oriented programming framework[edit]</h3><p>The Spring Framework has its own Aspect-oriented programming (AOP) framework that modularizes cross-cutting concerns in aspects. The motivation for creating a separate AOP framework comes from the belief that it would be possible to provide basic AOP features without too much complexity in either design, implementation, or configuration. The Spring AOP framework also takes full advantage of the Spring container.</p>
+<p>The Spring AOP framework is proxy pattern-based, and is configured at run time. This removes the need for a compilation step or load-time weaving. On the other hand, interception only allows for public method-execution on existing objects at a join point.</p>
+<p>Compared to the AspectJ framework, Spring AOP is less powerful, but also less complicated. Spring 1.2 includes support to configure AspectJ aspects in the container. Spring 2.0 added more integration with AspectJ; for example, the pointcut language is reused and can be mixed with Spring AOP-based aspects. Further, Spring 2.0 added a Spring Aspects library that uses AspectJ to offer common Spring features such as declarative transaction management and dependency injection via AspectJ compile-time or load-time weaving. SpringSource also uses AspectJ AOP in other Spring projects such as Spring Roo and Spring Insight, with Spring Security also offering an AspectJ-based aspect library.</p>
+<p>Spring AOP has been designed to make it able to work with cross-cutting concerns inside the Spring Framework. Any object which is created and configured by the container can be enriched using Spring AOP.</p>
+<p>The Spring Framework uses Spring AOP internally for transaction management, security, remote access, and JMX.</p>
+<p>Then, Some modules used frequently will be instroduced.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/01/10/architecture/abirdeyeviewofspringframework/" data-id="cjugo7ono0003zsuwdylklfff" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DI/">DI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IoC/">IoC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springframework/">springframework</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/springusingreference1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/01/10/architecture/springusingreference1/" class="article-date">
+  <time datetime="2014-01-09T16:00:00.000Z" itemprop="datePublished">2014-01-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/01/10/architecture/springusingreference1/">Spring Using Reference 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="spring-restful"><a href="#spring-restful" class="headerlink" title="spring restful"></a>spring restful</h2><h3 id="一、使用spring-boot测试"><a href="#一、使用spring-boot测试" class="headerlink" title="一、使用spring boot测试"></a>一、使用spring boot测试</h3><pre><code>#### 1.spring framework 4.1, jackson, tomcat embed，JDK1.7
+下载地址：http://repo1.maven.org/maven2/com/fasterxml/jackson/core/
+          http://maven.springframework.org/release/org/springframework/spring/
+          http://apache.fayea.com/tomcat/tomcat-7/v7.0.63/bin/embed/apache-tomcat-7.0.63-embed.zip
+#### 2.常见问题：
+- （1）Unregistering JMX-exposed beans on shutdown
+    使用tomcat embed
+- （2）java.nio.charset.Charset
+    使用jdk1.7
+- （2）status=406
+    使用jackson因为4.1使用这个解析xml
+示例程序参见：http://spring.io/guides/gs/rest-service/
+</code></pre><h2 id="Spring-IOC"><a href="#Spring-IOC" class="headerlink" title="Spring IOC"></a>Spring IOC</h2><p>spring ioc原理（看完后大家可以自己写一个spring）:<a href="http://blog.csdn.net/it_man/article/details/4402245" target="_blank" rel="noopener">http://blog.csdn.net/it_man/article/details/4402245</a></p>
+<h2 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h2><ul>
+<li>Spring实现AOP的4种方式：<a href="http://blog.csdn.net/udbnny/article/details/5870076" target="_blank" rel="noopener">http://blog.csdn.net/udbnny/article/details/5870076</a></li>
+<li>Spring AOP 的简单例子：<a href="http://www.cnblogs.com/yql1986/articles/2213486.html" target="_blank" rel="noopener">http://www.cnblogs.com/yql1986/articles/2213486.html</a></li>
+</ul>
+<h2 id="设计模式："><a href="#设计模式：" class="headerlink" title="设计模式："></a>设计模式：</h2><pre><code>- 静态代理：http://blog.csdn.net/lidatgb/article/details/8941711
+- 动态代理：http://blog.csdn.net/lidatgb/article/details/8993131
+</code></pre><h2 id="二、Spring、Struts2、Hibernate整合"><a href="#二、Spring、Struts2、Hibernate整合" class="headerlink" title="二、Spring、Struts2、Hibernate整合"></a>二、Spring、Struts2、Hibernate整合</h2><p>strut2同样负责的是Action任务，但它的Action经过Spring处理，所以先由Spring生成Action。<br>Spring生成Action需要数据库支持，Spring将Hibernate作为一个bean将它Model</p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><ul>
+<li><a href="http://txazo.iteye.com/blog/1669771" target="_blank" rel="noopener">http://txazo.iteye.com/blog/1669771</a></li>
+<li><a href="http://my.oschina.net/tomzhao/blog/37292" target="_blank" rel="noopener">http://my.oschina.net/tomzhao/blog/37292</a></li>
+<li><a href="http://www.cnblogs.com/taoxiaoji/archive/2011/03/12/Two_ways_to_integrate_Struts2_and_Spring.html" target="_blank" rel="noopener">http://www.cnblogs.com/taoxiaoji/archive/2011/03/12/Two_ways_to_integrate_Struts2_and_Spring.html</a></li>
+</ul>
+<h3 id="常见错误："><a href="#常见错误：" class="headerlink" title="常见错误："></a>常见错误：</h3><ul>
+<li>1.Cannot locate the chosen ObjectFactory implementation:<br><br><a href="http://wkf41068.iteye.com/blog/1464206" target="_blank" rel="noopener">http://wkf41068.iteye.com/blog/1464206</a></li>
+<li><ol start="2">
+<li>org.apache.struts2.dispatcher.ng.filter <br><br><a href="http://blog.csdn.net/longyi007/article/details/6939477" target="_blank" rel="noopener">http://blog.csdn.net/longyi007/article/details/6939477</a></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>org/hibernate/service/jta/platform/spi/JtaPlatform <br><br><a href="http://www.cnblogs.com/leiOOlei/p/3668229.html" target="_blank" rel="noopener">http://www.cnblogs.com/leiOOlei/p/3668229.html</a></li>
+</ol>
+</li>
+<li>4.No default constructor for entity <br><br><a href="http://my.oschina.net/zhuka/blog/147907" target="_blank" rel="noopener">http://my.oschina.net/zhuka/blog/147907</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/01/10/architecture/springusingreference1/" data-id="cjugo7oo2000dzsuwpx4qa9tn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mvc/">mvc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/restful/">restful</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springframework/">springframework</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-data platform/architectrueresourcesondataplatform" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/12/10/data platform/architectrueresourcesondataplatform/" class="article-date">
+  <time datetime="2013-12-09T16:00:00.000Z" itemprop="datePublished">2013-12-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/12/10/data platform/architectrueresourcesondataplatform/">Collection of Resources on Architecture about Data Platform</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p><a href="http://www.oracle.com/technetwork/topics/entarch/oracle-wp-big-data-refarch-2019930.pdf" target="_blank" rel="noopener">oracle big data platform white paper</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2013/12/10/data platform/architectrueresourcesondataplatform/" data-id="cjugo7oo6000jzsuwz1qjzukk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ai/">ai</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data/">data</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/platform/">platform</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-littleqi/diary20151021" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/10/11/littleqi/diary20151021/" class="article-date">
+  <time datetime="2013-10-10T16:00:00.000Z" itemprop="datePublished">2013-10-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/10/11/littleqi/diary20151021/">The life of little Qi (1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="The-gift-of-the-god"><a href="#The-gift-of-the-god" class="headerlink" title="The gift of the god"></a>The gift of the god</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2013/10/11/littleqi/diary20151021/" data-id="cjugo7oob000pzsuwm4jewzu0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/diary/">diary</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mood/">mood</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-frontend/bootrap3instruction" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/10/10/frontend/bootrap3instruction/" class="article-date">
+  <time datetime="2013-10-09T16:00:00.000Z" itemprop="datePublished">2013-10-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/10/10/frontend/bootrap3instruction/">BootStrap 3 Instruction</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p><a href="http://getbootstrap.com/2.3.2/" target="_blank" rel="noopener">ref</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2013/10/10/frontend/bootrap3instruction/" data-id="cjugo7oo5000izsuwf4etw3fl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/frontend/">frontend</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/library/">library</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/responsive/">responsive</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-bibis/howbadmyfortune" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/09/11/bibis/howbadmyfortune/" class="article-date">
+  <time datetime="2013-09-10T16:00:00.000Z" itemprop="datePublished">2013-09-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2013/09/11/bibis/howbadmyfortune/">How Bad My Fortune It Is</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="How-Bad-My-Fortune-It-Is"><a href="#How-Bad-My-Fortune-It-Is" class="headerlink" title="How Bad My Fortune It Is"></a>How Bad My Fortune It Is</h2><p>Today, I lost one hundred yuan money.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2013/09/11/bibis/howbadmyfortune/" data-id="cjugo7oo5000hzsuwehryov82" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/diary/">diary</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mood/">mood</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DI/">DI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IoC/">IoC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monitor/">Monitor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aar/">aar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad/">ad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptation/">adaptation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aidl/">aidl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/allegrograph/">allegrograph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analysis/">analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apk/">apk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/application/">application</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/architecture/">architecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asm/">asm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automatic/">automatic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/back/">back</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootloader/">bootloader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cayley/">cayley</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cipher/">cipher</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/click/">click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commontool/">commontool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/construct/">construct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data/">data</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debugging/">debugging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearn/">deeplearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dev/">dev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dex/">dex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/diary/">diary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastboot/">fastboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastlane/">fastlane</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flockdb/">flockdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontend/">frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph/">graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hacking/">hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hotfix/">hotfix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/inaction/">inaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/infinitegraph/">infinitegraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmlr/">jmlr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kylin/">kylin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/library/">library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/local/">local</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/looper/">looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ml/">ml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mood/">mood</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-dimensional/">multi-dimensional</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multidex/">multidex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neo4j/">neo4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netty/">netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nio/">nio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuomi/">nuomi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuwa/">nuwa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optimization/">optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/permission/">permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/platform/">platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/production/">production</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protection/">protection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/queue/">queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recovery/">recovery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/">remote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responsive/">responsive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restful/">restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retrofit/">retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reversing/">reversing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rom/">rom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/safe-mode/">safe mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroller/">scroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secure/">secure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sourcecode/">sourcecode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springframework/">springframework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusbar/">statusbar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svd/">svd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svm/">svm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp-ip/">tcp/ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tech/">tech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/title-bar/">title bar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmall/">tmall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/touch/">touch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/update/">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view/">view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/viewpager/">viewpager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webview/">webview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/IoC/" style="font-size: 10px;">IoC</a> <a href="/tags/Monitor/" style="font-size: 10px;">Monitor</a> <a href="/tags/ReactiveX/" style="font-size: 10px;">ReactiveX</a> <a href="/tags/aar/" style="font-size: 11.43px;">aar</a> <a href="/tags/ad/" style="font-size: 10px;">ad</a> <a href="/tags/adaptation/" style="font-size: 10px;">adaptation</a> <a href="/tags/advice/" style="font-size: 10px;">advice</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/aidl/" style="font-size: 11.43px;">aidl</a> <a href="/tags/algorithm/" style="font-size: 17.14px;">algorithm</a> <a href="/tags/allegrograph/" style="font-size: 10px;">allegrograph</a> <a href="/tags/analysis/" style="font-size: 12.86px;">analysis</a> <a href="/tags/android/" style="font-size: 11.43px;">android</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/apk/" style="font-size: 10px;">apk</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/application/" style="font-size: 10px;">application</a> <a href="/tags/architecture/" style="font-size: 12.86px;">architecture</a> <a href="/tags/asm/" style="font-size: 10px;">asm</a> <a href="/tags/asynchronous/" style="font-size: 10px;">asynchronous</a> <a href="/tags/auto/" style="font-size: 11.43px;">auto</a> <a href="/tags/automatic/" style="font-size: 11.43px;">automatic</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/back/" style="font-size: 10px;">back</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bird-view/" style="font-size: 11.43px;">bird view</a> <a href="/tags/bitmap/" style="font-size: 10px;">bitmap</a> <a href="/tags/bootloader/" style="font-size: 10px;">bootloader</a> <a href="/tags/bootrap/" style="font-size: 10px;">bootrap</a> <a href="/tags/cayley/" style="font-size: 10px;">cayley</a> <a href="/tags/cipher/" style="font-size: 10px;">cipher</a> <a href="/tags/click/" style="font-size: 10px;">click</a> <a href="/tags/commontool/" style="font-size: 11.43px;">commontool</a> <a href="/tags/construct/" style="font-size: 10px;">construct</a> <a href="/tags/ctf/" style="font-size: 11.43px;">ctf</a> <a href="/tags/ctrip/" style="font-size: 10px;">ctrip</a> <a href="/tags/data/" style="font-size: 10px;">data</a> <a href="/tags/data-analysis/" style="font-size: 12.86px;">data analysis</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/debugging/" style="font-size: 11.43px;">debugging</a> <a href="/tags/deep-learning/" style="font-size: 10px;">deep learning</a> <a href="/tags/deeplearn/" style="font-size: 11.43px;">deeplearn</a> <a href="/tags/design/" style="font-size: 11.43px;">design</a> <a href="/tags/dev/" style="font-size: 10px;">dev</a> <a href="/tags/dex/" style="font-size: 10px;">dex</a> <a href="/tags/diary/" style="font-size: 11.43px;">diary</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/fastlane/" style="font-size: 10px;">fastlane</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/flockdb/" style="font-size: 10px;">flockdb</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/frontend/" style="font-size: 10px;">frontend</a> <a href="/tags/gettingstart/" style="font-size: 20px;">gettingstart</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/graphics/" style="font-size: 11.43px;">graphics</a> <a href="/tags/hacking/" style="font-size: 11.43px;">hacking</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/high-concurrency/" style="font-size: 12.86px;">high concurrency</a> <a href="/tags/hot-fix/" style="font-size: 10px;">hot fix</a> <a href="/tags/hotfix/" style="font-size: 10px;">hotfix</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/ibinder/" style="font-size: 11.43px;">ibinder</a> <a href="/tags/inaction/" style="font-size: 10px;">inaction</a> <a href="/tags/infinitegraph/" style="font-size: 10px;">infinitegraph</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jmlr/" style="font-size: 10px;">jmlr</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kylin/" style="font-size: 10px;">kylin</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/learning/" style="font-size: 11.43px;">learning</a> <a href="/tags/library/" style="font-size: 10px;">library</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/linux/" style="font-size: 12.86px;">linux</a> <a href="/tags/live/" style="font-size: 11.43px;">live</a> <a href="/tags/local/" style="font-size: 10px;">local</a> <a href="/tags/looper/" style="font-size: 10px;">looper</a> <a href="/tags/machine-learning/" style="font-size: 15.71px;">machine learning</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/ml/" style="font-size: 11.43px;">ml</a> <a href="/tags/mobile/" style="font-size: 11.43px;">mobile</a> <a href="/tags/mood/" style="font-size: 11.43px;">mood</a> <a href="/tags/multi-classification/" style="font-size: 10px;">multi-classification</a> <a href="/tags/multi-dimensional/" style="font-size: 10px;">multi-dimensional</a> <a href="/tags/multidex/" style="font-size: 10px;">multidex</a> <a href="/tags/mvc/" style="font-size: 15.71px;">mvc</a> <a href="/tags/neo4j/" style="font-size: 10px;">neo4j</a> <a href="/tags/net/" style="font-size: 18.57px;">net</a> <a href="/tags/netty/" style="font-size: 15.71px;">netty</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/nio/" style="font-size: 10px;">nio</a> <a href="/tags/nuomi/" style="font-size: 10px;">nuomi</a> <a href="/tags/nuwa/" style="font-size: 10px;">nuwa</a> <a href="/tags/optimization/" style="font-size: 10px;">optimization</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/permission/" style="font-size: 10px;">permission</a> <a href="/tags/platform/" style="font-size: 14.29px;">platform</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/production/" style="font-size: 10px;">production</a> <a href="/tags/protection/" style="font-size: 10px;">protection</a> <a href="/tags/queue/" style="font-size: 10px;">queue</a> <a href="/tags/react-native/" style="font-size: 10px;">react native</a> <a href="/tags/recovery/" style="font-size: 10px;">recovery</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a> <a href="/tags/request/" style="font-size: 11.43px;">request</a> <a href="/tags/responsive/" style="font-size: 10px;">responsive</a> <a href="/tags/restful/" style="font-size: 15.71px;">restful</a> <a href="/tags/retrofit/" style="font-size: 11.43px;">retrofit</a> <a href="/tags/reversing/" style="font-size: 11.43px;">reversing</a> <a href="/tags/rom/" style="font-size: 10px;">rom</a> <a href="/tags/safe-mode/" style="font-size: 10px;">safe mode</a> <a href="/tags/scroller/" style="font-size: 11.43px;">scroller</a> <a href="/tags/secure/" style="font-size: 11.43px;">secure</a> <a href="/tags/security/" style="font-size: 10px;">security</a> <a href="/tags/service/" style="font-size: 11.43px;">service</a> <a href="/tags/shell/" style="font-size: 11.43px;">shell</a> <a href="/tags/sklearn/" style="font-size: 11.43px;">sklearn</a> <a href="/tags/sourcecode/" style="font-size: 10px;">sourcecode</a> <a href="/tags/spring/" style="font-size: 18.57px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springframework/" style="font-size: 18.57px;">springframework</a> <a href="/tags/statusbar/" style="font-size: 10px;">statusbar</a> <a href="/tags/support-vector-machine/" style="font-size: 12.86px;">support vector machine</a> <a href="/tags/svd/" style="font-size: 10px;">svd</a> <a href="/tags/svm/" style="font-size: 12.86px;">svm</a> <a href="/tags/tcp-ip/" style="font-size: 10px;">tcp/ip</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/tensorflow/" style="font-size: 12.86px;">tensorflow</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/title-bar/" style="font-size: 10px;">title bar</a> <a href="/tags/tmall/" style="font-size: 10px;">tmall</a> <a href="/tags/touch/" style="font-size: 10px;">touch</a> <a href="/tags/update/" style="font-size: 10px;">update</a> <a href="/tags/view/" style="font-size: 10px;">view</a> <a href="/tags/viewpager/" style="font-size: 10px;">viewpager</a> <a href="/tags/webview/" style="font-size: 11.43px;">webview</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/writeup/" style="font-size: 11.43px;">writeup</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/10/ml/AdaptationBasedonGeneralizedDiscrepancy/">Adaptation Based on Generalized Discrepancy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/31/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/02/mathalg/matrixcompletionandlowranksvdviafastalternatingleastsquares/">Matrix Completion and Low-Rank SVD via Fast Alternating Least Squares (JMLR)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 dachmx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo and dachmx</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

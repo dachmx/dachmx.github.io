@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Using RxJava for Android Dev | Dachmx web log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Desc of RxJavaReactiveX is a library for composing asynchronous and event-based programs by using observable sequences. It extends the observer pattern to support sequences of data and/or events and a">
+<meta name="keywords" content="netty,net,retrofit,ReactiveX,asynchronous">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using RxJava for Android Dev">
+<meta property="og:url" content="http://dachmx.github.io/2015/10/15/android/usingrxjavaonandroid/index.html">
+<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:description" content="Desc of RxJavaReactiveX is a library for composing asynchronous and event-based programs by using observable sequences. It extends the observer pattern to support sequences of data and/or events and a">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-14T09:52:55.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Using RxJava for Android Dev">
+<meta name="twitter:description" content="Desc of RxJavaReactiveX is a library for composing asynchronous and event-based programs by using observable sequences. It extends the observer pattern to support sequences of data and/or events and a">
+  
+    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dachmx web log</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">just record and just share</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dachmx.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android/usingrxjavaonandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/15/android/usingrxjavaonandroid/" class="article-date">
+  <time datetime="2015-10-14T16:00:00.000Z" itemprop="datePublished">2015-10-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Using RxJava for Android Dev
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Desc-of-RxJava"><a href="#Desc-of-RxJava" class="headerlink" title="Desc of RxJava"></a>Desc of RxJava</h2><p>ReactiveX is a library for composing asynchronous and event-based programs by using observable sequences.</p>
+<p>It extends the observer pattern to support sequences of data and/or events and adds operators that allow you to compose sequences together declaratively while abstracting away concerns about things like low-level threading, synchronization, thread-safety, concurrent data structures, and non-blocking I/O.</p>
+<h4 id="Observables-fill-the-gap-by-being-the-ideal-way-to-access-asynchronous-sequences-of-multiple-items"><a href="#Observables-fill-the-gap-by-being-the-ideal-way-to-access-asynchronous-sequences-of-multiple-items" class="headerlink" title="Observables fill the gap by being the ideal way to access asynchronous sequences of multiple items"></a>Observables fill the gap by being the ideal way to access asynchronous sequences of multiple items</h4><table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">single items</th>
+<th style="text-align:center">multiple items</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">synchronous</td>
+<td style="text-align:center">T getData()</td>
+<td style="text-align:center">Iterable<t> getData()</t></td>
+</tr>
+<tr>
+<td style="text-align:center">asynchronous</td>
+<td style="text-align:center">Future<t> getData()</t></td>
+<td style="text-align:center">Observable<t> getData()</t></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Using-of-RxAndroid"><a href="#Using-of-RxAndroid" class="headerlink" title="Using of RxAndroid"></a>Using of RxAndroid</h2><h3 id="1-Setting-Up-RxAndroid"><a href="#1-Setting-Up-RxAndroid" class="headerlink" title="1. Setting Up RxAndroid"></a>1. Setting Up RxAndroid</h3><p>To use RxAndroid in an Android Studio project, add it as a compile dependency in the app module’s build.gradle.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">'io.reactivex:rxandroid:0.25.0'</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-Basics-of-Observers-and-Observables"><a href="#2-Basics-of-Observers-and-Observables" class="headerlink" title="2. Basics of Observers and Observables"></a>2. Basics of Observers and Observables</h3><p>When working with ReactiveX, you will be using observables and observers extensively. You can think of an observable as an object that emits data and an observer as an object that consumes that data. In RxJava and RxAndroid, observers are instances of the Observer interface, and observables are instances of the Observable class.</p>
+<p>The Observable class has many static methods, called operators, to create Observable objects. The following code shows you how to use the just operator to create a very simple Observable that emits a single String.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;String&gt; myObservable </span><br><span class="line">    = Observable.just(<span class="string">"Hello"</span>); <span class="comment">// Emits "Hello"</span></span><br></pre></td></tr></table></figure></p>
+<p>The observable we just created will emit its data only when it has at least one observer. To create an observer, you create a class that implements the Observer interface. The Observer interface has intuitively named methods to handle the different types of notifications it can receive from the observable. Here’s an observer that can print the String emitted by the observable we created earlier:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Observer&lt;String&gt; myObserver = <span class="keyword">new</span> Observer&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Called when the observable has no more data to emit</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Called when the observable encounters an error</span></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Called each time the observable emits data</span></span><br><span class="line">        Log.d(<span class="string">"MY OBSERVER"</span>, s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>To assign an observer to an observable, you should use the subscribe method, which returns a Subscription object. The following code makes myObserver observe myObservable:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Subscription mySubscription = myObservable.subscribe(myObserver);</span><br></pre></td></tr></table></figure></p>
+<p>As soon as an observer is added to the observable, it emits its data. Therefore, if you execute the code now, you will see Hello printed in Android Studio’s logcat window.</p>
+<p>You might have noticed that we didn’t use the onCompleted and the onError methods in myObserver. As these methods are often left unused, you also have the option of using the Action1 interface, which contains a single method named call.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Action1&lt;String&gt; myAction = <span class="keyword">new</span> Action1&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"My Action"</span>, s);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>When you pass an instance of Action1 to the subscribe method, the call method is invoked whenever the observable emits data.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Subscription mySubscription = myObservable.subscribe(myAction1);</span><br></pre></td></tr></table></figure>
+<p>To detach an observer from its observable while the observable is still emitting data, you can call the unsubscribe method on the Subscription object.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mySubscription.unsubscribe();</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-Using-Operators"><a href="#3-Using-Operators" class="headerlink" title="3. Using Operators"></a>3. Using Operators</h3><p>Now that you know how to create observers and observables, let me show you how to use ReactiveX’s operators that can create, transform, and perform other operations on observables. Let’s start by creating a slightly more advanced Observable, one that emits items from an array of Integer objects. To do so, you have to use the from operator, which can generate an Observable from arrays and lists.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;Integer&gt; myArrayObservable </span><br><span class="line">    = Observable.from(<span class="keyword">new</span> Integer[]&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;); <span class="comment">// Emits each item of the array, one at a time</span></span><br><span class="line"> </span><br><span class="line">myArrayObservable.subscribe(<span class="keyword">new</span> Action1&lt;Integer&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Integer i)</span> </span>&#123;</span><br><span class="line">        Log.d(<span class="string">"My Action"</span>, String.valueOf(i)); <span class="comment">// Prints the number received</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>When you run this code, you will see each of the numbers of the array printed one after another.</p>
+<p>If you’re familiar with JavaScript, Ruby, or Kotlin, you might be familiar with higher-order functions such as map and filter, which can be used when working with arrays. ReactiveX has operators that can perform similar operations on observables. However, because Java 7 doesn’t have lambdas and higher-order functions, we’ll have to do it with classes that simulate lambdas. To simulate a lambda that takes one argument, you will have to create a class that implements the Func1 interface.</p>
+<p>Here’s how you can use the map operator to square each item of myArrayObservable:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">myArrayObservable = myArrayObservable.map(<span class="keyword">new</span> Func1&lt;Integer, Integer&gt;() &#123; <span class="comment">// Input and Output are both Integer</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">call</span><span class="params">(Integer integer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> integer * integer; <span class="comment">// Square the number</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Note that the call to the map operator returns a new Observable, it doesn’t change the original Observable. If you subscribe to myArrayObservable now, you will receive squares of the numbers.</p>
+<p>Operators can be chained. For example, the following code block uses the skip operator to skip the first two numbers, and then the filter operator to ignore odd numbers:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">myArrayObservable</span><br><span class="line">    .skip(<span class="number">2</span>) <span class="comment">// Skip the first two items</span></span><br><span class="line">    .filter(<span class="keyword">new</span> Func1&lt;Integer, Boolean&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Boolean <span class="title">call</span><span class="params">(Integer integer)</span> </span>&#123; <span class="comment">// Ignores any item that returns false</span></span><br><span class="line">            <span class="keyword">return</span> integer % <span class="number">2</span> == <span class="number">0</span>; </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Emits 4 and 6</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="4-Handling-Asynchronous-Jobs"><a href="#4-Handling-Asynchronous-Jobs" class="headerlink" title="4. Handling Asynchronous Jobs"></a>4. Handling Asynchronous Jobs</h3><p>The observers and observables we created in the previous sections worked on a single thread, Android’s UI thread. In this section, I will show you how to use ReactiveX to manage multiple threads and how ReactiveX solves the problem of callback hell.</p>
+<p>Assume you have a method named fetchData that can be used to fetch data from an API. Let’s say it accepts a URL as its parameter and returns the contents of the response as a String. The following code snippet shows how it could be used.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String content = fetchData(<span class="string">"http://www.google.com"</span>);</span><br><span class="line"><span class="comment">// fetches the contents of google.com as a String</span></span><br></pre></td></tr></table></figure></p>
+<p>This method needs to run on its own thread, because Android does not allow network operations on the UI thread. This means you would either create an AsyncTask or create a Thread that uses a Handler.</p>
+<p>With ReactiveX, however, you have a third option that is slightly more concise. Using the subscribeOn and observeOn operators, you can explicitly specify which thread should run the background job and which thread should handle the user interface updates.</p>
+<p>The following code creates a custom Observable using the create operator. When you create an Observable in this manner, you have to implement the Observable.OnSubscribe interface and control what it emits by calling the onNext, onError, and onCompleted methods yourself.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;String&gt; fetchFromGoogle = Observable.create(<span class="keyword">new</span> Observable.OnSubscribe&lt;String&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> String&gt; subscriber)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            String data = fetchData(<span class="string">"http://www.google.com"</span>);</span><br><span class="line">            subscriber.onNext(data); <span class="comment">// Emit the contents of the URL</span></span><br><span class="line">            subscriber.onCompleted(); <span class="comment">// Nothing more to emit</span></span><br><span class="line">        &#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line">            subscriber.onError(e); <span class="comment">// In case there are network errors</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>When the Observable is ready, you can use subscribeOn and observeOn to specify the threads it should use and subscribe to it.<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fetchFromGoogle</span><br><span class="line">    .subscribeOn(Schedulers.newThread()) <span class="comment">// Create a new Thread</span></span><br><span class="line">    .observeOn(AndroidSchedulers.mainThread()) <span class="comment">// Use the UI thread</span></span><br><span class="line">    .subscribe(<span class="keyword">new</span> Action1&lt;String&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">            view.setText(view.getText() + <span class="string">"\n"</span> + s); <span class="comment">// Change a View</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>You might still be thinking that the reactive approach isn’t drastically better than using the AsyncTask or Handler classes. You are right, you don’t really need ReactiveX if you have to manage only one background job.</p>
+<p>Now consider a scenario that would result in a complex codebase if you used the conventional approach. Let’s say you have to fetch data from two (or more) websites in parallel and update a View only when all the requests have completed. If you follow the conventional approach, you would have to write lots of unnecessary code to make sure that the requests completed without errors.</p>
+<p>Consider another scenario in which you have to start a background job only after another background job has completed. Using the conventional approach, this would result in nested callbacks.</p>
+<p>With ReactiveX’s operators, both scenarios can be handled with very little code. For example, if you have to use fetchData to fetch the contents of two websites, fore example Google and Yahoo, you would create two Observable objects, and use the subscribeOn method to make them run on different threads.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fetchFromGoogle = fetchFromGoogle.subscribeOn(Schedulers.newThread());</span><br><span class="line">fetchFromYahoo = fetchFromYahoo.subscribeOn(Schedulers.newThread());</span><br></pre></td></tr></table></figure>
+<p>To handle the first scenario in which both requests need to run in parallel, you can use the zip operator and subscribe to the Observable it returns.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fetch from both simultaneously</span></span><br><span class="line">Observable&lt;String&gt; zipped </span><br><span class="line">    = Observable.zip(fetchFromGoogle, fetchFromYahoo, <span class="keyword">new</span> Func2&lt;String, String, String&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">call</span><span class="params">(String google, String yahoo)</span> </span>&#123; </span><br><span class="line">            <span class="comment">// Do something with the results of both threads</span></span><br><span class="line">            <span class="keyword">return</span> google + <span class="string">"\n"</span> + yahoo;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>Similarly, to handle the second scenario, you can use the concat operator to run the threads one after another.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Observable&lt;String&gt; concatenated = Observable.concat(fetchFromGoogle, fetchFromYahoo);</span><br><span class="line"><span class="comment">// Emit the results one after another</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-Handling-Events"><a href="#5-Handling-Events" class="headerlink" title="5. Handling Events"></a>5. Handling Events</h3><p>RxAndroid has a class named ViewObservable that makes it easy to handle events associated with View objects. The following code snippet shows you how to create a ViewObservable that can be used to handle the click events of a Button.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Button myButton </span><br><span class="line">    = (Button)findViewById(R.id.my_button); <span class="comment">// Create a Button from a layout</span></span><br><span class="line"> </span><br><span class="line">Observable&lt;OnClickEvent&gt; clicksObservable</span><br><span class="line">    = ViewObservable.clicks(myButton); <span class="comment">// Create a ViewObservable for the Button</span></span><br></pre></td></tr></table></figure>
+<p>You can now subscribe to clicksObservable and use any of the operators you learned about in the previous sections. For example, if you want your app to skip the first four clicks of the button and start responding from the fifth click onwards, you could use the following implementation:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">clicksObservable</span><br><span class="line">    .skip(<span class="number">4</span>)    <span class="comment">// Skip the first 4 clicks</span></span><br><span class="line">    .subscribe(<span class="keyword">new</span> Action1&lt;OnClickEvent&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(OnClickEvent onClickEvent)</span> </span>&#123;</span><br><span class="line">            Log.d(<span class="string">"Click Action"</span>, <span class="string">"Clicked!"</span>); </span><br><span class="line">                <span class="comment">// Printed from the fifth click onwards</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>##Conclusion</p>
+<p>In this tutorial, you learned how to use ReactiveX’s observers, observables, and operators to handle multiple asynchronous operations and events. As working with ReactiveX involves functional, reactive programming, a programming paradigm most Android developers are not used to, don’t be too hard on yourself if you don’t get it right the first time. You should also know that ReactiveX code will be a lot more readable if you use a modern programming language, such as Kotlin, that supports higher-order functions.</p>
+<p>reference articles:</p>
+<p><a href="http://reactivex.io/intro.html" target="_blank" rel="noopener">ReactiveX</a></p>
+<p><a href="https://code.tutsplus.com/tutorials/getting-started-with-reactivex-on-android--cms-24387" target="_blank" rel="noopener">Getting Started With ReactiveX on Android</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/10/15/android/usingrxjavaonandroid/" data-id="cjugo67wn000pnkuwdfmf01ox" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/netty/">netty</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/retrofit/">retrofit</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/20/android/learningnetworkoptimizationformobile/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Learning NetWork Optimization for Mobile of Ctrip
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/12/android/analysisonnetrequestofandroid/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Analysis on Net Request for Android Dev</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DI/">DI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IoC/">IoC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monitor/">Monitor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aar/">aar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad/">ad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptation/">adaptation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aidl/">aidl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/allegrograph/">allegrograph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analysis/">analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apk/">apk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/application/">application</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/architecture/">architecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asm/">asm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automatic/">automatic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/back/">back</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootloader/">bootloader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cayley/">cayley</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cipher/">cipher</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/click/">click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commontool/">commontool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/construct/">construct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data/">data</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debugging/">debugging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearn/">deeplearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dev/">dev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dex/">dex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/diary/">diary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastboot/">fastboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastlane/">fastlane</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flockdb/">flockdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontend/">frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph/">graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hacking/">hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hotfix/">hotfix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/inaction/">inaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/infinitegraph/">infinitegraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmlr/">jmlr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kylin/">kylin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/library/">library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/local/">local</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/looper/">looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ml/">ml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mood/">mood</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-dimensional/">multi-dimensional</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multidex/">multidex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neo4j/">neo4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netty/">netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nio/">nio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuomi/">nuomi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuwa/">nuwa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optimization/">optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/permission/">permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/platform/">platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/production/">production</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protection/">protection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/queue/">queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recovery/">recovery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/">remote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responsive/">responsive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restful/">restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retrofit/">retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reversing/">reversing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rom/">rom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/safe-mode/">safe mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroller/">scroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secure/">secure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sourcecode/">sourcecode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springframework/">springframework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusbar/">statusbar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svd/">svd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svm/">svm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp-ip/">tcp/ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tech/">tech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/title-bar/">title bar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmall/">tmall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/touch/">touch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/update/">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view/">view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/viewpager/">viewpager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webview/">webview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/IoC/" style="font-size: 10px;">IoC</a> <a href="/tags/Monitor/" style="font-size: 10px;">Monitor</a> <a href="/tags/ReactiveX/" style="font-size: 10px;">ReactiveX</a> <a href="/tags/aar/" style="font-size: 11.43px;">aar</a> <a href="/tags/ad/" style="font-size: 10px;">ad</a> <a href="/tags/adaptation/" style="font-size: 10px;">adaptation</a> <a href="/tags/advice/" style="font-size: 10px;">advice</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/aidl/" style="font-size: 11.43px;">aidl</a> <a href="/tags/algorithm/" style="font-size: 17.14px;">algorithm</a> <a href="/tags/allegrograph/" style="font-size: 10px;">allegrograph</a> <a href="/tags/analysis/" style="font-size: 12.86px;">analysis</a> <a href="/tags/android/" style="font-size: 11.43px;">android</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/apk/" style="font-size: 10px;">apk</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/application/" style="font-size: 10px;">application</a> <a href="/tags/architecture/" style="font-size: 12.86px;">architecture</a> <a href="/tags/asm/" style="font-size: 10px;">asm</a> <a href="/tags/asynchronous/" style="font-size: 10px;">asynchronous</a> <a href="/tags/auto/" style="font-size: 11.43px;">auto</a> <a href="/tags/automatic/" style="font-size: 11.43px;">automatic</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/back/" style="font-size: 10px;">back</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bird-view/" style="font-size: 11.43px;">bird view</a> <a href="/tags/bitmap/" style="font-size: 10px;">bitmap</a> <a href="/tags/bootloader/" style="font-size: 10px;">bootloader</a> <a href="/tags/bootrap/" style="font-size: 10px;">bootrap</a> <a href="/tags/cayley/" style="font-size: 10px;">cayley</a> <a href="/tags/cipher/" style="font-size: 10px;">cipher</a> <a href="/tags/click/" style="font-size: 10px;">click</a> <a href="/tags/commontool/" style="font-size: 11.43px;">commontool</a> <a href="/tags/construct/" style="font-size: 10px;">construct</a> <a href="/tags/ctf/" style="font-size: 11.43px;">ctf</a> <a href="/tags/ctrip/" style="font-size: 10px;">ctrip</a> <a href="/tags/data/" style="font-size: 10px;">data</a> <a href="/tags/data-analysis/" style="font-size: 12.86px;">data analysis</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/debugging/" style="font-size: 11.43px;">debugging</a> <a href="/tags/deep-learning/" style="font-size: 10px;">deep learning</a> <a href="/tags/deeplearn/" style="font-size: 11.43px;">deeplearn</a> <a href="/tags/design/" style="font-size: 11.43px;">design</a> <a href="/tags/dev/" style="font-size: 10px;">dev</a> <a href="/tags/dex/" style="font-size: 10px;">dex</a> <a href="/tags/diary/" style="font-size: 11.43px;">diary</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/fastlane/" style="font-size: 10px;">fastlane</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/flockdb/" style="font-size: 10px;">flockdb</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/frontend/" style="font-size: 10px;">frontend</a> <a href="/tags/gettingstart/" style="font-size: 20px;">gettingstart</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/graphics/" style="font-size: 11.43px;">graphics</a> <a href="/tags/hacking/" style="font-size: 11.43px;">hacking</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/high-concurrency/" style="font-size: 12.86px;">high concurrency</a> <a href="/tags/hot-fix/" style="font-size: 10px;">hot fix</a> <a href="/tags/hotfix/" style="font-size: 10px;">hotfix</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/ibinder/" style="font-size: 11.43px;">ibinder</a> <a href="/tags/inaction/" style="font-size: 10px;">inaction</a> <a href="/tags/infinitegraph/" style="font-size: 10px;">infinitegraph</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jmlr/" style="font-size: 10px;">jmlr</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kylin/" style="font-size: 10px;">kylin</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/learning/" style="font-size: 11.43px;">learning</a> <a href="/tags/library/" style="font-size: 10px;">library</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/linux/" style="font-size: 12.86px;">linux</a> <a href="/tags/live/" style="font-size: 11.43px;">live</a> <a href="/tags/local/" style="font-size: 10px;">local</a> <a href="/tags/looper/" style="font-size: 10px;">looper</a> <a href="/tags/machine-learning/" style="font-size: 15.71px;">machine learning</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/ml/" style="font-size: 11.43px;">ml</a> <a href="/tags/mobile/" style="font-size: 11.43px;">mobile</a> <a href="/tags/mood/" style="font-size: 11.43px;">mood</a> <a href="/tags/multi-classification/" style="font-size: 10px;">multi-classification</a> <a href="/tags/multi-dimensional/" style="font-size: 10px;">multi-dimensional</a> <a href="/tags/multidex/" style="font-size: 10px;">multidex</a> <a href="/tags/mvc/" style="font-size: 15.71px;">mvc</a> <a href="/tags/neo4j/" style="font-size: 10px;">neo4j</a> <a href="/tags/net/" style="font-size: 18.57px;">net</a> <a href="/tags/netty/" style="font-size: 15.71px;">netty</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/nio/" style="font-size: 10px;">nio</a> <a href="/tags/nuomi/" style="font-size: 10px;">nuomi</a> <a href="/tags/nuwa/" style="font-size: 10px;">nuwa</a> <a href="/tags/optimization/" style="font-size: 10px;">optimization</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/permission/" style="font-size: 10px;">permission</a> <a href="/tags/platform/" style="font-size: 14.29px;">platform</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/production/" style="font-size: 10px;">production</a> <a href="/tags/protection/" style="font-size: 10px;">protection</a> <a href="/tags/queue/" style="font-size: 10px;">queue</a> <a href="/tags/react-native/" style="font-size: 10px;">react native</a> <a href="/tags/recovery/" style="font-size: 10px;">recovery</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a> <a href="/tags/request/" style="font-size: 11.43px;">request</a> <a href="/tags/responsive/" style="font-size: 10px;">responsive</a> <a href="/tags/restful/" style="font-size: 15.71px;">restful</a> <a href="/tags/retrofit/" style="font-size: 11.43px;">retrofit</a> <a href="/tags/reversing/" style="font-size: 11.43px;">reversing</a> <a href="/tags/rom/" style="font-size: 10px;">rom</a> <a href="/tags/safe-mode/" style="font-size: 10px;">safe mode</a> <a href="/tags/scroller/" style="font-size: 11.43px;">scroller</a> <a href="/tags/secure/" style="font-size: 11.43px;">secure</a> <a href="/tags/security/" style="font-size: 10px;">security</a> <a href="/tags/service/" style="font-size: 11.43px;">service</a> <a href="/tags/shell/" style="font-size: 11.43px;">shell</a> <a href="/tags/sklearn/" style="font-size: 11.43px;">sklearn</a> <a href="/tags/sourcecode/" style="font-size: 10px;">sourcecode</a> <a href="/tags/spring/" style="font-size: 18.57px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springframework/" style="font-size: 18.57px;">springframework</a> <a href="/tags/statusbar/" style="font-size: 10px;">statusbar</a> <a href="/tags/support-vector-machine/" style="font-size: 12.86px;">support vector machine</a> <a href="/tags/svd/" style="font-size: 10px;">svd</a> <a href="/tags/svm/" style="font-size: 12.86px;">svm</a> <a href="/tags/tcp-ip/" style="font-size: 10px;">tcp/ip</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/tensorflow/" style="font-size: 12.86px;">tensorflow</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/title-bar/" style="font-size: 10px;">title bar</a> <a href="/tags/tmall/" style="font-size: 10px;">tmall</a> <a href="/tags/touch/" style="font-size: 10px;">touch</a> <a href="/tags/update/" style="font-size: 10px;">update</a> <a href="/tags/view/" style="font-size: 10px;">view</a> <a href="/tags/viewpager/" style="font-size: 10px;">viewpager</a> <a href="/tags/webview/" style="font-size: 11.43px;">webview</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/writeup/" style="font-size: 11.43px;">writeup</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/10/ml/AdaptationBasedonGeneralizedDiscrepancy/">Adaptation Based on Generalized Discrepancy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/31/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/02/mathalg/matrixcompletionandlowranksvdviafastalternatingleastsquares/">Matrix Completion and Low-Rank SVD via Fast Alternating Least Squares (JMLR)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 dachmx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo and dachmx</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

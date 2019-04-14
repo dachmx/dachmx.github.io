@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Learning NetWork Optimization for Mobile of Ctrip | Dachmx web log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="InstroductionCtrip travel as a user to use the site around the world, its network optimization is the most important performance and user experience optimization, before we share Ctrip in the network">
+<meta name="keywords" content="mobile,ctrip,optimization,network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning NetWork Optimization for Mobile of Ctrip">
+<meta property="og:url" content="http://dachmx.github.io/2015/10/20/android/learningnetworkoptimizationformobile/index.html">
+<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:description" content="InstroductionCtrip travel as a user to use the site around the world, its network optimization is the most important performance and user experience optimization, before we share Ctrip in the network">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/10.jpg">
+<meta property="og:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/11.jpg">
+<meta property="og:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/12.jpg">
+<meta property="og:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/13.jpg">
+<meta property="og:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/14.jpg">
+<meta property="og:updated_time" content="2019-04-14T09:56:10.005Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Learning NetWork Optimization for Mobile of Ctrip">
+<meta name="twitter:description" content="InstroductionCtrip travel as a user to use the site around the world, its network optimization is the most important performance and user experience optimization, before we share Ctrip in the network">
+<meta name="twitter:image" content="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/10.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dachmx web log</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">just record and just share</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dachmx.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-android/learningnetworkoptimizationformobile" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/20/android/learningnetworkoptimizationformobile/" class="article-date">
+  <time datetime="2015-10-19T16:00:00.000Z" itemprop="datePublished">2015-10-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Learning NetWork Optimization for Mobile of Ctrip
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instroduction"><a href="#Instroduction" class="headerlink" title="Instroduction"></a>Instroduction</h2><p>Ctrip travel as a user to use the site around the world, its network optimization is the most important performance and user experience optimization, before we share Ctrip in the network and application architecture optimization exploration:</p>
+<p>App network services, high reliability and low latency for the steady development of wireless business is essential in the past two years we have been continuously optimized App network service performance, to the end of Q2 this year, the basic completion of the App network service channel management and performance optimization phase Of the objectives, the author hereby summarize the lessons learned for future work to lay the foundation.</p>
+<h2 id="Ctrip-App-wireless-network-service-architecture"><a href="#Ctrip-App-wireless-network-service-architecture" class="headerlink" title="Ctrip App wireless network service architecture"></a>Ctrip App wireless network service architecture</h2><p>In 2014, Ctrip developed Mobile Gateway for wireless services. There are two types: TCP Gateway and HTTP Gateway. TCP Gateway is designed for native service network services in App, based on the TCP protocol is designed on the application layer protocol, similar to the RPC mechanism. TCP Gateway combines the functions of the access layer and the service dynamic routing. The function of the access layer is based on the Netty implementation. It manages the client’s TCP long connection or short connection. The dynamic routing function is based on the NetWare open source Zuul implementation Which provides services such as routing, monitoring, anti-crawling, and user authentication on the TCP Gateway, which can provide dynamic routing, monitoring, resiliency, security, and more.<br><img src="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/10.jpg" alt="sd"><br>After each TCP service request arrives at the TCP Gateway, it will be forwarded to the corresponding service cluster on the back end according to the service number in the packet header, thus decoupling the back-end service. The forwarding of TCP Gateway to the back-end business service cluster is realized by using the interface of HTTP protocol. The complete packet of a TCP service request is forwarded to the back-end business service cluster as Payload of HTTP request. After receiving the HTTP response, Its Payload complete return to the corresponding TCP connection.</p>
+<p>HTTP Gateway for the App in the Hybrid and H5 Web site network services, the use of HTTP Restful interface to provide services, the logic is relatively simple, the core is the HTTP service dynamic forwarding function.<br><img src="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/11.jpg" alt="sdfsd"><br>More details of the design of the Mobile Gateway can refer to Wang Xingchao in 2015 Shanghai QCon speech “Ctrip wireless Gateway”:</p>
+<p>Http://<a href="http://www.infoq.com/cn/presentations/ctrip-wireless-gateway" target="_blank" rel="noopener">www.infoq.com/cn/presentations/ctrip-wireless-gateway</a></p>
+<h2 id="Implementation-of-App-Network-Service-Based-on-TCP-Protocol"><a href="#Implementation-of-App-Network-Service-Based-on-TCP-Protocol" class="headerlink" title="Implementation of App Network Service Based on TCP Protocol"></a>Implementation of App Network Service Based on TCP Protocol</h2><p>Bandwidth and delay are two factors that affect the performance of network services. Bandwidth is limited by the minimum bandwidth of the network channel. The delay is the round-trip transmission time of the network packet between the client and the server. The bandwidth and delay on different network types The difference is very large (see below).<br><img src="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/12.jpg" alt="sd"><br>We want to achieve better performance of network services for the network bandwidth and delay of their two points, you can do just as much as possible to select the most appropriate network channel, the other can only be used on the network channel to optimize.</p>
+<p>Traditional non-IM instant messaging class App usually use HTTP protocol to achieve network services (Restful API form), Ctrip use TCP protocol to achieve, does increase the cost of many development, such as the need to design application layer protocol, network management, Handling exceptions, etc., but the following reasons or let us finally choose to achieve App Web services based on TCP protocol:</p>
+<p>Ctrip users sometimes in the network environment is very poor scenic areas need to be optimized for the weak network, a simple HTTP application layer protocol is difficult to achieve.<br>HTTP requests for the first time the need for DNS domain name resolution, we found that the domestic environment for Ctrip domain name failure rate of 2-3% (including domain name hijacking and resolution failure), seriously affect the user experience.<br>Although HTTP is based on TCP protocol to achieve the application layer protocol, the advantage is good encapsulation, client and server-side solution is mature. Disadvantages are small controllability, can not be customized for network connections, send requests and receive responses to optimize, even if the characteristics of HTTP such as to keep a long connection KeepAlive or pipeline Pipeline and so will be subject to the network environment Proxy or server implementation, It is difficult to fully play its role.</p>
+<p>Based on the TCP protocol allows us to complete control of the entire network service life cycle of the various stages, including the following stages:</p>
+<ul>
+<li><p>Gets the IP address of the server</p>
+</li>
+<li><p>establish connection</p>
+</li>
+<li><p>Serialize network request packets</p>
+</li>
+<li><p>Sends a network request</p>
+</li>
+<li><p>Accept a network response</p>
+</li>
+<li><p>Deserializes the network response message</p>
+</li>
+</ul>
+<p>Our network service channel management and optimization work is from these aspects.</p>
+<p>TCP network service channel management and performance optimization</p>
+<ol>
+<li>Farewell DNS, direct use of IP addresses</li>
+</ol>
+<p>If the first time to send HTTP-based network services, the first thing is DNS domain name resolution, DNS statistics we have only 98% of the success rate of resolution, the remaining 2% of the failure of resolution or DNS hijackers (Local DNS returned Non-source IP address), while DNS resolution in 3G time-consuming about 200 milliseconds, 4G also have 100 milliseconds or so, the delay is obvious. We are based on TCP connection, skip the DNS resolution stage, the use of built-in IP list of ways to connect to the network.</p>
+<p>Ctrip App built a set of Server IP list, while each IP has a weight. Each time a new connection is established, the highest-weighted IP address is selected for the connection. When the App starts, all the weights of the IP list are the same. At this time, a set of Ping operations will be started to calculate the IP weight according to the delay time of the Ping value. The principle is that the IP address is smaller, Of the network transmission delay should also be relatively smaller. The industry also uses the HTTP DNS method to resolve DNS hijacking issues, while returning the most appropriate user network Server IP. However, the development and deployment of HTTP DNS requires no small development costs, we do not currently use.</p>
+<p>The built-in Server IP list is also updated. Each App starts with a Mobile Config service (supports both TCP and HTTP network type services) to update the Server IP List and support Server IP List updates for different product lines. Therefore, the traditional DNS resolution can solve the function of multiple IDC diversion can also be resolved through this method.</p>
+<ol start="2">
+<li>Socket connection optimization, reducing the connection time</li>
+</ol>
+<p>As with the Keepalive feature in the HTTP protocol, the most direct way to reduce network service time is to maintain a long connection. Each TCP three-way handshake connection takes one RTT (round trip time) to complete, which means 100-300 millisecond delay; TCP protocol itself should deal with the network congestion Slow Start mechanism will also affect the new connection Of the transmission performance.</p>
+<p>Ctrip App use of a long connection pool to use long connections, long connection pool to maintain a number of maintenance and service side of the TCP connection, each time the network service will be initiated from the long connection pool to obtain a free long connection to complete the network services And then put the TCP connection back into the long connection pool. We do not implement Pipeline and Multiplexing on a single TCP connection. Instead, we use the simplest FIFO mechanism for two reasons:</p>
+<p>Simplify the service processing logic of Mobile Gateway, and reduce the development cost;<br>When multiple responses are sent back to the server, if a response packet is very large, using multiple long connections can speed up the response of the received service.<br>If a TCP connection is in use when a network service is initiated, or if a TCP long-connected network service fails, a TCP short connection is made to implement the network service. The difference between long and short connections is that the TCP connection is closed only after the service is complete.</p>
+<p>Pipeline and Multiplexing is different, such as HTTP / 1.1 support Pipeline, the client can send multiple requests, but the server returns the response should be sent in accordance with the request to send the order to respond; SPDY and HTTP / 2 protocol Supports multiplexing, that is, support the out-of-order response of the return message, send the request and receive the response does not interfere with each other, so to avoid the HTTP / 1.1 Pipeline also can not completely solve the Head of line blocking problem.</p>
+<p>References</p>
+<p>Http://stackoverflow.com/questions/10362171/is-spdy-any-different-than-http-multiplexing-over-keep-alive-connections</p>
+<p>Https://http2.github.io/faq/</p>
+<p>The HTTP / 1.1 Pipeline feature mentioned in Reference 2 only partially resolves the Head of line blocking problem because a large or slow response can still block others behind it.</p>
+<ol start="3">
+<li>Weak network and network jitter optimization</li>
+</ol>
+<p>Ctrip App introduces the network quality parameters, through the network type and end to end Ping value calculation, according to different network quality to change the network service strategy:</p>
+<p>Adjust the number of long connection pool: for example, in the 2G / 2.5G Egde network, will reduce the number of long connection pool is 1 (the operator will limit the number of single target IP TCP connection); WIFI network can increase the number of long connection pool And other mechanisms.<br>Dynamically adjust the TCP connection, write, read the timeout.<br>When the network type is switched, such as WIFI and mobile network, when the 4G / 3G switch to 2G, the IP address of the client will change. The TCP Socket that is already connected is destined to be invalid. (Each socket corresponds to a four-tuple: source IP, source Port, Destination IP, Destination Port), all free long connections are automatically closed, and the existing network service automatically retries according to the status.</p>
+<ol start="4">
+<li>Data format optimization, reduce the amount of data transmission and serialization time</li>
+</ol>
+<p>The smaller the amount of data transferred, the shorter the transmission time on the same TCP connection. Ctrip has used to design a set of data format, and later compared with Google ProtocolBuffer found that the specific data type packet size will be reduced by 20-30%, serialization and deserialization time can be reduced by 10-20%, so the current Core services are gradually migrating to ProtocolBuffer format. In addition, Facebook has shared their use FlatBuffer data format to improve performance of the practice, our analysis is not suitable for Ctrip’s business scenarios and therefore not used.</p>
+<ol start="5">
+<li>Retry mechanism is introduced to improve the success rate of network services</li>
+</ol>
+<p>By the TCP protocol retransmission mechanism to ensure reliable transmission mechanism of inspiration, we also introduced a retry mechanism in the application level to improve the success rate of network services. We found that more than 90% of the network service failure is due to network connection failure, then try again to have the opportunity to connect successfully and complete the service; At the same time we found that the network service life cycle mentioned in the establishment of a connection, serialization Network request packets, send network request failure of these three stages are automatically retry, because we can be sure that the request has not yet reached the server for processing, does not produce idempotent problems (if there is idempotent problem , There will be repeated orders, etc.). When a network service needs to retry, a short connection is used to compensate, rather than a long connection.</p>
+<p>To achieve the above mechanism, Ctrip App network service success rate from the original 95.3% + upgrade to today’s 99.5% + (where the service success rate refers to the end-to-end service success rate, that is, the number of client acquisition service divided by the success Request the total amount calculated, and does not distinguish between the current network conditions), the effect is significant.</p>
+<h2 id="Other-Network-Services"><a href="#Other-Network-Services" class="headerlink" title="Other Network Services"></a>Other Network Services</h2><p>Ctrip App also implements a number of other network services to facilitate business development, such as network service priority mechanism, high priority service priority to use long connections, low priority service by default using a short connection; network service dependency mechanism, depending on the relationship automatically initiated or When the network service is canceled, for example, when the main service fails, the sub-service is automatically canceled.</p>
+<p>Development process, we also found that some mobile platforms TCP Socket development tricks:</p>
+<p>IOS platform, the native Socket interface to create a connection does not activate the mobile network, where the native Socket interface is POSIX Socket interface, you must use the CFSocket or upper network interface to try to activate the network connection. So Ctrip will be activated when the first activation of some third-party registration SDK and send HTTP request to activate the mobile network.</p>
+<p>The SO_NOSIGPIPE parameter closes the SIGPIPE event, and the TCP_NODELAY parameter turns off the TCP Nagle algorithm. The TCP_NODELAY parameter turns off the TCP Nagle algorithm. The TCP_NODELAY parameter turns off the TCP Nagle algorithm. The SO_NOSIGPIPE parameter is used to keep the TCP connection alive. .<br>Since iOS requires support for IPv6-Only networks, the native socket must support IPv6.<br>If you use select to handle nonblocking IO operations, ensure that different return values ​​and time-out parameters are handled correctly.</p>
+<p>Heartbeat mechanism to maintain the availability of TCP long connections: For non-IM applications, the heartbeat mechanism is not significant, because the user will continue to trigger requests to use TCP connections, especially in the Ctrip business scenario, through data statistics found using heartbeat On the service time and success rate of minimal impact, it is now closed heartbeat mechanism. The original heartbeat mechanism is an idle TCP connection in a TCP long connection pool. A heartbeat packet is sent to the Gateway every 60 seconds, and the Gateway returns a heartbeat response packet, allowing both parties to confirm that the TCP connection is valid.<br>Hybrid network service optimization</p>
+<p>Ctrip App a considerable proportion of the business is the use of Hybrid technology, running in the WebView environment, which all network services (HTTP requests) are controlled by the system, we can not control, it can not be optimized, the end to End service success rate is only about 97% (Note: here refers to the page business logic to send the network service request, rather than static resource request).</p>
+<p>We adopt the technology called “TCP Tunnel for Hybrid” to optimize the hybrid network services. Unlike the traditional HTTP acceleration products, we do not use the method of intercepting HTTP requests to re-transmit, but in the Ctrip Hybrid framework of network services Layer to automatically switch.<br><img src="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/13.jpg" alt="sadf"><br>As shown in the figure, the flow of the technical solution is as follows:</p>
+<p>If the App supports TCP Tunnel for Hybrid, the Hybrid service forwards the network traffic through the Hybrid interface to the TCP network communication layer of the App Native layer. This module encapsulates the HTTP request and forwards it to the TCP Gateway as Payload of the TCP network service.</p>
+<p>TCP Gateway will be based on the service number to determine the Hybrid forwarding service, unpacked directly after the Payload forwarded to the HTTP Gateway, the HTTP request is transparent to the HTTP Gateway, HTTP Gateway does not need to distinguish between the App directly sent to the TCP Gateway or forwarded to HTTP request;</p>
+<p>After the back-end business service processing is complete, the HTTP response is returned to the TCP Gateway via the HTTP Gateway, which returns the HTTP response as Payload to the TCP network communication layer of the App.</p>
+<p>TCP network communication layer will then deserialize the Payload back to the Hybrid framework, the final asynchronous callback to the Hybrid business caller. The whole process is also transparent to the caller of the Hybrid service. It does not know the existence of the TCP tunnel.</p>
+<p>The adoption of the technology program, Ctrip App in the Hybrid business network service success rate increased to more than 99%, the average time-consuming decreased by 30%.<br><img src="http://cdn3.infoqstatic.com/statics_s2_20161025-0357/resource/articles/app-network-service-and-performance-optimization-of-ctrip/zh/resources/14.jpg" alt="sdf"></p>
+<p>Overseas network service optimization</p>
+<p>Ctrip is not currently deployed overseas IDC, overseas users need to access the use of App in the domestic IDC, the average time-consuming service was significantly higher than domestic users. We have adopted a technology called “TCP Bypass for Oversea” technology program to optimize the performance of overseas network services, mainly using Akamai’s exclusive network of overseas channels, while Ctrip domestic IDC deployment of central office equipment, the use of dedicated channel to accelerate the way Enhance the overseas user experience.</p>
+<p>If the network service fails and the retry mechanism takes effect, the traditional Internet channel will be retried. If the Akamai channel fails, the network service will go to the Akamai channel first. Using the Akamai channel Bypass technology, the average service time was reduced by 33% compared to using traditional Internet channels only, while maintaining the success rate of network services.</p>
+<p>Discussion on Other Network Protocols</p>
+<p>Over the past two years our network service optimization are based on TCP protocol implementation, basically reached the optimization goals. But over the past two years the new application layer network protocol SPDY and HTTP / 2 gradually into the mainstream, UDP-based QUIC protocol also looks very interesting, worthy of follow-up research.</p>
+<h2 id="SPDY-amp-HTTP-2"><a href="#SPDY-amp-HTTP-2" class="headerlink" title="SPDY &amp; HTTP / 2"></a>SPDY &amp; HTTP / 2</h2><p>SPDY is Google’s TCP-based network application layer protocol, has been developed to support the design based on SPDY results of HTTP / 2 protocol, HTTP / 2 protocol core improvement is in fact for the HTTP / 1.x impact delay performance pain points Optimize:</p>
+<p>Header Compression: Compresses redundant HTTP request and response headers.<br>Supports Multiplexing: Supports multiple simultaneous requests and responses on a single TCP connection.<br>Maintains long connections (more thorough than HTTP / 1.x): Reduces network connection time.<br>Support Push: You can push the server to push the data to the client.<br>Official performance test results show that the use of SPDY or HTTP / 2 page load time reduced by about 30%, but this is the test results for the Web, for the App in the network services, specific optimization results we are still in-house testing, And now we use the TCP protocol optimization similar to the performance optimization performance may not be significant.</p>
+<h2 id="QUIC"><a href="#QUIC" class="headerlink" title="QUIC"></a>QUIC</h2><p>QUIC is Google-based application layer protocol developed by UDP, UDP protocol without connection, there is no retransmission mechanism, so the application layer needs to ensure the reliability of the service. Currently domestic Tencent has tried for the weak network QUIC protocol, we are also testing, will eventually need to see if the test results.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Technology is only a means, and ultimately to reflect on the business results. We have achieved in addition to static resources and other needs to access the CDN network request, the other App network services using a unified TCP channel, which has better performance tuning and business monitoring capabilities. Ctrip is currently based on the TCP protocol for a variety of App network service optimization, but also a variety of technical solutions to the balance, although the HTTP / 2 and other new protocols mature, but the TCP protocol flexibility to support their own targeted performance optimization, Special advantage, hope that our practice summary of the domestic wireless technology practitioners have some reference value.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://www.infoq.com/cn/articles/app-network-service-and-performance-optimization-of-ctrip" target="_blank" rel="noopener">app-network-service-and-performance-optimization-of-ctrip</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/10/20/android/learningnetworkoptimizationformobile/" data-id="cjugo67wn000knkuwdluijh6i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mobile/">mobile</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/optimization/">optimization</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/10/20/android/learningtheautomatictestsysofnuomi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Learning The Automatic Testing System of Nuomi
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/10/15/android/usingrxjavaonandroid/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Using RxJava for Android Dev</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DI/">DI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IoC/">IoC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monitor/">Monitor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aar/">aar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad/">ad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptation/">adaptation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aidl/">aidl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/allegrograph/">allegrograph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analysis/">analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apk/">apk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/application/">application</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/architecture/">architecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asm/">asm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automatic/">automatic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/back/">back</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootloader/">bootloader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cayley/">cayley</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cipher/">cipher</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/click/">click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commontool/">commontool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/construct/">construct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data/">data</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debugging/">debugging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearn/">deeplearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dev/">dev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dex/">dex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/diary/">diary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastboot/">fastboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastlane/">fastlane</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flockdb/">flockdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontend/">frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph/">graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hacking/">hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hotfix/">hotfix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/inaction/">inaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/infinitegraph/">infinitegraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmlr/">jmlr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kylin/">kylin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/library/">library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/local/">local</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/looper/">looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ml/">ml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mood/">mood</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-dimensional/">multi-dimensional</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multidex/">multidex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neo4j/">neo4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netty/">netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nio/">nio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuomi/">nuomi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuwa/">nuwa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optimization/">optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/permission/">permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/platform/">platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/production/">production</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protection/">protection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/queue/">queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recovery/">recovery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/">remote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responsive/">responsive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restful/">restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retrofit/">retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reversing/">reversing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rom/">rom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/safe-mode/">safe mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroller/">scroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secure/">secure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sourcecode/">sourcecode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springframework/">springframework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusbar/">statusbar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svd/">svd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svm/">svm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp-ip/">tcp/ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tech/">tech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/title-bar/">title bar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmall/">tmall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/touch/">touch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/update/">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view/">view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/viewpager/">viewpager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webview/">webview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/IoC/" style="font-size: 10px;">IoC</a> <a href="/tags/Monitor/" style="font-size: 10px;">Monitor</a> <a href="/tags/ReactiveX/" style="font-size: 10px;">ReactiveX</a> <a href="/tags/aar/" style="font-size: 11.43px;">aar</a> <a href="/tags/ad/" style="font-size: 10px;">ad</a> <a href="/tags/adaptation/" style="font-size: 10px;">adaptation</a> <a href="/tags/advice/" style="font-size: 10px;">advice</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/aidl/" style="font-size: 11.43px;">aidl</a> <a href="/tags/algorithm/" style="font-size: 17.14px;">algorithm</a> <a href="/tags/allegrograph/" style="font-size: 10px;">allegrograph</a> <a href="/tags/analysis/" style="font-size: 12.86px;">analysis</a> <a href="/tags/android/" style="font-size: 11.43px;">android</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/apk/" style="font-size: 10px;">apk</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/application/" style="font-size: 10px;">application</a> <a href="/tags/architecture/" style="font-size: 12.86px;">architecture</a> <a href="/tags/asm/" style="font-size: 10px;">asm</a> <a href="/tags/asynchronous/" style="font-size: 10px;">asynchronous</a> <a href="/tags/auto/" style="font-size: 11.43px;">auto</a> <a href="/tags/automatic/" style="font-size: 11.43px;">automatic</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/back/" style="font-size: 10px;">back</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bird-view/" style="font-size: 11.43px;">bird view</a> <a href="/tags/bitmap/" style="font-size: 10px;">bitmap</a> <a href="/tags/bootloader/" style="font-size: 10px;">bootloader</a> <a href="/tags/bootrap/" style="font-size: 10px;">bootrap</a> <a href="/tags/cayley/" style="font-size: 10px;">cayley</a> <a href="/tags/cipher/" style="font-size: 10px;">cipher</a> <a href="/tags/click/" style="font-size: 10px;">click</a> <a href="/tags/commontool/" style="font-size: 11.43px;">commontool</a> <a href="/tags/construct/" style="font-size: 10px;">construct</a> <a href="/tags/ctf/" style="font-size: 11.43px;">ctf</a> <a href="/tags/ctrip/" style="font-size: 10px;">ctrip</a> <a href="/tags/data/" style="font-size: 10px;">data</a> <a href="/tags/data-analysis/" style="font-size: 12.86px;">data analysis</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/debugging/" style="font-size: 11.43px;">debugging</a> <a href="/tags/deep-learning/" style="font-size: 10px;">deep learning</a> <a href="/tags/deeplearn/" style="font-size: 11.43px;">deeplearn</a> <a href="/tags/design/" style="font-size: 11.43px;">design</a> <a href="/tags/dev/" style="font-size: 10px;">dev</a> <a href="/tags/dex/" style="font-size: 10px;">dex</a> <a href="/tags/diary/" style="font-size: 11.43px;">diary</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/fastlane/" style="font-size: 10px;">fastlane</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/flockdb/" style="font-size: 10px;">flockdb</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/frontend/" style="font-size: 10px;">frontend</a> <a href="/tags/gettingstart/" style="font-size: 20px;">gettingstart</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/graphics/" style="font-size: 11.43px;">graphics</a> <a href="/tags/hacking/" style="font-size: 11.43px;">hacking</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/high-concurrency/" style="font-size: 12.86px;">high concurrency</a> <a href="/tags/hot-fix/" style="font-size: 10px;">hot fix</a> <a href="/tags/hotfix/" style="font-size: 10px;">hotfix</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/ibinder/" style="font-size: 11.43px;">ibinder</a> <a href="/tags/inaction/" style="font-size: 10px;">inaction</a> <a href="/tags/infinitegraph/" style="font-size: 10px;">infinitegraph</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jmlr/" style="font-size: 10px;">jmlr</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kylin/" style="font-size: 10px;">kylin</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/learning/" style="font-size: 11.43px;">learning</a> <a href="/tags/library/" style="font-size: 10px;">library</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/linux/" style="font-size: 12.86px;">linux</a> <a href="/tags/live/" style="font-size: 11.43px;">live</a> <a href="/tags/local/" style="font-size: 10px;">local</a> <a href="/tags/looper/" style="font-size: 10px;">looper</a> <a href="/tags/machine-learning/" style="font-size: 15.71px;">machine learning</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/ml/" style="font-size: 11.43px;">ml</a> <a href="/tags/mobile/" style="font-size: 11.43px;">mobile</a> <a href="/tags/mood/" style="font-size: 11.43px;">mood</a> <a href="/tags/multi-classification/" style="font-size: 10px;">multi-classification</a> <a href="/tags/multi-dimensional/" style="font-size: 10px;">multi-dimensional</a> <a href="/tags/multidex/" style="font-size: 10px;">multidex</a> <a href="/tags/mvc/" style="font-size: 15.71px;">mvc</a> <a href="/tags/neo4j/" style="font-size: 10px;">neo4j</a> <a href="/tags/net/" style="font-size: 18.57px;">net</a> <a href="/tags/netty/" style="font-size: 15.71px;">netty</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/nio/" style="font-size: 10px;">nio</a> <a href="/tags/nuomi/" style="font-size: 10px;">nuomi</a> <a href="/tags/nuwa/" style="font-size: 10px;">nuwa</a> <a href="/tags/optimization/" style="font-size: 10px;">optimization</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/permission/" style="font-size: 10px;">permission</a> <a href="/tags/platform/" style="font-size: 14.29px;">platform</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/production/" style="font-size: 10px;">production</a> <a href="/tags/protection/" style="font-size: 10px;">protection</a> <a href="/tags/queue/" style="font-size: 10px;">queue</a> <a href="/tags/react-native/" style="font-size: 10px;">react native</a> <a href="/tags/recovery/" style="font-size: 10px;">recovery</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a> <a href="/tags/request/" style="font-size: 11.43px;">request</a> <a href="/tags/responsive/" style="font-size: 10px;">responsive</a> <a href="/tags/restful/" style="font-size: 15.71px;">restful</a> <a href="/tags/retrofit/" style="font-size: 11.43px;">retrofit</a> <a href="/tags/reversing/" style="font-size: 11.43px;">reversing</a> <a href="/tags/rom/" style="font-size: 10px;">rom</a> <a href="/tags/safe-mode/" style="font-size: 10px;">safe mode</a> <a href="/tags/scroller/" style="font-size: 11.43px;">scroller</a> <a href="/tags/secure/" style="font-size: 11.43px;">secure</a> <a href="/tags/security/" style="font-size: 10px;">security</a> <a href="/tags/service/" style="font-size: 11.43px;">service</a> <a href="/tags/shell/" style="font-size: 11.43px;">shell</a> <a href="/tags/sklearn/" style="font-size: 11.43px;">sklearn</a> <a href="/tags/sourcecode/" style="font-size: 10px;">sourcecode</a> <a href="/tags/spring/" style="font-size: 18.57px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springframework/" style="font-size: 18.57px;">springframework</a> <a href="/tags/statusbar/" style="font-size: 10px;">statusbar</a> <a href="/tags/support-vector-machine/" style="font-size: 12.86px;">support vector machine</a> <a href="/tags/svd/" style="font-size: 10px;">svd</a> <a href="/tags/svm/" style="font-size: 12.86px;">svm</a> <a href="/tags/tcp-ip/" style="font-size: 10px;">tcp/ip</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/tensorflow/" style="font-size: 12.86px;">tensorflow</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/title-bar/" style="font-size: 10px;">title bar</a> <a href="/tags/tmall/" style="font-size: 10px;">tmall</a> <a href="/tags/touch/" style="font-size: 10px;">touch</a> <a href="/tags/update/" style="font-size: 10px;">update</a> <a href="/tags/view/" style="font-size: 10px;">view</a> <a href="/tags/viewpager/" style="font-size: 10px;">viewpager</a> <a href="/tags/webview/" style="font-size: 11.43px;">webview</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/writeup/" style="font-size: 11.43px;">writeup</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/10/ml/AdaptationBasedonGeneralizedDiscrepancy/">Adaptation Based on Generalized Discrepancy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/31/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/02/mathalg/matrixcompletionandlowranksvdviafastalternatingleastsquares/">Matrix Completion and Low-Rank SVD via Fast Alternating Least Squares (JMLR)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 dachmx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo and dachmx</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

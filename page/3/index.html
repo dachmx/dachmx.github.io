@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Dachmx web log</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="blog">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dachmx web log">
+<meta property="og:url" content="http://dachmx.github.io/page/3/index.html">
+<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:locale" content="default">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dachmx web log">
+  
+    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Dachmx web log</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">just record and just share</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://dachmx.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-architecture/thinkinginhighconcurrency" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/10/architecture/thinkinginhighconcurrency/" class="article-date">
+  <time datetime="2015-10-09T16:00:00.000Z" itemprop="datePublished">2015-10-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/10/architecture/thinkinginhighconcurrency/">Thinking in High Concurrency</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="One-word-points"><a href="#One-word-points" class="headerlink" title="One word: points"></a>One word: points</h2><ul>
+<li><p>Divide and rule, multi-level shunt</p>
+</li>
+<li><p>Browser-side, server front-end, middle layer, database side</p>
+</li>
+<li>Everywhere there is the possibility of diversion</li>
+</ul>
+<h2 id="Some-things-about-high-concurrency-dev"><a href="#Some-things-about-high-concurrency-dev" class="headerlink" title="Some things about high concurrency dev"></a>Some things about high concurrency dev</h2><p><a href="http://www.javabloger.com/java-development-concern-those-things/" target="_blank" rel="noopener">reference</a><br>Recently, various IT media industry technology conference held a lot of sites are in the disclosure of their own technology to share with insiders, to facebook, Baidu, small to the start of the site. Facebook, Baidu and other large sites using the technology and extraordinary processing power really gives a fresh feeling, but not every site is like Facebook, Baidu has hundreds of millions of users to access traffic, there is a huge amount of data needs to be stored, Need to use mapreduce / parallel computing, HBase / column storage of these technologies is not. Technical means has always been operational support for the current operating environment is like, there is no need to have to catch a fashionable, be sure to have a popular technology and the relationship between the point was let go.</p>
+<p>In the recent technical conference, we have more eyes are focused on these large sites, in fact, small and medium-sized portal technology system is worth to explore and concern. Siege division is not all in the world for these large portal services, more siege division are unknown for some just started small and medium-sized Web site services, and occupy the siege division in more than 60% of the team Of the population. In the large-scale portals concerned about the time, small and medium-sized portal technology development and practical experience more worth to share.</p>
+<p>Both large portals and small to medium sized vertical types of sites are driven by stability, performance, and scalability. Large-scale site technology experience sharing is worth learning and borrowing, but the implementation of the more specific practice is not applicable to all sites, other language development sites I dare not say, but Java development system, I can You plug in a few words:</p>
+<h3 id="JVM"><a href="#JVM" class="headerlink" title="JVM"></a>JVM</h3><p>JEE container to run the JVM parameters The correct use of configuration parameters directly related to the performance of the entire system and processing power, JVM tuning is mainly on the memory management aspects of optimization, optimization direction is divided into the following four points:</p>
+<ol>
+<li>HeapSize heap size, it can be said that the Java virtual machine to use the memory strategy, this is very critical.</li>
+<li>GarbageCollector through the configuration parameters related to Java garbage collector in the four algorithms (strategy) to use.</li>
+<li>StackSize JVM stack is the memory instruction area, each thread has his own Stack, Stack size limits the number of threads.</li>
+<li>DeBug / Log In the JVM can also set the JVM run-time log and JVM hang log output, this is very critical, according to various types of JVM log output to configure the appropriate parameters.<br>JVM configuration skills can be seen everywhere on the Internet, but I still recommend reading the official Sun article 2, you can configure the parameters of its still have an understanding</li>
+<li>Java HotSpot VM Options<br>Http://<a href="http://www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html" target="_blank" rel="noopener">www.oracle.com/technetwork/java/javase/tech/vmoptions-jsp-140102.html</a></li>
+<li>Troubleshoot Guide for Java SE 6 with HotSpot VM <a href="http://www.oracle.com/technetwork/java/javase/index-137495.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/index-137495.html</a><br>In addition, I believe that not every siege division is facing these JVM parameters every day, if you forget those key parameters you can enter Java-X (uppercase X) to prompt.</li>
+</ol>
+<h3 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h3><p>JDBC parameters for MySQL In the previous article also introduced in a single machine or cluster environment reasonable use of JDBC configuration parameters on the operation of the database also has a great impact.<br>Some of the so-called high-performance Java ORM open source framework is open a lot of JDBC in the default parameters:</p>
+<ol>
+<li>For example: autoReconnect, prepStmtCacheSize, cachePrepStmts, useNewIO, blobSendChunkSize,</li>
+<li>For example, cluster environment: roundRobinLoadBalance, failOverReadOnly, autoReconnectForPools, secondsBeforeRetryMaster.<br>The specific content can refer to the MySQL JDBC official manual:<br>Http://dev.mysql.com/doc/refman/5.1/en/connectors.html#cj-jdbc-reference</li>
+</ol>
+<h3 id="Database-connection-pool-DataSource"><a href="#Database-connection-pool-DataSource" class="headerlink" title="Database connection pool (DataSource)"></a>Database connection pool (DataSource)</h3><p>Frequent interactions between application and database connections can create bottlenecks and a lot of overhead on system performance. The JDBC connection pool is responsible for allocating, managing, and releasing database connections. It allows an application to reuse an existing database connection, And not to re-establish a connection, so the application does not require frequent connections with the database switch, and can free up the free time than the maximum free time database connection to avoid the release of the database connection caused by missing database connection. This technology can significantly improve the performance of the database operation.<br>Here I think there is little need to explain:<br>The use of connection pooling is the need to close because the database connection pool to start when the database and pre-obtained the appropriate connection, and then no longer need to deal directly with the database application, because the application using the database connection pool is a “borrow” The application from the database connection pool access to resources is “lending”, also need to go back, like there are 20 buckets on here, people need to take the water can use these barrels from the pool inside the water, If 20 people take the water, do not return the bucket back to the original place, then the back of the people and then need to take the water, can only be in the next waiting for someone to return the barrel, before the people need to put back, or the back Of the people will have to wait, resulting in resource blockage, the same token, the application access to the database connection when the Connection connection object from the “pool” in the distribution of a database connection out after the return of the database connection, so as to Maintain the database connection “there are also” guidelines.<br>References:<br><a href="http://dev.mysql.com/doc/refman/5.1/en/connectors.html#cj-connection-pooling" target="_blank" rel="noopener">ref</a></p>
+<h3 id="Data-access"><a href="#Data-access" class="headerlink" title="Data access"></a>Data access</h3><p>Database server optimization and data access, what type of data on where it is better to think about the problem, the future storage is likely to be mixed, Cache, NOSQL, DFS, DataBase in a system will have, Life tableware and weekdays need to wear clothes at home, but will not use the same type of furniture storage, looks like no one to put the tableware and clothes in the same cabinet inside. This is like a system of different types of data, as different types of data need to use the appropriate storage environment. File and image storage, the first visit in accordance with the heat classification, or in accordance with the size of the file. Strong relationship type and need to support the use of traditional transactional database, the weak relationship does not require transaction support can be considered NOSQL, massive file storage can be considered to support network storage DFS, the cache depends on your single data storage size and read and write proportion.</p>
+<p>Another point worth noting is the separation of data read and write, both in the DataBase or NOSQL environment, most of the time is greater than the write, so the design need to consider not only need to read the data scattered in multiple machines, but also need Consider the data consistency between multiple machines, MySQL, a main and more from, plus MySQL-Proxy or to borrow some parameters in JDBC (roundRobinLoadBalance, failOverReadOnly, autoReconnectForPools, secondsBeforeRetryMaster) for follow-up application development, you can read and Write separation, the pressure will be a lot of reading scattered on multiple machines, and also to ensure the consistency of the data.</p>
+<h3 id="Cache"><a href="#Cache" class="headerlink" title="Cache"></a>Cache</h3><p>In general, the cache is generally divided into two kinds: the local cache and distributed cache</p>
+<ol>
+<li><p>Local cache, the local cache for Java is to say the data into static (static) data combination, and then need to use when the data from the static out of the combination of the proposed high ConcurrentHashMap or CopyOnWriteArrayList As a local cache. More specific use of the cache is the use of system memory, the use of the number of memory resources need to have an appropriate ratio, if more than the appropriate use of storage access, will be counterproductive, resulting in inefficient operation of the entire system.</p>
+</li>
+<li><p>Distributed cache, generally used for distributed environment, the cache on each machine for centralized storage, and not only for the use of the scope of the cache can also be used as a distributed system data synchronization / transmission of a Means, the most commonly used is Memcached and Redis.</p>
+</li>
+</ol>
+<p>Data storage in different media read / write get efficiency is different in the system how to use the cache, so that your data closer to the cpu, the following a picture you need to always keep in mind, the technology from Google Daniel Jeff Dean (Ref)’s masterpiece, as shown:</p>
+<h4 id="Cache-speed"><a href="#Cache-speed" class="headerlink" title="Cache-speed"></a>Cache-speed</h4><p>Concurrent / multithreading</p>
+<p>In a high concurrency environment, developers are advised to use the JDK in the accompanying package (java.util.concurrent), after the JDK1.5 use java.util.concurrent tools can simplify the development of multi-threaded, java.util. Concurrent tools are mainly divided into the following main parts:</p>
+<ol>
+<li><p>Thread pool, thread pool interface (Executor, ExecutorService) and implementation class (ThreadPoolExecutor, ScheduledThreadPoolExecutor), using jdk thread pool framework can manage their own queuing and scheduling tasks, and allow controlled shutdown. Because the need to run a thread to consume the system CPU resources, and create, end a thread CPU system resources are also overhead, the use of thread pool can not only effectively manage the use of multi-threaded, or can improve the efficiency of thread operation.</p>
+</li>
+<li><p>Local queues, providing efficient, scalable, thread-safe non-blocking FIFO queues. Each of the five implementations in java.util.concurrent supports the extended BlockingQueue interface, which defines the blocking versions of put and take: LinkedBlockingQueue, ArrayBlockingQueue, SynchronousQueue, PriorityBlockingQueue, and DelayQueue. These different classes cover the most common use contexts of producer-consumer, message passing, parallel task execution, and related concurrency design.</p>
+</li>
+<li><p>Synchronizer, four classes can assist in the realization of common private synchronization statement. Semaphore is a classic concurrency tool. CountDownLatch is an extremely simple but extremely useful utility for blocking execution until a given number of signals, events, or conditions are maintained. CyclicBarrier is a resettable multiplexing point that is useful in some parallel programming styles. Exchanger allows two threads to exchange objects at the collection point, which is useful in multi-pipeline design.</p>
+</li>
+<li><p>Concurrent package Collection, this package also provides for the design of the context of the multi-threaded Collection implementation: ConcurrentHashMap, ConcurrentSkipListMap, ConcurrentSkipListSet, CopyOnWriteArrayList and CopyOnWriteArraySet. ConcurrentHashMap usually outperforms synchronized HashMap when many threads are expected to access a given collection, and ConcurrentSkipListMap is usually superior to a synchronized TreeMap. CopyOnWriteArrayList outperforms synchronized ArrayList when the expected reading and traversal are much larger than the list’s update count.</p>
+</li>
+</ol>
+<h4 id="queue"><a href="#queue" class="headerlink" title="queue"></a>queue</h4><p>On the queue can be divided into: the local queue and distributed queue 2 categories</p>
+<p>Local queue: the common common for non-timeliness of the data batch write, you can cache the data in an array to achieve a certain number of times when a batch write, you can use BlockingQueue or List / Map to achieve.</p>
+<p>Related Information: Sun Java API.<br>Distributed Queue: General as a message middleware, build distributed environment subsystem and subsystem communication between the bridge, JEE environment is the most used Apache AvtiveMQ and Sun’s OpenMQ.</p>
+<p>Lightweight MQ middleware has also been introduced before, for example: Kestrel and Redis (Ref <a href="http://www.javabloger.com/article/mq-kestrel-redis-for-java.html)" target="_blank" rel="noopener">http://www.javabloger.com/article/mq-kestrel-redis-for-java.html)</a>, recently heard LinkedIn’s search technology team has introduced an MQ product, kaukaf (Ref <a href="http://sna-projects.com/kafka)" target="_blank" rel="noopener">http://sna-projects.com/kafka)</a>, to stay focused.</p>
+<p>Relevant information:</p>
+<ol>
+<li><p>ActiveMQ <a href="http://activemq.apache.org/getting-started.html" target="_blank" rel="noopener">http://activemq.apache.org/getting-started.html</a></p>
+</li>
+<li><p>OpenMQ <a href="http://mq.java.net/about.html" target="_blank" rel="noopener">http://mq.java.net/about.html</a></p>
+</li>
+<li><p>Kafka <a href="http://sna-projects.com/kafka" target="_blank" rel="noopener">http://sna-projects.com/kafka</a></p>
+</li>
+<li><p>JMS article <a href="http://www.javabloger.com/article/category/jms" target="_blank" rel="noopener">http://www.javabloger.com/article/category/jms</a></p>
+</li>
+</ol>
+<h3 id="NIO"><a href="#NIO" class="headerlink" title="NIO"></a>NIO</h3><p>NIO is in JDK1.4 after the version of the emergence of the Java 1.4 before, Jdk are provided for the flow of I / O systems, such as read / write file is a one-byte data processing, an input stream One byte of data, one output stream consumes one byte of data, stream-oriented I / O is very slow, and one packet or the entire datagram has been received, or not yet. Java NIO non-blocking technology is to take Reactor mode, the content will come in automatic notification, do not die, death cycle, greatly enhance the system performance. NIO technology in the real scene most of the use of two aspects, 1 is the file read and write operations, 2 is the network data flow operation. There are several core objects in the NIO need to master: 1 selector (Selector), 2 channel (Channel), 3 buffer (Buffer).</p>
+<p>My nonsense:</p>
+<ol>
+<li><p>Java NIO technology in the category of memory-mapped file is an efficient approach can be used in the cache stored in the cold / hot data separation, the cache part of the cold data for such treatment, this approach than the conventional Based on the flow or channel-based I / O more quickly by making the data in the file appears as the contents of the memory array to complete the actual reading of the file or write part of the map will be mapped to memory, not The entire file is read into memory.</p>
+</li>
+<li><p>Mysql jdbc in the drive can also use NIO technology to operate the database to enhance system performance.</p>
+</li>
+</ol>
+<h3 id="Long-connection-Servlet3-0"><a href="#Long-connection-Servlet3-0" class="headerlink" title="Long connection / Servlet3.0"></a>Long connection / Servlet3.0</h3><p>Here is a long connection that long polling, the previous browser (client) need to pay attention to the server-side data changes occur need to constantly access the server, so that the number of clients will inevitably give a lot of pressure on the server side, for example: In-site messages in the forum. Servlet3.0 specification now provides a new feature: asynchronous IO communication; this feature will maintain a long connection. The use of Servlet3 asynchronous request of this technology can greatly ease the pressure on the server side.</p>
+<p>Servlet3.0 principle is to request the request to open a thread to suspend, the middle set to wait for the time-out, if the background event trigger request request, the results returned to the client’s request, if the time set in the waiting time without any The event will also request to return to the client, the client will again request the request, the client and server-side interaction can reciprocate.</p>
+<p>If you come over and told me that if someone is looking for you, I immediately inform you that you come to see him, the original you need to constantly ask if I have to find you, regardless of whether there are people looking for you, you need constant Ask me if I have to find you, so ask the person or ask people who will be exhausted.</p>
+<h3 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h3><p>Log4J is commonly used tools, the system is in the line just when the log is generally set in the INFO level, the real on the general set in the ERROR level, but at any time, the log input content is the need to focus on the development Personnel can generally rely on the output log to find problems or rely on the output of the log to optimize the performance of the system, the system is running the log is the basis for reporting and troubleshooting.<br>In short, the log according to the definition of the different strategies and levels of output to different environments, so as to facilitate our analysis and management. On the contrary, you do not have the output of the strategy, then the machine more than one, over time, there will be a big mess of chaos log, you will not have time to start troubleshooting, so the log output strategy is to use log key points.</p>
+<p>Reference: <a href="http://logging.apache.org/log4j/1.2/manual.html" target="_blank" rel="noopener">ref</a></p>
+<h3 id="Packaging-deployment"><a href="#Packaging-deployment" class="headerlink" title="Packaging / deployment"></a>Packaging / deployment</h3><p>In the code design time it is best to different types of function modules in the IDE environment, coarse-grained into different projects, easy to play into different jar package deployed in different environments. There is such an application scenario: the need for regular daily remote access from the SP side of the day 100 news and part of the city’s weather forecast, although the amount of data per day is not much, but the front-end access to a large amount of clear, clearly in the system architecture Do read and write separation.</p>
+<p>If the web project and the timing of the function of the module is fully concentrated in a project package, will lead to the need to expand each machine when there are both web applications and timers, because the functional modules are not separated, each machine has a timer Work will result in duplication of data inside the database.</p>
+<p>If the development of the web and the timer will be divided into two projects, when the package can be deployed separately, 10 web corresponding to a regular device, decomposition of the front-end request pressure, the data will not be written to repeat.</p>
+<p>Another advantage of this can be shared, in the above scenario, the web and the timer needs to be read on the database, then the web and timer projects have the operation of the database code, the logic of the code or feel chaotic messy. If you draw a DAL layer jar, web and timer application module developers need only reference the DAL layer jar, the development of business logic, interface-oriented programming, regardless of the specific database operation, the specific database operation by the other Developers to complete, you can in the development of the division of labor is very clear, and non-interference.</p>
+<h3 id="frame"><a href="#frame" class="headerlink" title="frame"></a>frame</h3><p>The so-called popular SSH (Struts / Spring / Hiberanet) lightweight framework, for many small and medium-sized projects that are not lightweight, the developer not only need to maintain the code, also need to maintain cumbersome xml configuration file, and maybe Not written on the configuration file so that the whole project can not run. No configuration file can replace the SSH (struts / Spring / Hiberanet) framework of the product is really too much, I have introduced to you before a number of products (Ref).</p>
+<p>I do not mean to use SSH (Struts / Spring / Hiberanet) framework, in my view SSH framework really is the normative development, and do not use the SSH (Struts / Spring / Hiberanet) framework can improve the number of performance.</p>
+<p>SSH framework is only for a very large number of projects hundreds of teams, also need to continue to increase the size of the team, is the need to select some of the market are recognized and familiar with the technology, SSH (Struts / Spring / Hiberanet) framework More mature so it is the first product.</p>
+<p>But for some of the small team in the middle of the technical team of experts can choose a more concise framework, the real speed of your development efficiency, early rejection of the SSH framework to choose a more concise technology in small team development is a A more informed choice.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/10/10/architecture/thinkinginhighconcurrency/" data-id="cjugo7oo4000gzsuwtd6ump8r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/architecture/">architecture</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/analysisonbinderofandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/09/android/analysisonbinderofandroid/" class="article-date">
+  <time datetime="2015-10-08T16:00:00.000Z" itemprop="datePublished">2015-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/09/android/analysisonbinderofandroid/">Analysis on IBinder for Android</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="current-situation"><a href="#current-situation" class="headerlink" title="current situation"></a>current situation</h2><h3 id="Desc-of-IBinder"><a href="#Desc-of-IBinder" class="headerlink" title="Desc of IBinder"></a>Desc of IBinder</h3><pre><code>Base interface for a remotable object, the core part of a lightweight remote procedure call mechanism designed for high performance when performing in-process and cross-process calls. This interface describes the abstract protocol for interacting with a remotable object. Do not implement this interface directly, instead extend from Binder.
+
+The key IBinder API is transact() matched by Binder.onTransact(). These methods allow you to send a call to an IBinder object and receive a call coming in to a Binder object, respectively. This transaction API is synchronous, such that a call to transact() does not return until the target has returned from Binder.onTransact(); this is the expected behavior when calling an object that exists in the local process, and the underlying inter-process communication (IPC) mechanism ensures that these same semantics apply when going across processes.
+</code></pre><p>The data sent through transact() is a Parcel, a generic buffer of data that also maintains some meta-data about its contents. The meta data is used to manage IBinder object references in the buffer, so that those references can be maintained as the buffer moves across processes. This mechanism ensures that when an IBinder is written into a Parcel and sent to another process, if that other process sends a reference to that same IBinder back to the original process, then the original process will receive the same IBinder object back. These semantics allow IBinder/Binder objects to be used as a unique identity (to serve as a token or for other purposes) that can be managed across processes.</p>
+<p>The system maintains a pool of transaction threads in each process that it runs in. These threads are used to dispatch all IPCs coming in from other processes. For example, when an IPC is made from process A to process B, the calling thread in A blocks in transact() as it sends the transaction to process B. The next available pool thread in B receives the incoming transaction, calls Binder.onTransact() on the target object, and replies with the result Parcel. Upon receiving its result, the thread in process A returns to allow its execution to continue. In effect, other processes appear to use as additional threads that you did not create executing in your own process.</p>
+<p>The Binder system also supports recursion across processes. For example if process A performs a transaction to process B, and process B while handling that transaction calls transact() on an IBinder that is implemented in A, then the thread in A that is currently waiting for the original transaction to finish will take care of calling Binder.onTransact() on the object being called by B. This ensures that the recursion semantics when calling remote binder object are the same as when calling local objects.</p>
+<h2 id="Analysis-of-IBinder"><a href="#Analysis-of-IBinder" class="headerlink" title="Analysis of IBinder"></a>Analysis of IBinder</h2><h3 id="Source-of-IBinder"><a href="#Source-of-IBinder" class="headerlink" title="Source of IBinder"></a>Source of IBinder</h3><p><a href="http://code.metager.de/source/xref/android/2.0.1/frameworks/base/core/java/android/os/IBinder.java" target="_blank" rel="noopener">IBinder</a> is a interface is not a Controller or a type of View.</p>
+<p>It has som abstract methods like dump, transact etc. as follows:</p>
+<ul>
+<li>abstract void    dump(FileDescriptor fd, String[] args)<br>Print the object’s state into the given stream.</li>
+<li>abstract void    dumpAsync(FileDescriptor fd, String[] args)<br>Like dump(FileDescriptor, String[]) but always executes asynchronously.</li>
+<li>abstract String    getInterfaceDescriptor()<br>Get the canonical name of the interface supported by this binder.</li>
+<li>abstract boolean    isBinderAlive()<br>Check to see if the process that the binder is in is still alive.</li>
+<li>abstract void    linkToDeath(IBinder.DeathRecipient recipient, int flags)<br>Register the recipient for a notification if this binder goes away.</li>
+<li>abstract boolean    pingBinder()<br>Check to see if the object still exists.</li>
+<li>abstract IInterface    queryLocalInterface(String descriptor)<br>Attempt to retrieve a local implementation of an interface for this Binder object.</li>
+<li>abstract boolean    transact(int code, Parcel data, Parcel reply, int flags)<br>Perform a generic operation with the object.</li>
+<li>abstract boolean    unlinkToDeath(IBinder.DeathRecipient recipient, int flags)<br>Remove a previously registered death notification.</li>
+</ul>
+<h3 id="Implementation-of-IPC"><a href="#Implementation-of-IPC" class="headerlink" title="Implementation of IPC"></a>Implementation of IPC</h3><p>The Binder’s main function is implemention of IPC, with the kernel driver.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/10/09/android/analysisonbinderofandroid/" data-id="cjugo67vc0002nkuwsnypnhxu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aidl/">aidl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/service/">service</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/analysisonaidlofandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/10/09/android/analysisonaidlofandroid/" class="article-date">
+  <time datetime="2015-10-08T16:00:00.000Z" itemprop="datePublished">2015-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/10/09/android/analysisonaidlofandroid/">Analysis on AIDL for Android</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="current-situation"><a href="#current-situation" class="headerlink" title="current situation"></a>current situation</h2><h3 id="Field-of-use"><a href="#Field-of-use" class="headerlink" title="Field of use"></a>Field of use</h3><pre><code>AIDL is not used frequently. There may be two reasons existing. First, the AIDL program can not be developed easily lik java program. Second, We just needn&apos;t use AIDL, in other words, we can write other simple program insteadly. 
+</code></pre><h2 id="Analysis-of-ViewPager"><a href="#Analysis-of-ViewPager" class="headerlink" title="Analysis of ViewPager"></a>Analysis of ViewPager</h2><h3 id="Desc-of-ViewPager"><a href="#Desc-of-ViewPager" class="headerlink" title="Desc of ViewPager"></a>Desc of ViewPager</h3><p><a href="https://developer.android.com/guide/components/aidl.html" target="_blank" rel="noopener">AIDL</a>(Android Interface definition language), is not a controller, but a language, and you can say it as designing pattern.</p>
+<p>AIDL is similar to other IDLs you might have worked with. It allows you to define the programming interface that both the client and service agree upon in order to communicate with each other using interprocess communication (IPC). On Android, one process cannot normally access the memory of another process. So to talk, they need to decompose their objects into primitives that the operating system can understand, and marshall the objects across that boundary for you. The code to do that marshalling is tedious to write, so Android handles it for you with AIDL.</p>
+<p> Using AIDL is necessary only if you allow clients from different applications to access your service for IPC and want to handle multithreading in your service. If you do not need to perform concurrent IPC across different applications, you should create your interface by implementing a Binder or, if you want to perform IPC, but do not need to handle multithreading, implement your interface using a Messenger. Regardless, be sure that you understand Bound Services before implementing an AIDL.</p>
+<h3 id="Use-of-AIDL"><a href="#Use-of-AIDL" class="headerlink" title="Use of AIDL"></a>Use of AIDL</h3><p>To create a bounded service using AIDL, follow these steps:</p>
+<h4 id="Create-the-aidl-file"><a href="#Create-the-aidl-file" class="headerlink" title="Create the .aidl file"></a>Create the .aidl file</h4><p>This file defines the programming interface with method signatures.</p>
+<h4 id="Implement-the-interface"><a href="#Implement-the-interface" class="headerlink" title="Implement the interface"></a>Implement the interface</h4><p>The Android SDK tools generate an interface in the Java programming language, based on your .aidl file. This interface has an inner abstract class named Stub that extends Binder and implements methods from your AIDL interface. You must extend the Stub class and implement the methods.</p>
+<h4 id="Expose-the-interface-to-clients"><a href="#Expose-the-interface-to-clients" class="headerlink" title="Expose the interface to clients"></a>Expose the interface to clients</h4><p>Implement a Service and override onBind() to return your implementation of the Stub class.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/10/09/android/analysisonaidlofandroid/" data-id="cjugo67vc0005nkuw62k4mivc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/aidl/">aidl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/service/">service</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-bibis/processtextfilewithawkparti" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/09/11/bibis/processtextfilewithawkparti/" class="article-date">
+  <time datetime="2015-09-10T16:00:00.000Z" itemprop="datePublished">2015-09-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/11/bibis/processtextfilewithawkparti/">Process Text File with AWK Part I</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="AWK-Process-TEXT-File"><a href="#AWK-Process-TEXT-File" class="headerlink" title="AWK Process TEXT File"></a>AWK Process TEXT File</h2><p>codes : <a href="https://github.com/dachmx/tmpcode/tree/master/tmpp" target="_blank" rel="noopener">tmpp</a></p>
+<p>Basic functions of awk are be used in this awk file.</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.gnu.org/software/gawk/manual/gawk.html" target="_blank" rel="noopener">The GNU Awk User’s Guide</a></p>
+<p><a href="http://man.linuxde.net/awk" target="_blank" rel="noopener">awk blog</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/09/11/bibis/processtextfilewithawkparti/" data-id="cjugo7oo3000fzsuwin2z6g4o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/awk/">awk</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/commontool/">commontool</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/useviewpagerofandroid" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/15/android/useviewpagerofandroid/" class="article-date">
+  <time datetime="2015-08-14T16:00:00.000Z" itemprop="datePublished">2015-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/15/android/useviewpagerofandroid/">Using ViewPager for Android Dev</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="current-situation"><a href="#current-situation" class="headerlink" title="current situation"></a>current situation</h2><h3 id="Field-of-use"><a href="#Field-of-use" class="headerlink" title="Field of use"></a>Field of use</h3><pre><code>Most of apps will use viewpager in different format, even a very simple app. For example, the [wechat](https://play.google.com/store/apps/details?id=com.tencent.mm&amp;hl=zh_CN). It only has for main content pages, but it uses viewpager. Our system app, luncher, uses viewpager as well. 
+</code></pre><h3 id="Formats-of-ViewPager"><a href="#Formats-of-ViewPager" class="headerlink" title="Formats of ViewPager"></a>Formats of ViewPager</h3><pre><code>The main format is that a container wrapping many pages shown horizonally. It can be used show ad pictures, and also can be used show many fragments. In many situations, the other indicators will be used with it.
+</code></pre><h2 id="Analysis-of-ViewPager"><a href="#Analysis-of-ViewPager" class="headerlink" title="Analysis of ViewPager"></a>Analysis of ViewPager</h2><h3 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h3><p><a href="http://code.metager.de/source/xref/android/4.0.3/frameworks-support/v4/java/android/support/v4/view/ViewPager.java" target="_blank" rel="noopener">ViewPager</a> is type of ViewGroup, so that it has all features of ViewGroup.</p>
+<p>ViewPager shows data by the PageAdpter. It means that viewpager likes ListView showing data by adapter pattern.</p>
+<p>The main feature of ViewPager unlike others views is its TouchEvent function. It intercept the touch events and translates them to the operation on its pages, such as scroll left or right, etc.</p>
+<h3 id="Use-of-ViewPager"><a href="#Use-of-ViewPager" class="headerlink" title="Use of ViewPager"></a>Use of ViewPager</h3><p>Using ViewPager by declaring in the layout file, as follows:</p>
+<pre><code class="java">&lt;android.support.v4.view.ViewPager  
+    android:id=<span class="string">"@+id/viewpager"</span>  
+    android:layout_width=<span class="string">"wrap_content"</span>
+    android:layout_height=<span class="string">"200dip"</span>  
+    android:layout_gravity=<span class="string">"center"</span>&gt;  
+
+    &lt;android.support.v4.view.PagerTitleStrip  
+        android:id=<span class="string">"@+id/pagertitle"</span>    
+        android:layout_width=<span class="string">"wrap_content"</span>    
+        android:layout_height=<span class="string">"wrap_content"</span>    
+        android:layout_gravity=<span class="string">"top"</span>  
+        /&gt;  
+
+&lt;/android.support.v4.view.ViewPager&gt; 
+</code></pre>
+<p>Of course, you can replace the PageTitleStrip by other indicators. You just need change the PageChangeListener for viewpager.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/08/15/android/useviewpagerofandroid/" data-id="cjugo67wn000mnkuwla530ajk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ad/">ad</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fragment/">fragment</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scroller/">scroller</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/viewpager/">viewpager</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/androidappsecureproblemparty1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/06/13/android/androidappsecureproblemparty1/" class="article-date">
+  <time datetime="2015-06-12T16:00:00.000Z" itemprop="datePublished">2015-06-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/06/13/android/androidappsecureproblemparty1/">Android App Secure Problem Part 1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Security is important for applications involving direct money transactions or personal privacy concerns. Android system due to its open source properties, the market for open-source custom ROM vary, in the system level security and vulnerability are not the same, Android application market app review relatively iOS is also relatively broad, Many vulnerabilities provide an opportunity. Some mainstream app on the market although some have done some security precautions, but because most of the app does not involve financial security, so the importance of security is not enough; and because security is a door system disciplines, most of the app layer developers lack security Technology accumulation, measures are relatively limited.</p>
+<p>This article will focus on analysis of Android APP facing security issues, preventive measures and a series of security technology program implementation.</p>
+<h2 id="The-security-issues-facing"><a href="#The-security-issues-facing" class="headerlink" title="The security issues facing"></a>The security issues facing</h2><h3 id="virus"><a href="#virus" class="headerlink" title="virus"></a>virus</h3><p>Android virus is a mobile phone Trojans, mainly malicious applications. Such as last year, CCTV exposure of a “bank ruthless” mobile phone banking Trojan, imitate the real mobile banking software, through phishing access to user input phone number, ID number, bank account number, password and other information, and these Information uploaded to the hacker specified server. Steal bank account password, the user account in the funds immediately transferred away. Some of the independent existence of mobile phone Trojans, while others are disguised as a picture file attached to the genuine App, hidden very strong, some viruses will appear variants, and more powerful generation than generation.<br>These viruses have some general characteristics:</p>
+<ul>
+<li><p>Mother packet + malicious sub-packet operating mechanism.</p>
+</li>
+<li><p>Through technical means to prevent users through the normal way to uninstall.</p>
+</li>
+<li><p>To steal the user account funds for the purpose.</p>
+</li>
+<li><p>To SMS as a command channel.</p>
+</li>
+<li><p>Critical Information Disclosure</p>
+</li>
+</ul>
+<p>Although the java code to do the general confusion, but several major components of Android is dependent on the way to create the injection, it can not be confused, and some commonly used anti-compiler tools such as apktool can be effortless to restore java in the clear text information , Native library information can also be obtained through objdump or IDA. So once java or native code in the existence of expressly sensitive information, basically there is no security in terms of.</p>
+<h3 id="APP-re-packaged"><a href="#APP-re-packaged" class="headerlink" title="APP re-packaged"></a>APP re-packaged</h3><p>That is, decompile and re-join the malicious code logic, a new package APK file. The purpose of re-packaging are generally mentioned above and the virus, the genuine apk to unpack, insert the malicious virus re-packaged and released, so a strong camouflage. Intercepted app re-packaged to a certain extent to prevent the spread of the virus.</p>
+<h3 id="Process-was-hijacked"><a href="#Process-was-hijacked" class="headerlink" title="Process was hijacked"></a>Process was hijacked</h3><p>This is almost the most targeted attack a way, usually through the process of injection or debugging process to hook the process to change the logic and order of running the program to obtain the memory information to run the program, that is, all the user behavior Was monitored, this is the most commonly used account password theft a way. Of course, hook behavior is not necessarily entirely malicious, such as some security software will use the hook function to do proactive defense (such as LBE and our mobile security laboratory latest apkprotect online reinforcement products). In general, hook need to get root privileges or the same process with the hook authority, so if your phone is not root, but is genuine apk, was injected is still very difficult.</p>
+<h3 id="Data-is-hijacked-during-transmission"><a href="#Data-is-hijacked-during-transmission" class="headerlink" title="Data is hijacked during transmission"></a>Data is hijacked during transmission</h3><p>The most common hijacking in the transmission process is a man-in-the-middle attack. Many of the more secure applications require that all business requests go through https, but the middleman attack on https is getting more and more, and we find that in practice, certificate exchange and authentication are in some cottage phones or non-mainstream ROMs There are some problems, so that the use of https encounter obstacles.</p>
+<h3 id="Keyboard-input-security-risks"><a href="#Keyboard-input-security-risks" class="headerlink" title="Keyboard input security risks"></a>Keyboard input security risks</h3><p>Payment password is generally entered through the keyboard, keyboard input directly affects the security of the security of the password. The security risks of the keyboard come from three aspects:</p>
+<p>The use of third-party input method, all the click events are technically can be trilateral input method interception, if you are not careful to use some illegal input method, or input method to upload information and leaked, the consequences are unimaginable.</p>
+<p>Screenshot, the method requires mobile phone with root privileges to run screenshots software</p>
+<p>Getevent, by reading the system driver layer dev / input / event1 in the information to obtain the location of the phone touch screen coordinates, combined with the keyboard layout, you can figure out the incident with the specific number of mapping, which is currently more commonly used attacks the way.</p>
+<p>Before doing a set of security keyboard program, that is, custom keyboard + digital layout randomization. But the randomization of the keyboard is very inconsistent with the operating habits of human nature. So after the random words have also been removed.</p>
+<p>Also need to explain, there is a more secure way is now trustzone standard has GlobalPlatform_Trusted_User_Inteface, that is to say in the trustzone security interface in a set of standards, if the security keyboard in the trustzone in the pop-up, the hacker regardless of the means through the Sha Can not get the password, is the most secure way, but trustzone depends on the underlying equipment to achieve, if the device does not support trustzone, or trustzone does not support GlobalPlatform_Trusted_User_Inteface standard, we can not do anything. *</p>
+<h3 id="Webview-vulnerability"><a href="#Webview-vulnerability" class="headerlink" title="Webview vulnerability"></a>Webview vulnerability</h3><p>As the prevalence of hybrid app now, Webview in the use of the app is more and more, Android system Webview there are some loopholes, resulting in js right to mention. The most famous is the legendary js injection vulnerabilities and webkit xss vulnerabilities, the following section we will detail.</p>
+<h3 id="The-server-did-not-deal-with-was-infiltration-attacks"><a href="#The-server-did-not-deal-with-was-infiltration-attacks" class="headerlink" title="The server did not deal with, was infiltration attacks"></a>The server did not deal with, was infiltration attacks</h3><p>This is the most anti-replay attacks and injection attacks, this is not discussed in the context of this article.<br>Android APP security architecture</p>
+<h3 id="Familiarity-with-Https"><a href="#Familiarity-with-Https" class="headerlink" title="Familiarity with Https"></a>Familiarity with Https</h3><p>In essence, https is a two-way authentication process, but because too many Android devices too messy, Android device certificate is not uniform, generally only client authentication server-side certificate, and the server-side in the https layer will not verify the customer End certificate, so the actual application scenario is a one-way authentication process.<br>SchemeRegistry.register (new Scheme ( “https”, SSLSocketFactory.getSocketFactory (), 443));</p>
+<p>This is the use of google API to https for verification, the main check four aspects:</p>
+<ul>
+<li><p>Whether the signature CA is legal</p>
+</li>
+<li><p>Domain names match</p>
+</li>
+<li><p>Is not a self-signed certificate</p>
+</li>
+<li><p>Whether the certificate has expired</p>
+</li>
+</ul>
+<p>If the root certificate used by the server is self-signed or if the signing authority is not in the list of trusted certificates for the appliance, then http connections using httpclient will fail. There are several ways to solve this problem:</p>
+<p>The simplest approach is that httpclient does not open certificate validation, trust all the way the certificate. This approach is relatively simple, but the security is equivalent to http as bad, hackers can easily falsify the certificate for man-in-the-middle attacks, resulting in user transaction data and other sensitive information disclosure. Now most of the mobile browser in order to be compatible with the various certificates of the site is to take such a way, but also some mainstream browsers on the non-root certificate, only check the host and validity, if failed, to the user prompts, but also Can continue to browse or interrupt the prompt to ensure that the user experience at the same time to enhance security.</p>
+<p>Using the default certificate covering google checking mechanism (X509TrustManager) way, before initiating https connections the server certificate is added to the list of trusted certificates httpclient, this is relatively complex, error-prone, and since each site The definition of certificates are not the same, it is difficult to find a unified approach to all non-root certificate for certificate inspection.</p>
+<h3 id="Payment-Password-Security"><a href="#Payment-Password-Security" class="headerlink" title="Payment Password Security"></a>Payment Password Security</h3><pre><code>Payment password is only a representative of the data, it is actually representative of the client some sensitive data, such as bank card number, mobile phone number, password, cvv, expiration date. Especially against strong passwords and cvv such sensitive data, in order to improve the performance of applications and to prevent others from cracking.
+</code></pre><p>We use RSA and AES encryption of these two sets of encryption methods, as shown below:</p>
+<h3 id="Anti-debug-module"><a href="#Anti-debug-module" class="headerlink" title="Anti-debug module"></a>Anti-debug module</h3><p>Debugging refers to the current app by other programs using a specific method (debugger, ptrace, etc.) tracking hijacking, after debugging all the behavior of the app can be viewed and modified by other programs, we can think of the next usually through gdb debugger. Anti-debugging function in two steps: first test whether the current app is being debugged. If the app is being debugged, it returns the process name of the process the debugger is in. If the app is not debugged, protecting the app is no longer debugged by other programs. There are two ways to protect the app from being debugged: - One is the debug option in the kernel that has a debugger turned off, but we can not change the kernel state as an app. - The other is a dual process anti-debugging. We know that a process allows only one debugger, so in the process up at the same time, will fork a daemon (daemon), and ptrace protected app process, the daemon will intercept the debugger entry to ensure that other programs can not debug The current app. Once the daemon is activated, it will remain until the current application exits, if the forced shutdown of the daemon, the current App will be closed. Here we should pay attention to signal processing.</p>
+<h3 id="Anti-injection-module"><a href="#Anti-injection-module" class="headerlink" title="Anti-injection module"></a>Anti-injection module</h3><p>Injection is the current App process by other programs using specific methods (ptrace, dlopen, etc.) into the module does not belong to the current App. In general, the injection is not an end, just means, so after the injection module generally has a special behavior, such as the collection of App’s privacy data, the use of methods such as Hook hijack App normal operation process. Which Hook is the most important security risks. From the technical means, the premise is the need to debug the injection. So if the current App has been protected for not being debugged, then theoretically there is no risk of being injected. However, if the anti-debug module is activated later, then before the activation, App still there is the possibility of being injected. Anti-injection function is to detect the current App which modules are injected and hijacked (Hook) the. Android Hook and Hook methods are divided into two categories: Java Hook and So Hook. Java Hook which is divided into static members Hook and function hook, you can check the vm dex memory fields and method field to determine whether there are java injection. So Hook is all linux system hook mode, divided into GOT Hook, Symbol Hook and Inline Hook. Inline Hook is generally compiled by way of injection, Symbol Hook is generally used LD_PRELOAD way to the function plus hook, the two injection are currently Not to prevent, the main anti-or GOT hook. I have been in a number of years ago through the GOT hook principle in the brush machine, no root privileges in the system implanted su program, the system to force a root. GOT Hook principle is simply to say that through cat / proc / pid / maps get the app process so the load address, and then through the analysis of the GOT table so that the offset function of each address, calculate the function of the absolute address of the entrance, And then replace the address function with the injection function. So anti-native injection method is: through the app process space, see the loaded library is not in / system or / data / data / app under, if not, then there must be injected.</p>
+<h3 id="Anti-tampering-module"><a href="#Anti-tampering-module" class="headerlink" title="Anti-tampering module"></a>Anti-tampering module</h3><p>App is the traditional method to determine whether piracy, the industry’s usual practice is to collect a large number of genuine application of the information prior to do white list, and then use the current App’s package name, signature and other information to do matching. The accuracy of this method depends on the size of the white list library and requires network connectivity. Anti-tampering based on re-packaged App and genuine App’s dex arrangement features to determine whether the App is repackaged, fast, high accuracy.</p>
+<h3 id="Android-security-programming"><a href="#Android-security-programming" class="headerlink" title="Android security programming"></a>Android security programming</h3><p>For some Android-specific syntax and design, there is also the risk of being attacked, we usually code will be released before the security scan, security scanning sweep surface is the most important point of the following: - Security log this information is relatively simple, and does not allow Print sensitive data, and then must be closed before printing the print log switch. - Intent information disclosure in order to start another one application of Activity, we often use some implicit Intent, if it contains sensitive information, so long as the third-party app to register the same Intent Filter, it is possible to intercept sensitive information, so To send an implicit Intent, you must specify the receiver and permission.<br>Security of security components</p>
+<p>Android includes four components: Activitie, Service, Content Provider, Broadband Receiver, each of them can be opened outside of Intent implicit way, so long as these components are not open to the public must be indicated in the manifest inside exported to false, prohibit other Program access to our components, and external components to be interactive, you should add some access control, but also need to pass on the data for safe verification.<br>IPC null reference</p>
+<p>This occurred mainly in the opening assembly, since the opening of the component can receive Intent, which will generally contain some data when we do not judge these data when empty, app usually crash, an attacker might send data is empty Intent to attack.</p>
+<h3 id="WebView-vulnerability-attack-and-defense"><a href="#WebView-vulnerability-attack-and-defense" class="headerlink" title="WebView vulnerability attack and defense"></a>WebView vulnerability attack and defense</h3><p>Js injection vulnerability</p>
+<p>The problem was first documented in a paper called “Attacks on WebView in the Android System” in 2011 [<a href="http://www.cis.syr.edu/~wedu/Research/paper/webview_acsac2011.pdf]" target="_blank" rel="noopener">http://www.cis.syr.edu/~wedu/Research/paper/webview_acsac2011.pdf]</a> (<a href="http://www.cis.syr.edu/~wedu/Research/paper/webview_acsac2011.pdf)" target="_blank" rel="noopener">http://www.cis.syr.edu/~wedu/Research/paper/webview_acsac2011.pdf)</a>, this article points to the way addJavascriptInterface in the function of some of the risks, such as your app to achieve a read and write files Class, and then use the addJavascriptInterface interface allows js call, then it may lead to an attacker to directly call the class to read and write files to achieve the operation. This approach is the most primitive risk and does not directly point to the use of the getClass () method. Later, Baidu security group in 2013, the official release of the loopholes in the high-risk work order: <a href="http://security.baidu.com/risk/findNewsDetail.do" target="_blank" rel="noopener">http://security.baidu.com/risk/findNewsDetail.do</a>; jsessionid = B09405787822801D67251543B2B8C5CB.security_client-web01? Id = 336. This vulnerability is mainly through the getClass () method directly call java. Lang. Runtime interface to execute system commands, so that any js has the same app operating authority!</p>
+<p>The solution is mainly two:</p>
+<p>For Android 4.2 and above, Google has fixed the vulnerability, only native<br>Interface add @ addJavaInterface label can be.<br>For Android4.2 previous version, you need to rewrite addJavaInterface, js calls and native calls to achieve their mapping. This is a classic cordova design, it is worth learning about.</p>
+<p>WebView phishing vulnerability</p>
+<p>Fishing this thing has been the most commonly used security sector attacks, but also the most difficult to solve a class of technical problems, and fishing means is strange to prevent fishing in addition to allowing users to improve security awareness, do not click on the link from unknown sources, The technical level can do the following two points: - Check WebView to load the target URL if there is phishing and other security risks - on the webview closed scripting environment<br>WebView cross-domain vulnerability</p>
+<p>Mainly due to the JS XmlHttpRequest can read the local file to read to the app data database directory webviewCookiesChromium.db, the db is usually the system where the cookie is stored, the equivalent of disguised to read the cookie opened the permissions, the specific can For Android 4.1 and above, this does not exist in the cross-domain vulnerabilities, there is no targeted modification. [/ B] [/ color] [/ url] For all versions setAllowFileAccess (false), prohibit the page from the local html load.<br>other</p>
+<p>Weak encryption: a lot of Android application encryption storage methods are relatively simple, just a simple md5, it is easy to be cracked.</p>
+<p>Signature verification direction: Each apk will have a signature, the signature only the developer has, if someone else changes the code, it must be signed to run, but the modified signature and the official signature is inconsistent, so we inside Stored application of the official signature of the hashcode value, after the application starts so will check the signature is not the official signature, if not, the application directly closed, so inside the encryption function also does not work.</p>
+<p> reference articles:</p>
+<ul>
+<li><p><a href="http://www.kymjs.com/code/2015/05/03/01" target="_blank" rel="noopener">anaysizing WebView deeply</a></p>
+</li>
+<li><p><a href="http://www.2cto.com/article/201506/409026.html" target="_blank" rel="noopener">appsecure</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/06/13/android/androidappsecureproblemparty1/" data-id="cjugo67w7000cnkuwkmqqmi36" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/analysis/">analysis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/secure/">secure</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/gettingstartspringmvcpart1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/11/architecture/gettingstartspringmvcpart1/" class="article-date">
+  <time datetime="2015-05-10T16:00:00.000Z" itemprop="datePublished">2015-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/11/architecture/gettingstartspringmvcpart1/">Getting Start Using Spring MVC Part I (multi module with maven)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>demo codes :<a href="https://github.com/dachmx/democodeswithcommand/tree/master/java/springmvcparti" target="_blank" rel="noopener">demospring1</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>reference on <a href="https://spring.io/guides/gs/serving-web-content/" target="_blank" rel="noopener">Serving Web Content with Spring MVC</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/05/11/architecture/gettingstartspringmvcpart1/" data-id="cjugo7onv000azsuwuy3d4jyp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mvc/">mvc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/restful/">restful</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springframework/">springframework</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/gettingstartdubboparti" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/05/11/architecture/gettingstartdubboparti/" class="article-date">
+  <time datetime="2015-05-10T16:00:00.000Z" itemprop="datePublished">2015-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/11/architecture/gettingstartdubboparti/">Getting Start Using Dubbo Part I (Netty, Dubbo, Zookeeper and SpringMVC)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>demo codes :<a href="https://github.com/dachmx/democodeswithcommand/tree/master/java/dubbodemoparti" target="_blank" rel="noopener">demospring1</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://spring.io/guides/gs/serving-web-content/" target="_blank" rel="noopener">Serving Web Content with Spring MVC</a></p>
+<p><a href="https://github.com/alibaba/dubbo" target="_blank" rel="noopener">dubbo</a></p>
+<p><a href="http://dubbo.io/Developer+Guide-zh.htm" target="_blank" rel="noopener">dubbo guide</a></p>
+<p><a href="http://netty.io/" target="_blank" rel="noopener">netty</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/05/11/architecture/gettingstartdubboparti/" data-id="cjugo7onr0006zsuw2pb1vzx9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/maven/">maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mvc/">mvc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/netty/">netty</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/restful/">restful</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springframework/">springframework</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-android/acustomizegradlepluginofandroidstudio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/05/android/acustomizegradlepluginofandroidstudio/" class="article-date">
+  <time datetime="2015-03-04T16:00:00.000Z" itemprop="datePublished">2015-03-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/03/05/android/acustomizegradlepluginofandroidstudio/">Getting Start Writing Custom Plugins of Gradle</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduce"><a href="#Introduce" class="headerlink" title="Introduce"></a>Introduce</h2><p>A Gradle plugin packages up reusable pieces of build logic, which can be used across many different projects and builds. Gradle allows you to implement your own custom plugins, so you can reuse your build logic, and share it with others.</p>
+<p>You can implement a custom plugin in any language you like, provided the implementation ends up compiled as bytecode. For the examples here, we are going to use Groovy as the implementation language. You could use Java or Scala instead, if you want.</p>
+<h2 id="Writing-a-Custom-Plugin"><a href="#Writing-a-Custom-Plugin" class="headerlink" title="Writing a Custom Plugin"></a>Writing a Custom Plugin</h2><h3 id="Packaging-a-plugin"><a href="#Packaging-a-plugin" class="headerlink" title="Packaging a plugin"></a>Packaging a plugin</h3><p>There are several places where you can put the source for the plugin.</p>
+<h4 id="Build-script"><a href="#Build-script" class="headerlink" title="Build script"></a>Build script</h4><p>You can include the source for the plugin directly in the build script. This has the benefit that the plugin is automatically compiled and included in the classpath of the build script without you having to do anything. However, the plugin is not visible outside the build script, and so you cannot reuse the plugin outside the build script it is defined in.</p>
+<h4 id="buildSrc-project"><a href="#buildSrc-project" class="headerlink" title="buildSrc project"></a>buildSrc project</h4><p>You can put the source for the plugin in the rootProjectDir/buildSrc/src/main/groovy directory. Gradle will take care of compiling and testing the plugin and making it available on the classpath of the build script. The plugin is visible to every build script used by the build. However, it is not visible outside the build, and so you cannot reuse the plugin outside the build it is defined in.</p>
+<p>Organizing Build Logic for more details about the buildSrc project.</p>
+<h4 id="Standalone-project"><a href="#Standalone-project" class="headerlink" title="Standalone project"></a>Standalone project</h4><p>You can create a separate project for your plugin. This project produces and publishes a JAR which you can then use in multiple builds and share with others. Generally, this JAR might include some custom plugins, or bundle several related task classes into a single library. Or some combination of the two.</p>
+<p>In our examples, we will start with the plugin in the build script, to keep things simple. Then we will look at creating a standalone project.</p>
+<h3 id="Writing-a-simple-plugin"><a href="#Writing-a-simple-plugin" class="headerlink" title="Writing a simple plugin"></a>Writing a simple plugin</h3><p>To create a custom plugin, you need to write an implementation of Plugin. Gradle instantiates the plugin and calls the plugin instance’s Plugin.apply(T) method when the plugin is used with a project. The project object is passed as a parameter, which the plugin can use to configure the project however it needs to. The following sample contains a greeting plugin, which adds a hello task to the project.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">build.gradle</span><br><span class="line">apply plugin: GreetingPlugin</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GreetingPlugin</span> <span class="keyword">implements</span> <span class="title">Plugin</span>&lt;<span class="title">Project</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">apply</span><span class="params">(Project project)</span> </span>&#123;</span><br><span class="line">        project.task(<span class="string">'hello'</span>) &lt;&lt; &#123;</span><br><span class="line">            println <span class="string">"Hello from the GreetingPlugin"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>run<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Output of gradle -q hello</span><br><span class="line">&gt; gradle -q hello</span><br><span class="line">Hello from the GreetingPlugin</span><br></pre></td></tr></table></figure></p>
+<p>One thing to note is that a new instance of a given plugin is created for each project it is applied to. Also note that the Plugin class is a generic type. This example has it receiving the Project type as a type parameter. It’s possible to write unusual custom plugins that take different type parameters, but this will be unlikely (until someone figures out more creative things to do here).</p>
+<p>The other content will be completed later, Sleepping…………</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/03/05/android/acustomizegradlepluginofandroidstudio/" data-id="cjugo67vc0004nkuwcznhtkjx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gradle/">gradle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/plugin/">plugin</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-architecture/differencebetwwennetty3andnetty4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/10/architecture/differencebetwwennetty3andnetty4/" class="article-date">
+  <time datetime="2015-02-09T16:00:00.000Z" itemprop="datePublished">2015-02-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/10/architecture/differencebetwwennetty3andnetty4/">Difference Between Netty3 and Netty4</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>Netty 4 has been released three years, compared to Netty 3, Netty 4 in the memory model and the thread model has been modified. Now Netty 4 is already very mature, and for the Square company, Netty 4 also has a significant feature: the HTTP/2 protocol of the native support. Square expects its mobile devices to use the HTTP/2 protocol and is switching the back-end RPC framework to gRPC: an RPC/2 protocol-based RPC framework. Therefore, Tracon as a proxy service, must support HTTP/2 protocol.</p>
+<h2 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h2><h3 id="Single-Thread-Channel"><a href="#Single-Thread-Channel" class="headerlink" title="Single Thread Channel"></a>Single Thread Channel</h3><p>Unlike Netty 3, Netty 4’s inbound (data input) and outbound (data out) events are all in the same thread. This is the time to write the processor, you can remove the thread-safe code. However, this change also makes the upgrade process to meet the conditions of competition caused by the problem.</p>
+<p>In Netty 3, the operation for the pipeline is thread-safe, but in Netty 4, all operations are placed as events in the event loop asynchronously. As a proxy service, Tracon will have an independent inbound channel to interact with the upstream server, and a separate outbound channel to interact with the downstream server. In order to improve performance, the connection to the downstream server is cached, so that these events may occur concurrently when an event in the event loop triggers a write operation. This is fine for Netty 3, and every write will be completed before returning; but for Netty 4, these operations go into an event loop, which can lead to out-of-order messages.</p>
+<p>Therefore, in the block test, and occasionally encounter the data sent to the order is not arrived, resulting in test failure.</p>
+<p>When upgrading from Netty 3 to Netty 4, it is important to note that events are dispatched asynchronously if they are triggered outside the event loop.</p>
+<p>codes as follows:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">userEventTriggered</span><span class="params">(ChannelHandlerContext ctx,     Object evt)</span> <span class="keyword">throws</span></span></span><br><span class="line"><span class="function">    <span class="title">if</span> <span class="params">(evt.equals(SslHandshakeCompletionEvent.SUCCESS)</span>) </span>&#123;</span><br><span class="line">        Principal peerPrincipal = engine.getSession().getPeerPrincipal();</span><br><span class="line">     <span class="comment">// 身份验证</span></span><br><span class="line">     <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">super</span>.userEventTriggered(ctx, evt);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Memory-Leak"><a href="#Memory-Leak" class="headerlink" title="Memory Leak"></a>Memory Leak</h3><p>Since direct memory is used by NIO, it is necessary to monitor direct memory for Netty network libraries, which can be done by using JMX beanjava.nio: type = BufferPool, name = direct.</p>
+<p>Netty 4 introduces a thread-local Recyler based on thread-local variables to reclaim object pools. By default, a collector can hold up to 262k objects, for ByteBuf, less than 64k of the default shared cache object. In other words, each collector can hold up to 17G of direct memory.</p>
+<p>Normally, the NIO cache is sufficient to cope with an instantaneous amount of data. However, if you have a very slow reading of the back-end, will greatly increase the memory usage. In addition, when the cache memory in the NIO read and write by other threads, the allocation of the memory of the thread will not be able to reclaim the memory.</p>
+<p>The Netty project has also made some corrections to the problem of limiting the growth of objects that can not be recovered by the reclaimer, which causes memory exhaustion:</p>
+<ul>
+<li><p>Allows you to set the maximum number of WeakOrderQueue instances per thread;</p>
+</li>
+<li><p>The memory allocation / sharing ratio is introduced in the reclaimer;</p>
+</li>
+<li><p>Porting SendBufferPooled from Netty 3.10, used when using a non-shared ByteBuf allocator (ByteBufAllocator);</p>
+</li>
+</ul>
+<p>From the experience of upgrading Netty 4, it is recommended that all developers configure the Recycler based on available memory and threads. The maximum number of objects that the Reclaimer can hold can be set with the -Dio.netty.recycler.maxCapacity parameter, and the maximum memory limit can be set with the -Dio.netty.threadLocalDirectBufferSize parameter. If you want to completely close the collector, you can set-Dio.netty.recycler.maxCapacity 0</p>
+<p> Use Global Exception Process, codes as follows:<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="class"><span class="keyword">class</span> <span class="title">LoggingExceptionHandler</span> <span class="keyword">implements</span> <span class="title">Thread</span>.<span class="title">UncaughtExceptionHandler</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = Logger.getLogger(LoggingExceptionHandler.class);</span><br><span class="line">    <span class="comment">/** 注册成默认处理器 */</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">registerAsDefault</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread.setDefaultUncaughtExceptionHandler(<span class="keyword">new</span> LoggingExceptionHandler());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">uncaughtException</span><span class="params">(Thread t, Throwable e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> Exception) &#123;</span><br><span class="line">            logger.error(<span class="string">"Uncaught exception killed thread named '"</span> + t.getName() + <span class="string">"'."</span>, e);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            logger.fatal(<span class="string">"Uncaught error killed thread named '"</span> + t.getName() + <span class="string">"'."</span> + <span class="string">" Exiting now."</span>, e);</span><br><span class="line">            System.exit(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="HTTP-decoder-refactor"><a href="#HTTP-decoder-refactor" class="headerlink" title="HTTP decoder refactor"></a>HTTP decoder refactor</h3><p>Netty 4 refactored the HTTP decoders, and specifically improved support for chunked data. HTTP message body is split into HttpContent object, if the HTTP data through the block transmission, there will be more than one HttpContent order to arrive, when the data block transmission end, there will be a LastHttpContent object. It should be noted that, LastHttpContent inherited from HttpContent, must not be handled in the following manner:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">If (msg <span class="keyword">instanceof</span> HttpContent) &#123;</span><br><span class="line">   ...</span><br><span class="line">&#125;&#125;</span><br><span class="line">If (msg <span class="keyword">instanceof</span> LastHttpContent) &#123;</span><br><span class="line">   ... / / The last block will be repeated, the previous <span class="keyword">if</span> already contains the LastHttpContent</span><br><span class="line">&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>For LastHttpContent there is a need to note that when receiving this object, HTTP message body may have been transmitted over, at this time LastHttpContent just as HTTP transmission end (similar to EOF).</p>
+<h2 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h2><p><a href="http://www.infoq.com/cn/news/2016/10/Square-Netty-3-Netty-4?utm_source=infoq&amp;utm_medium=popular_widget&amp;utm_campaign=popular_content_list&amp;utm_content=homepage" target="_blank" rel="noopener">Square-Netty-3-Netty-4</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2015/02/10/architecture/differencebetwwennetty3andnetty4/" data-id="cjugo7onp0004zsuw1q4c4ifq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/back/">back</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/netty/">netty</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/performance/">performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/DI/">DI</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IoC/">IoC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Monitor/">Monitor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ReactiveX/">ReactiveX</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aar/">aar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ad/">ad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptation/">adaptation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/advice/">advice</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/aidl/">aidl</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/allegrograph/">allegrograph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/analysis/">analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation/">animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apk/">apk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/application/">application</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/architecture/">architecture</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asm/">asm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/asynchronous/">asynchronous</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/auto/">auto</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/automatic/">automatic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/back/">back</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bash/">bash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bird-view/">bird view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bitmap/">bitmap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootloader/">bootloader</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bootrap/">bootrap</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cayley/">cayley</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cipher/">cipher</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/click/">click</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/commontool/">commontool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/construct/">construct</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctrip/">ctrip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data/">data</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/data-analysis/">data analysis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/database/">database</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/debugging/">debugging</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deeplearn/">deeplearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dev/">dev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dex/">dex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/diary/">diary</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/event/">event</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastboot/">fastboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastlane/">fastlane</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fix/">fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flockdb/">flockdb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fragment/">fragment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/frontend/">frontend</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gettingstart/">gettingstart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gradle/">gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graph/">graph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hacking/">hacking</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/handler/">handler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-fix/">hot fix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hotfix/">hotfix</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/https/">https</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibinder/">ibinder</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/inaction/">inaction</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/infinitegraph/">infinitegraph</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jmlr/">jmlr</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kernel/">kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kylin/">kylin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/library/">library</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/life/">life</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/live/">live</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/local/">local</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/looper/">looper</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/maven/">maven</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/message/">message</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ml/">ml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mood/">mood</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multi-dimensional/">multi-dimensional</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multidex/">multidex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neo4j/">neo4j</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/net/">net</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/netty/">netty</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">network</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nio/">nio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuomi/">nuomi</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nuwa/">nuwa</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/optimization/">optimization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/permission/">permission</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/platform/">platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/plugin/">plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/process/">process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/production/">production</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/protection/">protection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/queue/">queue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/react-native/">react native</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recovery/">recovery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/remote/">remote</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/request/">request</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/responsive/">responsive</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/restful/">restful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/retrofit/">retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/reversing/">reversing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rom/">rom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/safe-mode/">safe mode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/scroller/">scroller</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/secure/">secure</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/security/">security</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/service/">service</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sourcecode/">sourcecode</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot/">springboot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springframework/">springframework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/statusbar/">statusbar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svd/">svd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svm/">svm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tcp-ip/">tcp/ip</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tech/">tech</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/title-bar/">title bar</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmall/">tmall</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/touch/">touch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/update/">update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/view/">view</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/viewpager/">viewpager</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webview/">webview</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/window/">window</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/writeup/">writeup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/zookeeper/">zookeeper</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/DI/" style="font-size: 10px;">DI</a> <a href="/tags/IoC/" style="font-size: 10px;">IoC</a> <a href="/tags/Monitor/" style="font-size: 10px;">Monitor</a> <a href="/tags/ReactiveX/" style="font-size: 10px;">ReactiveX</a> <a href="/tags/aar/" style="font-size: 11.43px;">aar</a> <a href="/tags/ad/" style="font-size: 10px;">ad</a> <a href="/tags/adaptation/" style="font-size: 10px;">adaptation</a> <a href="/tags/advice/" style="font-size: 10px;">advice</a> <a href="/tags/ai/" style="font-size: 10px;">ai</a> <a href="/tags/aidl/" style="font-size: 11.43px;">aidl</a> <a href="/tags/algorithm/" style="font-size: 17.14px;">algorithm</a> <a href="/tags/allegrograph/" style="font-size: 10px;">allegrograph</a> <a href="/tags/analysis/" style="font-size: 12.86px;">analysis</a> <a href="/tags/android/" style="font-size: 11.43px;">android</a> <a href="/tags/animation/" style="font-size: 10px;">animation</a> <a href="/tags/apk/" style="font-size: 10px;">apk</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/application/" style="font-size: 10px;">application</a> <a href="/tags/architecture/" style="font-size: 12.86px;">architecture</a> <a href="/tags/asm/" style="font-size: 10px;">asm</a> <a href="/tags/asynchronous/" style="font-size: 10px;">asynchronous</a> <a href="/tags/auto/" style="font-size: 11.43px;">auto</a> <a href="/tags/automatic/" style="font-size: 11.43px;">automatic</a> <a href="/tags/awk/" style="font-size: 10px;">awk</a> <a href="/tags/back/" style="font-size: 10px;">back</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bird-view/" style="font-size: 11.43px;">bird view</a> <a href="/tags/bitmap/" style="font-size: 10px;">bitmap</a> <a href="/tags/bootloader/" style="font-size: 10px;">bootloader</a> <a href="/tags/bootrap/" style="font-size: 10px;">bootrap</a> <a href="/tags/cayley/" style="font-size: 10px;">cayley</a> <a href="/tags/cipher/" style="font-size: 10px;">cipher</a> <a href="/tags/click/" style="font-size: 10px;">click</a> <a href="/tags/commontool/" style="font-size: 11.43px;">commontool</a> <a href="/tags/construct/" style="font-size: 10px;">construct</a> <a href="/tags/ctf/" style="font-size: 11.43px;">ctf</a> <a href="/tags/ctrip/" style="font-size: 10px;">ctrip</a> <a href="/tags/data/" style="font-size: 10px;">data</a> <a href="/tags/data-analysis/" style="font-size: 12.86px;">data analysis</a> <a href="/tags/database/" style="font-size: 11.43px;">database</a> <a href="/tags/debugging/" style="font-size: 11.43px;">debugging</a> <a href="/tags/deep-learning/" style="font-size: 10px;">deep learning</a> <a href="/tags/deeplearn/" style="font-size: 11.43px;">deeplearn</a> <a href="/tags/design/" style="font-size: 11.43px;">design</a> <a href="/tags/dev/" style="font-size: 10px;">dev</a> <a href="/tags/dex/" style="font-size: 10px;">dex</a> <a href="/tags/diary/" style="font-size: 11.43px;">diary</a> <a href="/tags/dubbo/" style="font-size: 10px;">dubbo</a> <a href="/tags/event/" style="font-size: 10px;">event</a> <a href="/tags/fastboot/" style="font-size: 10px;">fastboot</a> <a href="/tags/fastlane/" style="font-size: 10px;">fastlane</a> <a href="/tags/fix/" style="font-size: 10px;">fix</a> <a href="/tags/flockdb/" style="font-size: 10px;">flockdb</a> <a href="/tags/fragment/" style="font-size: 10px;">fragment</a> <a href="/tags/frontend/" style="font-size: 10px;">frontend</a> <a href="/tags/gettingstart/" style="font-size: 20px;">gettingstart</a> <a href="/tags/gradle/" style="font-size: 10px;">gradle</a> <a href="/tags/graph/" style="font-size: 10px;">graph</a> <a href="/tags/graphics/" style="font-size: 11.43px;">graphics</a> <a href="/tags/hacking/" style="font-size: 11.43px;">hacking</a> <a href="/tags/handler/" style="font-size: 10px;">handler</a> <a href="/tags/high-concurrency/" style="font-size: 12.86px;">high concurrency</a> <a href="/tags/hot-fix/" style="font-size: 10px;">hot fix</a> <a href="/tags/hotfix/" style="font-size: 10px;">hotfix</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/ibinder/" style="font-size: 11.43px;">ibinder</a> <a href="/tags/inaction/" style="font-size: 10px;">inaction</a> <a href="/tags/infinitegraph/" style="font-size: 10px;">infinitegraph</a> <a href="/tags/javascript/" style="font-size: 11.43px;">javascript</a> <a href="/tags/jmlr/" style="font-size: 10px;">jmlr</a> <a href="/tags/kernel/" style="font-size: 10px;">kernel</a> <a href="/tags/kylin/" style="font-size: 10px;">kylin</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/learning/" style="font-size: 11.43px;">learning</a> <a href="/tags/library/" style="font-size: 10px;">library</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/linux/" style="font-size: 12.86px;">linux</a> <a href="/tags/live/" style="font-size: 11.43px;">live</a> <a href="/tags/local/" style="font-size: 10px;">local</a> <a href="/tags/looper/" style="font-size: 10px;">looper</a> <a href="/tags/machine-learning/" style="font-size: 15.71px;">machine learning</a> <a href="/tags/maven/" style="font-size: 11.43px;">maven</a> <a href="/tags/message/" style="font-size: 10px;">message</a> <a href="/tags/ml/" style="font-size: 11.43px;">ml</a> <a href="/tags/mobile/" style="font-size: 11.43px;">mobile</a> <a href="/tags/mood/" style="font-size: 11.43px;">mood</a> <a href="/tags/multi-classification/" style="font-size: 10px;">multi-classification</a> <a href="/tags/multi-dimensional/" style="font-size: 10px;">multi-dimensional</a> <a href="/tags/multidex/" style="font-size: 10px;">multidex</a> <a href="/tags/mvc/" style="font-size: 15.71px;">mvc</a> <a href="/tags/neo4j/" style="font-size: 10px;">neo4j</a> <a href="/tags/net/" style="font-size: 18.57px;">net</a> <a href="/tags/netty/" style="font-size: 15.71px;">netty</a> <a href="/tags/network/" style="font-size: 10px;">network</a> <a href="/tags/nio/" style="font-size: 10px;">nio</a> <a href="/tags/nuomi/" style="font-size: 10px;">nuomi</a> <a href="/tags/nuwa/" style="font-size: 10px;">nuwa</a> <a href="/tags/optimization/" style="font-size: 10px;">optimization</a> <a href="/tags/performance/" style="font-size: 10px;">performance</a> <a href="/tags/permission/" style="font-size: 10px;">permission</a> <a href="/tags/platform/" style="font-size: 14.29px;">platform</a> <a href="/tags/plugin/" style="font-size: 10px;">plugin</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/production/" style="font-size: 10px;">production</a> <a href="/tags/protection/" style="font-size: 10px;">protection</a> <a href="/tags/queue/" style="font-size: 10px;">queue</a> <a href="/tags/react-native/" style="font-size: 10px;">react native</a> <a href="/tags/recovery/" style="font-size: 10px;">recovery</a> <a href="/tags/remote/" style="font-size: 10px;">remote</a> <a href="/tags/request/" style="font-size: 11.43px;">request</a> <a href="/tags/responsive/" style="font-size: 10px;">responsive</a> <a href="/tags/restful/" style="font-size: 15.71px;">restful</a> <a href="/tags/retrofit/" style="font-size: 11.43px;">retrofit</a> <a href="/tags/reversing/" style="font-size: 11.43px;">reversing</a> <a href="/tags/rom/" style="font-size: 10px;">rom</a> <a href="/tags/safe-mode/" style="font-size: 10px;">safe mode</a> <a href="/tags/scroller/" style="font-size: 11.43px;">scroller</a> <a href="/tags/secure/" style="font-size: 11.43px;">secure</a> <a href="/tags/security/" style="font-size: 10px;">security</a> <a href="/tags/service/" style="font-size: 11.43px;">service</a> <a href="/tags/shell/" style="font-size: 11.43px;">shell</a> <a href="/tags/sklearn/" style="font-size: 11.43px;">sklearn</a> <a href="/tags/sourcecode/" style="font-size: 10px;">sourcecode</a> <a href="/tags/spring/" style="font-size: 18.57px;">spring</a> <a href="/tags/springboot/" style="font-size: 10px;">springboot</a> <a href="/tags/springframework/" style="font-size: 18.57px;">springframework</a> <a href="/tags/statusbar/" style="font-size: 10px;">statusbar</a> <a href="/tags/support-vector-machine/" style="font-size: 12.86px;">support vector machine</a> <a href="/tags/svd/" style="font-size: 10px;">svd</a> <a href="/tags/svm/" style="font-size: 12.86px;">svm</a> <a href="/tags/tcp-ip/" style="font-size: 10px;">tcp/ip</a> <a href="/tags/tech/" style="font-size: 10px;">tech</a> <a href="/tags/tensorflow/" style="font-size: 12.86px;">tensorflow</a> <a href="/tags/testing/" style="font-size: 10px;">testing</a> <a href="/tags/title-bar/" style="font-size: 10px;">title bar</a> <a href="/tags/tmall/" style="font-size: 10px;">tmall</a> <a href="/tags/touch/" style="font-size: 10px;">touch</a> <a href="/tags/update/" style="font-size: 10px;">update</a> <a href="/tags/view/" style="font-size: 10px;">view</a> <a href="/tags/viewpager/" style="font-size: 10px;">viewpager</a> <a href="/tags/webview/" style="font-size: 11.43px;">webview</a> <a href="/tags/window/" style="font-size: 10px;">window</a> <a href="/tags/writeup/" style="font-size: 11.43px;">writeup</a> <a href="/tags/zookeeper/" style="font-size: 10px;">zookeeper</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/04/10/ml/AdaptationBasedonGeneralizedDiscrepancy/">Adaptation Based on Generalized Discrepancy</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/31/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/02/mathalg/matrixcompletionandlowranksvdviafastalternatingleastsquares/">Matrix Completion and Low-Rank SVD via Fast Alternating Least Squares (JMLR)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 dachmx<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo and dachmx</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
