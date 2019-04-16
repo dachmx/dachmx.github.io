@@ -5,14 +5,14 @@
   
 
   
-  <title>Analysis on The SourceCode of Handler, Looper and Message Queue | Dachmx web log</title>
+  <title>Analysis on The SourceCode of Handler, Looper and Message Queue | Dachmx Web Log</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="IntroduceAndroid can be updated through the Handler UI to change the main thread, the update UI can only be updated in the main thread, and in order to allow other threads can control UI changes, Andr">
 <meta name="keywords" content="analysis,handler,looper,message,queue,sourcecode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Analysis on The SourceCode of Handler, Looper and Message Queue">
 <meta property="og:url" content="http://dachmx.github.io/2015/01/11/android/analysisonhandlerlooperandmessagequeue/index.html">
-<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:site_name" content="Dachmx Web Log">
 <meta property="og:description" content="IntroduceAndroid can be updated through the Handler UI to change the main thread, the update UI can only be updated in the main thread, and in order to allow other threads can control UI changes, Andr">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://idisfkj.github.io/2016/10/19/Android-Handler%E3%80%81Looper%E4%B8%8EMessageQueue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Handler%E3%80%81Looper%E4%B8%8EMessageQueue.png">
@@ -22,7 +22,7 @@
 <meta name="twitter:description" content="IntroduceAndroid can be updated through the Handler UI to change the main thread, the update UI can only be updated in the main thread, and in order to allow other threads can control UI changes, Andr">
 <meta name="twitter:image" content="http://idisfkj.github.io/2016/10/19/Android-Handler%E3%80%81Looper%E4%B8%8EMessageQueue%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Handler%E3%80%81Looper%E4%B8%8EMessageQueue.png">
   
-    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Dachmx Web Log" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -41,7 +41,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Dachmx web log</a>
+        <a href="/" id="logo">Dachmx Web Log</a>
       </h1>
       
         <h2 id="subtitle-wrap">
@@ -115,7 +115,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2015/01/11/android/analysisonhandlerlooperandmessagequeue/" data-id="cjugo67vc0007nkuw6gk3dk7t" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2015/01/11/android/analysisonhandlerlooperandmessagequeue/" data-id="cjujwmif9000518uw879tta0b" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/analysis/">analysis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/handler/">handler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/looper/">looper</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/message/">message</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/queue/">queue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sourcecode/">sourcecode</a></li></ul>
@@ -126,19 +126,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/01/11/android/aexampleofhotfixforwechat/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/01/11/android/gettingstartpulishaartojcenter/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          A Simple Example of Hot Fix Like Wechat
+          Getting Start Make Module AAR for Android Project (Remote)
         
       </div>
     </a>
   
   
-    <a href="/2015/01/11/android/gettingstartpulishaartojcenter/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/01/11/android/aexampleofhotfixforwechat/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Getting Start Make Module AAR for Android Project (Remote)</div>
+      <div class="article-nav-title">A Simple Example of Hot Fix Like Wechat</div>
     </a>
   
 </nav>
@@ -176,7 +176,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
     </div>
   </div>
 
@@ -193,10 +193,6 @@
           </li>
         
           <li>
-            <a href="/2017/10/31/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
           </li>
         
@@ -206,6 +202,10 @@
         
           <li>
             <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/20/android/SummaryofAndroidsoftwareprotection/">Summary of Android software protection measures</a>
           </li>
         
       </ul>

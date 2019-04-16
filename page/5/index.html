@@ -5,18 +5,18 @@
   
 
   
-  <title>Dachmx web log</title>
+  <title>Dachmx Web Log</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="blog">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Dachmx web log">
+<meta property="og:title" content="Dachmx Web Log">
 <meta property="og:url" content="http://dachmx.github.io/page/5/index.html">
-<meta property="og:site_name" content="Dachmx web log">
+<meta property="og:site_name" content="Dachmx Web Log">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dachmx web log">
+<meta name="twitter:title" content="Dachmx Web Log">
   
-    <link rel="alternate" href="/atom.xml" title="Dachmx web log" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Dachmx Web Log" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -35,7 +35,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Dachmx web log</a>
+        <a href="/" id="logo">Dachmx Web Log</a>
       </h1>
       
         <h2 id="subtitle-wrap">
@@ -66,116 +66,6 @@
 </header>
       <div class="outer">
         <section id="main">
-  
-    <article id="post-architecture/designofhighconcurrencyarchitectureofliveplatform" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2014/11/10/architecture/designofhighconcurrencyarchitectureofliveplatform/" class="article-date">
-  <time datetime="2014-11-09T16:00:00.000Z" itemprop="datePublished">2014-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2014/11/10/architecture/designofhighconcurrencyarchitectureofliveplatform/">Design of High Concurrency Architecture of Live Platform</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="Rise-and-the-status-quo"><a href="#Rise-and-the-status-quo" class="headerlink" title="Rise and the status quo"></a>Rise and the status quo</h3><p>Everyday life with the mobile phone to watch the video more and more, more and more time, look at the content is more and more types. Including the recent start from the United States in March after the fire, the domestic mobile video is also the social class of fire. This is what we now focus on the cut of a vertical category, the vertical class why now fire? We summarize down part of the reason is because of its highly entertaining, low latency, and the anchor may have a strong interaction, so more and more people are concerned. At present, there are at least a few domestic on-line, there are dozens of contacts are preparing to go online, which will always be a few fire up.</p>
-<p>[image]<br>This is what we now come into contact with these industries do some classification, there is a comprehensive category, that is, user-generated content to entertainment-oriented, user-generated content is not strong division. There will be some suggestions, but not mandatory. There are some relatively strong industry, such as finance, sports, education, these categories.</p>
-<p>There is the most extensive show field class, the profit model is the most clear, its volume is particularly large, the anchor depends on this strong business. This part of the core needs of manufacturers is clear, most of them from their business needs, they are good at doing is installed capacity, to maintain high daily living, to maintain the stickiness between the anchor and the user, and then how to do commercial, commercial Many people have a headache, these things enough for them, and they are good at.</p>
-<p>But in this part of the multimedia, the threshold is high, before doing on-demand services, like two years ago when I was doing the media cloud, were on-demand business. Do the back, I think the on-demand business is not as difficult as you think, you want to have a stable storage, find a Kaopu CDN, and then find a player can be used to do it, what is this Hard to do? You can find a cloud service company, you can find outsourcing, or you can recruit a person to do. But now found to move, especially in March after the fire live fire up, the threshold suddenly high. Because the content generation side into the mobile side, I will elaborate later.</p>
-<h3 id="Core-requirements"><a href="#Core-requirements" class="headerlink" title="Core requirements"></a>Core requirements</h3><p>Let me talk about why the core needs arise. We are watching mobile live, if someone concerned, you will find those anchors often ask the word is “card is not card, is not another card, and I want to crazy, and stuck.” When you see on-demand, watching a short video, no one would ask, right? Will not say you see a short video, it cards, this problem is only recently appeared. Real customers have returned to this problem, indicating that the threshold of streaming media has become high, so their demand for streaming media is growing. Then we look at what these needs are.</p>
-<ol>
-<li><p>the first content side is the push-flow side, and now the mainstream IOS, Andrews, IOS is relatively simple, that is a few models, we all fit well. But Andrews fragmentation is very serious, a lot of energy need to do on the adaptation of Andrews, and soft power consumption is generally very high, the phone will use a hot, are worried about will not explode. User experience is different in the network, upload the video may be card, there may be incoherent, reported a wide range of errors, this is a developer as he can not go to fit. Said the white side of the demand from the user is the push-flow side can not card, picture quality is better, not too hot, this is our contact with the real customers to mention the problem is that we from a bit biased technology point of view extracted behind it Corresponding to what is.</p>
-</li>
-<li><p>and then the distribution network. In fact, the distribution network hiding behind a place, the user actually invisible. The real needs of the distribution network to mention the user can not mention, so this part of the basic requirements will be presented to the player, the demand is not to mention cards, not Huaping, the first screen must be fast, that is necessary to see, Too much. In fact, many of these are the source distribution network and the relationship between the station, but users do not see this demand will be connected with the back of the player together.</p>
-</li>
-</ol>
-<p>On this demand we do some abstraction is the user’s reachability is better, our CDN nodes in the whole region, all operators have coverage, including education network. There are many people, like those small operators will ignore the education network, we have encountered such an example, the education network is really bad, because the node is not enough, this is not a difficult point, just a pit, you can do To. Most of the low-latency from the end of the operation, the server as long as the cache is good to ensure that this data is coherent. If you want to lose data, the key frame to retain good, throw GOP middle of those PB frames, mainly in the side will receive.</p>
-<p>The first screen time is to open the user point of view, before those open source architecture is rtmp server, it can not do a little open to see, and now some open source of domestic resources is also better written, you can see. We are their own development, it also spent some work, can save the key frame before the information, the user can open a little to see, this is very details of the things. If this is not good, it will be black, green screen, or half-day can not see the image.</p>
-<ol start="3">
-<li>in the player here is when we pick up the business, the most users encounter complaints, because all the problems are reflected in the time of the watch, all the players had to carry the player Ray. This demand is not card, can not delay too high. If the delay is high, to recover, chase when the sound can not be changed, it is best to pursue the strategy can control their own, this is the user really put forward the demand.</li>
-</ol>
-<p>For us, to meet these needs, we need to do a good job of multi-resolution adaptation, to ensure good fluency, and ensure that we catch up with the strategy will not be any exception. So the three end a lot of mutual coupling, such as the flow and distribution together to protect the user’s fluency and quality, distribution and players together to ensure good low-delay and smooth playback. All of these needs in the common point is not card, behind us in the design of the program, but also focus on how to do not consider the card.<br>solution<br>[image]<br>This is our side of the system architecture diagram. The bottom is relying on Jinshan cloud services, because we have a very good platform to provide our computing resources, providing storage, providing a lot of self-built nodes, of course, not enough, we are a fusion CDN, and then provide The ability of data analysis. We rely on it to do this layer of orange, is our own core, streaming media, and then around the core we do look back on-demand, online transcoding, authentication, content review.</p>
-<p>Why do you want to do on-demand? Because it is not a short video recording and broadcasting of the project, but a live broadcast on the decision it will not be very high, the content will not be many hot spots less. If you do not look back, the user is difficult to maintain its daily life, it is difficult to maintain user viscosity, so the user will be asked to look back.</p>
-<p>Why do online transcoding? Push-flow end actually do a lot of better quality to try to pass up the work, cast a lot of manpower to do. Pass up, the watch is also moving, it may not be seen. If he can not see how to do? We need to turn online, online transcoding actually bear more and more important things.</p>
-<p>Authentication, the user does not want to be Daochang, especially when the push flow, if I do not authentication, no one can come to push, push a law lun power how to do? This is a must. Content review, and now we have no way to help him do automatic review, technology is not enough. Now do the screenshots, according to the time specified by the user regularly screenshots, so, the user can ask some outsourcing is not sensitive to content, is not to be off the assembly line, this is now the three or four seconds delay to live Said it was very important. You can not do it, chances are you do not go on the policy factors.</p>
-<p>Part of the data analysis is based on Jinshan has been part of our own to do, because we delay, timeliness requirements are higher. Customers will often make a sudden appearance of a special anchor anchor card, ask why, if the way that as before, an hour to generate reports, and then experience the map and tell him why the card, the customer can not have this patience.</p>
-<p>We are now able to do the basic 5-second interval before the issue of positioning, including the positioning of the data collected from the source station curve. There are from the end, if the end users to allow, then push the flow and pull the flow end we will have reported data, a few curves a fit, we know where the problem lies. So now more than RD can check the problem, many of our pre-sale are in the bear to help users out of the map of the work.<br>[image]</p>
-<p>This is a business-specific flow chart, the flow chart is not anything special, but the general trend of streaming media data, a variety of requests. But there are some pit I can talk with you focus on, first of all look at the launch process, it is certainly by the application to their own server to request a flow of the address, the flow of the address he used to our streaming media Server push, and then we give it authentication.</p>
-<p>After authentication, it can be selected in the parameter is not to record. If you need video capture, or the need for HLS distribution, we can help him do, done after the deposit to our storage, which is later mentioned, we do business between the isolation, different priorities , This back-end multimedia processing as much as possible will depend on other services, and then is the normal end of the process.</p>
-<p>This is a problem encountered in practice, and now do streaming media, users push the flow, he wanted to know the flow did not end, the general Internet companies do cloud services are how to do? Are to the callback, if the push flow is over, I call back the business side, so that business side know I’m over, you can do your logic.</p>
-<p>But the actual operation we encountered the problem is the business side of the server is not so reliable, we may have a particularly long time in the past, there are delays, lost, or their service stability we can not confirm that this is actually a coupling between the two sides . And its servers, because we are to tune, its authentication function is no way to do very complicated, his own server security vulnerabilities. If someone comes to attack him, his entire business process is in a state of chaos.</p>
-<p>In the test after several customers, we changed to another way, it is generally accepted, that is, by the APP and their own Server heartbeat, if the APP network is not unusual, then it must end its Server knew. If abnormal heart rupture, he will determine the end of the. And we will ensure that the source side of the service here, you have no data for 5 seconds is certainly the end, and we will kick you out of the flow, so users can achieve the business status is stable, our streaming media Services are stable, and coupling will be relatively small.</p>
-<p>This is a pit we actually encounter, this is not difficult, but now the general cloud service providers are also used in the way back out, so I mention that there is also an alternative way, the better .</p>
-<p>Playback process, the player will first request to play his own service address, and then to our pull flow, can be authentication can not authentication, depending on its business form. If the pull flow failure, we have some customization operation, he used RTMP to pull the flow, we will tell him what is wrong, including authentication failure, authentication parameters error, or the flow problems, we will in the state Tell him. This is the needs of users before that, need to know where to play a problem, so we try to state the code are particularly detailed return to the user. Including our original station also has a query interface, if he needs the kind of unified query can also check.</p>
-<ol>
-<li>Push-flow side to achieve the program</li>
-</ol>
-<p>This is the push-flow side of the realization of the design principle of the flow end is down adaptive, push the flow of anyone can do, a lot of open source. But why do some good, some do well? Is to look at doing good or bad adaptation.</p>
-<p>Sum up there are three adaptive, one is the frame rate and bit rate adaptive, which is everyone can think of. I push the flow, if the network card, I drop the frame rate or drop a little bit rate, this thing well, the normal flow to push up, not Caton. This picture is drawn to the network, we made a QS module, in addition to our team to do engineering people, there will be four or five doctors do the specialized algorithms.</p>
-<p>Here there are some, we adapt to the rate of time is directly back to the encoder, so that the encoder dynamically adjust their bit rate, as far as possible to ensure that the quality of non-destructive, the video rate dropped out of the video smoothing . Frame rate control is relatively simple, and when we found that the network Carton, and we will feed back to the frame rate control module.</p>
-<p>In the collection time to do some of the discarded operation, the purpose is to send the bandwidth down. We do this is based on TCP, certainly not the effect of UDP, UDP is the next step of our attempt, has not yet begun. Because UDP also involves some of the source station structure reconstruction, we have not had time to do, and now the effect is actually based on TCP good. In addition to this simple behind the adaptive, we also added an algorithm class, that effect will be more obvious.</p>
-<p>The second adaptation is hard and soft self-adaptation, the good understanding of the advantages of hardware coding is the phone is not hot, a lot of shortcomings, with MediaRecorder, audio and video is difficult to synchronize with MediaCodec, compatibility issues, Now is not very popular. With a soft code words rate is low, good quality, in addition to CPU particularly hot, others are advantages.</p>
-<p>How can these two together? We are now doing some strategic things, this is a manual labor, on our own side to configure the black and white list, there are some Top50 to Top100 of the high-end models we use to test, performance is no problem, we are on Soft. Because just heard the soft knitting is the advantage, in addition to hot.</p>
-<p>Popular models have some low-end, soft-series can not stand on the hard-coded. Because the hard series is a manual work, so the model is certainly limited, no one can guarantee that all platforms, all models fit hard, so some of the following non-popular models, we have time to adapt to the soft . Do so down, the basic can reach more than 99% adaptation rate. In some large users there have been verified this data.</p>
-<p>The third is adaptive and algorithmic adaptive. We are the first company to be able to commercialize h.265. Now all of the h.265, I do not know if you do not know h.265, has not heard of h.265 can be commercialized in the Web-free plug-in player? We now do in the Celeron machine can broadcast 30FPS 720P video, the browser does not need to install any plug-ins, this is our continuous optimization results. Of course, this is not suitable for mobile scenarios, we are in another scene when used.</p>
-<p>In the mobile side we do the IOS phone 720P encoding, so 15FPS, and then CPU will not play full, may be between 50% to 70%. Before the data is played a core. This is because we have a lot of algorithms before the team, the beginning is to do technology licensing, and later wanted to landing on some products, mobile live h.265 is a very good landing scene, why?</p>
-<p>Push the end of the task is to push up the quality of better, limited network, how can I push up a better picture quality? H.265 can save 30% of bandwidth relative to h.264. 30% of the concept is in the video-on-demand applications can save some money in the initial application simply do not care, because the anchor is more expensive, who cares about 30% of the bandwidth.</p>
-<p>But in the mobile flow is not the same, and 30% is from 480P to 720P changes, that is, you can only push up the 480P picture quality, after h.265 this code can be pushed up 720P, the demand is Network is good enough, CPU good enough, why do not I push a better video up? This is a scene of h.265, I use the advantages of the algorithm, as long as you can make me use 265 to adapt to the machine, I can push up the better picture quality.</p>
-<ol start="2">
-<li>distribution network - multi-cluster source station design<br>[image]<br>Distribution network is hiding in a place far away, we were the design of the three principles is high concurrency, high availability, system decoupling, the first two are virtual, as long as the system will want to do how high concurrency, how high availability , How to expand the most easily horizontal.</li>
-</ol>
-<p>We do a multi-source station, as opposed to many companies doing single-source approach, we are in order to allow users to better reach our network. In each cluster, each city has done a multi-source station, now is not only a few points in Hong Kong and the United States, we also made a point. So how can do horizontal expansion and data and business center of isolation, is spent some mind. This program is not difficult to do with a number of storage synchronization is also done.</p>
-<p>High availability, like DNS this, to ensure that a single point of service, high availability can do. How do decoupling the system, because the traditional CDN is responsible for streaming media distribution, we compared to its advantage is that we do in addition to streaming media distribution, but also do a lot of multimedia features, such as screenshots, video, transcoding, and more Resolution, adaptation of these things, these things will affect the stability of the system. How can we achieve a real decoupling, to ensure system stability is a lot of work under.</p>
-<p>Some open source services, but also do multi-resolution adaptation, but all of its transcoding scheduling is by its streaming media services to transfer from the. Including transcoding the life cycle is also a streaming media service to control, they are deployed at the same level. In fact, this is a big problem, multi-resolution adaptation and the original picture of the push and distribution is not a priority service. When doing system grading, they should be separated, should be separated in different systems to do.<br>[image]<br>Multi-cluster source station is just mentioned, as far as possible with a three-room, or BPG room, and then in all cities north and south are distributed, as close to the reach of users, allowing users to stream more easily. At the same time we have deployed in each source station Jinshan cloud storage, KS3.</p>
-<p>Department of storage is also intended to be able to better ensure the user screenshots and video file reliability, save down we do not care, to the KS3, of course, KS3 multimedia service is our maintenance. Do transcoding screenshots, or a combination of a series of operations to turn resolution, is done by another system, we put these multimedia services and services to do the source decoupling.</p>
-<p>Online transcoding is a very CPU-intensive business. A 24-core high-end configuration of the machine is now, if I want to turn some good quality video, each video to three resolution, so I turn it to play eight full, which is very CPU consumption. If I turn no one to see, the CPU in that consumption, and this is not suitable and the source station mixed with a service.</p>
-<p>Transcoding to and data from the close, in the source station cluster in the same room, we will apply for some transcoding resources, and then unified by the core room scheduling. We separate the scheduling and specific functions, according to your where to push the flow, we are close to where the transcoding. Transcoding also adds some real-time transcoding strategy.</p>
-<p>Why do online transcoding? Because the push-flow side is the best effort to do the best picture quality, the highest bandwidth pass up. But the player does not necessarily see, so we need to turn it out, and h.265 although good, but the biggest problem is that there is no way to move the browser on the broadcast. Share out must be h.264, or else to WeChat or QQ browser, you can not see.</p>
-<p>If I use a very deep technical means to push up your h.265 video, and picture quality is very good. But not on our side to not see, you want to share, we can help you turn out a h.264 to share. Transcoding is a high CPU occupancy scene, if I do not make a reasonable allocation of CPU, then my machine resources will be played soon.</p>
-<p>We do two strategies, one is a limited machine reasonable scheduling. Our transcoding system is distributed, pipelined, similar to Storm that kind of system, but we do more suitable for transcoding. After the task came, our first process is not to turn, but analysis, to see what you want to turn into what you are quality, probably what CPU.</p>
-<p>If you use a lot of CPU, I would think this is a very difficult to be re-scheduling services, such as you come in a four-core transcoding services, and then come a bunch of a core, and certainly a nuclear comparison Good scheduling, the machine resources, and I can give you scheduling another machine, or another machine would have some spare, and now the remaining three cores, I can not take four cores, I can only take a nuclear , So we will be priority, priority allocation of high CPU occupied task, and then is the task of low CPU occupancy, in the streaming system, will be in the pre-analysis of different tasks thrown into a different priority queue, this Priority queue to undertake a different resolution to go to the video function.</p>
-<p>But if you need to downgrade disaster recovery in the back, then also rely on this priority queue to solve, each user will have quotas. I just said 24 and 24, in fact, for a cloud service company, this amount is too small. Baidu as I do in the media before the cloud when the amount of transcoding every day is 300,000, I think a business bigger, the day 30 million of the amount of transcoding is normal.</p>
-<p>This is a test of a project, how can we do as much as possible to tie the CPU, because the peak trough is obvious. Like h.265 this scene, we are doing a real-time transcoding, someone to share immediately turn to you, so that once the user starts to share, to achieve the role of seconds to open. But you do not look, we will have a strategy to help you stop as soon as possible. Because this share out of the video is not a high concurrent business, some people see we give him turn is a more reasonable scene.</p>
-<p>For those low resolution is now gradually on the gray, not to say that all your distribution, you initiated, I give you turn, we will gradually determine that some people see we turn, try to save system resources. The back will also consider storage resources, because each room will have storage, storage is completely without the CPU, it is to ensure that the disk and IO, and we are not completely re-use of resources, can be mixed Department, and later we will consider Step by step the Department of mixing.</p>
-<p>CDN distribution, distribution links, in fact, there are many things that need to play to meet, for example, now push the flow in order to ensure good quality, I will increase the B frame, increase the GOP, so encoded video quality will become better, I increased the GOP, then my delay will be large, the user must start from the last key frame to see, so he may see is 5 seconds or 10 seconds before the video, the social class of mobile broadcast is Unbearable. Since there is such a demand, the source station needs to be saved before the good. But how can make the delay was digested, it depends on the player side.</p>
-<ol start="3">
-<li>the player-side program</li>
-</ol>
-<p>This is the realization of the broadcast side of the block diagram, the middle draw a little less. This is a traditional player block diagram, does not reflect the core of our technical points, the data received from the network, after the Demux after RTMP, we have a module, the module will determine whether the current video needs to be discarded , This principle is also related to our cache, we cache with two seconds, if more than two seconds, or more than one of the other threshold, we will open the discarded mode.</p>
-<p>This discard has a variety of strategies, some directly lose frames, some fast forward. If you do the player will know that the traditional video to catch up after the video decoding is generally done to catch up. Decoding will mean CPU consumption, especially now if I want to broadcast 720 of the video, just barely real-time decoding, basically, there is no room for catching up.</p>
-<p>So we have done some optimization algorithm, we get this video will go to judge when it is not a can be lost, if it can be lost in the decoding before we lost, but this will throw a problem, Because the decoder will be internal discontinuous, once the decoder internal discontinuity, it may produce a black screen, so even if we want to lose, but also in the decoder inside to do some custom development, or to lose the video into the pass, Let it lose its own, it is not to solution, so that you can achieve more quickly lost the video to catch up with the actual progress of the current anchor.</p>
-<p>In this case, if we network is good, do not worry about the future jitter, we can do from the push to watch is 2 seconds delay, but generally we are controlled in 4 seconds, is to prevent jitter.</p>
-<p>Just said is lost this logic, if you want to fast-forward, similar to the kind of betta, in a little into the start screen is soon past, but there is no audio, we are now doing the way audio, video in the fast Progressive, audio is fast-forward, so the sound will change tone, because the sampling rate has changed. Before doing the end of the experience, have done this kind of variable speed invariant transfer algorithm, a lot of open source, change the fact that the effect can be good, this algorithm as long as the reverse optimization, put in, the audio can guarantee the same tone .</p>
-<p>Log collection, may not all log developers are willing to accept, but some developers are forcing us to do, because they need this data to locate the problem, as I said, people often ask, Is not another card, the question was asked more, we all want to know why the card, the end of the log is not collected up there is no way to locate the problem. We now have a log collection strategy in the user’s consent, it may periodically hundreds of labeled into a ZIP package up, this data is shared with our users.</p>
-<p>In fact, we have waded the pit, the beginning we do based on VLC, because the beginning we do the media cloud is doing on-demand business, VLC is a very good framework, but with VLC to catch up with this logic can put people dead, Particularly hard to change. Because it is coupled inside a layer of heavy, even to the end of the change over, the sound card situation. Later, or with a more simple framework, to write their own upper control. So the mobile end of the live scene and on-demand scenes or there is a big difference, which is why recently there have been a lot of sudden voice in the video business on the threshold.</p>
-<p>This page I have already mentioned one after another, that is how we locate the problem, how to meet the player’s compatibility, there are catch-up experience, contract, we will pay attention to the size of APP. Because we are a collection and playback are provided by our end-to-end program, there are many libraries can be reused, if we use our words, we can do some of these libraries to merge, to maximize the savings we provide compressed the size of.</p>
-<h3 id="User-stories"><a href="#User-stories" class="headerlink" title="User stories"></a>User stories</h3><p>This is our actual access to some of the user’s case, some of the main push hard, and some of the main push of the soft, many of the products on some of the details. We are also through these cases, analysis of which products are suitable for social class live, have seen some of the user base and concern the beginning of the relationship between the fire hope, but also his needs to mention the most, but also the most On the will of h.265. Once you have this relationship, really tried the water test and error this stage, it will be very concerned about the quality of the content you produce, because we are end to end service, so very suitable for access to such users.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/11/10/architecture/designofhighconcurrencyarchitectureofliveplatform/" data-id="cjugo7onq0005zsuwxkkfvu65" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/architecture/">architecture</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design/">design</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/high-concurrency/">high concurrency</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/live/">live</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/platform/">platform</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
   
     <article id="post-architecture/architecturedesignofthesixkeypoints" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -222,7 +112,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/11/10/architecture/architecturedesignofthesixkeypoints/" data-id="cjugo7onn0002zsuwxsvlsuiy" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/11/10/architecture/architecturedesignofthesixkeypoints/" data-id="cjujwmigk001h18uwhshbdrsf" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/construct/">construct</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design/">design</a></li></ul>
@@ -273,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/10/13/android/analysisonwebviewforandroid/" data-id="cjugo67vc000bnkuwrb2qj2gx" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/10/13/android/analysisonwebviewforandroid/" data-id="cjujwmifp000i18uwn8xzhte7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/net/">net</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/request/">request</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webview/">webview</a></li></ul>
@@ -315,7 +205,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/10/12/android/analysisontouchandclickforandroid/" data-id="cjugo67vc0008nkuwu9wt2ggh" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/10/12/android/analysisontouchandclickforandroid/" data-id="cjujwmifp000g18uwxydmdfl3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/click/">click</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/event/">event</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/touch/">touch</a></li></ul>
@@ -396,7 +286,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/08/08/pages/About/" data-id="cjugo7ooh000uzsuwfj9bj2yd" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/08/08/pages/About/" data-id="cjujwmihf003418uwdbd87ppp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -453,7 +343,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/04/05/security/NcN_2013_CTF_australia_bin_write_up/" data-id="cjugo7ooi000vzsuw46o676dw" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/04/05/security/NcN_2013_CTF_australia_bin_write_up/" data-id="cjujwmihf002x18uwys3wj5na" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/debugging/">debugging</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hacking/">hacking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reversing/">reversing</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
@@ -512,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/04/05/security/NcN_2013_CTF_canada_write_up/" data-id="cjugo7ool000xzsuwcczhov8h" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/04/05/security/NcN_2013_CTF_canada_write_up/" data-id="cjujwmihf002v18uw1jiadj1n" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/debugging/">debugging</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hacking/">hacking</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/reversing/">reversing</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/writeup/">writeup</a></li></ul>
@@ -552,7 +442,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/03/12/ml/gettingstartmulticlassforsvminsklearn/" data-id="cjugo7ooe000qzsuwvkth11yj" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/03/12/ml/gettingstartmulticlassforsvminsklearn/" data-id="cjujwmihf002l18uwzrv5f7p4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/multi-classification/">multi-classification</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svm/">svm</a></li></ul>
@@ -591,7 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/03/11/ml/gettingstarttensorflow/" data-id="cjugo7oof000rzsuwvskqh1yd" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/03/11/ml/gettingstarttensorflow/" data-id="cjujwmihf002q18uwgfc27811" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deep-learning/">deep learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
@@ -632,10 +522,56 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://dachmx.github.io/2014/03/10/ml/svminstruction/" data-id="cjugo7oog000tzsuwxgcuaqcl" class="article-share-link">Share</a>
+      <a data-url="http://dachmx.github.io/2014/03/10/ml/svminstruction/" data-id="cjujwmihf002s18uwhi0278ct" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svm/">svm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ml/gettingstartusingsklearnofsvm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/03/10/ml/gettingstartusingsklearnofsvm/" class="article-date">
+  <time datetime="2014-03-09T16:00:00.000Z" itemprop="datePublished">2014-03-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/03/10/ml/gettingstartusingsklearnofsvm/">Getting Start Using SVM Module of Sklearn</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Instruction"><a href="#Instruction" class="headerlink" title="Instruction"></a>Instruction</h2><p>SVN principle is more complex, but the idea is very simple, one sentence is summarized, that is, through a kernel function, the data in the high-dimensional space to find an optimal hyperplane, can separate the two types of data.</p>
+<p>For different data sets, the classification of different kernel functions may be completely different. There are several optional kernel functions:</p>
+<p>Linear function: a linear function of the form K (x, y) = x * y;</p>
+<p>Polynomial function: A polynomial function of the form K (x, y) = [(x · y) +1] ^ d;</p>
+<p>Radial basis function: an exponential function of the form K (x, y) = exp (- | x-y | ^ 2 / d ^ 2)</p>
+<p>Sigmoid function: is the Sigmoid function mentioned in the previous article.</p>
+<h2 id="Code-using-Lib-Sklearn"><a href="#Code-using-Lib-Sklearn" class="headerlink" title="Code using Lib Sklearn"></a>Code using Lib Sklearn</h2><p>codes as follows:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> scipy <span class="keyword">as</span> sp</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm</span><br><span class="line"><span class="keyword">from</span> sklearn.cross_validation <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">data   = []</span><br><span class="line">labels = []</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"data\\1.txt"</span>) <span class="keyword">as</span> ifile:</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> ifile:</span><br><span class="line">            tokens = line.strip().split(<span class="string">' '</span>)</span><br><span class="line">            data.append([float(tk) <span class="keyword">for</span> tk <span class="keyword">in</span> tokens[:<span class="number">-1</span>]])</span><br><span class="line">            labels.append(tokens[<span class="number">-1</span>])</span><br><span class="line">x = np.array(data)</span><br><span class="line">labels = np.array(labels)</span><br><span class="line">y = np.zeros(labels.shape)</span><br><span class="line">y[labels==<span class="string">'fat'</span>]=<span class="number">1</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = <span class="number">0.0</span>)</span><br><span class="line"></span><br><span class="line">h = <span class="number">.02</span>  </span><br><span class="line"><span class="comment"># create a mesh to plot in</span></span><br><span class="line">x_min, x_max = x_train[:, <span class="number">0</span>].min() - <span class="number">0.1</span>, x_train[:, <span class="number">0</span>].max() + <span class="number">0.1</span></span><br><span class="line">y_min, y_max = x_train[:, <span class="number">1</span>].min() - <span class="number">1</span>, x_train[:, <span class="number">1</span>].max() + <span class="number">1</span></span><br><span class="line">xx, yy = np.meshgrid(np.arange(x_min, x_max, h),</span><br><span class="line">                     np.arange(y_min, y_max, h))</span><br><span class="line"></span><br><span class="line"><span class="string">''' SVM '''</span></span><br><span class="line"><span class="comment"># title for the plots</span></span><br><span class="line">titles = [<span class="string">'LinearSVC (linear kernel)'</span>,</span><br><span class="line">          <span class="string">'SVC with polynomial (degree 3) kernel'</span>,</span><br><span class="line">          <span class="string">'SVC with RBF kernel'</span>,</span><br><span class="line">          <span class="string">'SVC with Sigmoid kernel'</span>]</span><br><span class="line">clf_linear  = svm.SVC(kernel=<span class="string">'linear'</span>).fit(x, y)</span><br><span class="line"><span class="comment">#clf_linear  = svm.LinearSVC().fit(x, y)</span></span><br><span class="line">clf_poly    = svm.SVC(kernel=<span class="string">'poly'</span>, degree=<span class="number">3</span>).fit(x, y)</span><br><span class="line">clf_rbf     = svm.SVC().fit(x, y)</span><br><span class="line">clf_sigmoid = svm.SVC(kernel=<span class="string">'sigmoid'</span>).fit(x, y)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i, clf <span class="keyword">in</span> enumerate((clf_linear, clf_poly, clf_rbf, clf_sigmoid)):</span><br><span class="line">    answer = clf.predict(np.c_[xx.ravel(), yy.ravel()])</span><br><span class="line">    print(clf)</span><br><span class="line">    print(np.mean( answer == y_train))</span><br><span class="line">    print(answer)</span><br><span class="line">    print(y_train)</span><br><span class="line"></span><br><span class="line">    plt.subplot(<span class="number">2</span>, <span class="number">2</span>, i + <span class="number">1</span>)</span><br><span class="line">    plt.subplots_adjust(wspace=<span class="number">0.4</span>, hspace=<span class="number">0.4</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Put the result into a color plot</span></span><br><span class="line">    z = answer.reshape(xx.shape)</span><br><span class="line">    plt.contourf(xx, yy, z, cmap=plt.cm.Paired, alpha=<span class="number">0.8</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Plot also the training points</span></span><br><span class="line">    plt.scatter(x_train[:, <span class="number">0</span>], x_train[:, <span class="number">1</span>], c=y_train, cmap=plt.cm.Paired)</span><br><span class="line">    plt.xlabel(<span class="string">u'height'</span>)</span><br><span class="line">    plt.ylabel(<span class="string">u'body weight'</span>)</span><br><span class="line">    plt.xlim(xx.min(), xx.max())</span><br><span class="line">    plt.ylim(yy.min(), yy.max())</span><br><span class="line">    plt.xticks(())</span><br><span class="line">    plt.yticks(())</span><br><span class="line">    plt.title(titles[i])</span><br><span class="line">    </span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://dachmx.github.io/2014/03/10/ml/gettingstartusingsklearnofsvm/" data-id="cjujwmihf002n18uwl4mhvuh5" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machine-learning/">machine learning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sklearn/">sklearn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/support-vector-machine/">support vector machine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svm/">svm</a></li></ul>
 
     </footer>
   </div>
@@ -681,7 +617,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">June 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/08/">August 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">April 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">March 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">January 2014</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a></li></ul>
     </div>
   </div>
 
@@ -698,10 +634,6 @@
           </li>
         
           <li>
-            <a href="/2017/10/31/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
             <a href="/2017/05/04/security/analysisofpermissionaccessinglocalfileleakedfromwebview/">Analysis of Permission Accessing local file Leaked from Android WebView</a>
           </li>
         
@@ -711,6 +643,10 @@
         
           <li>
             <a href="/2016/08/15/android/startproectedontmall/">The final rescue plan - safe mode</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/20/android/SummaryofAndroidsoftwareprotection/">Summary of Android software protection measures</a>
           </li>
         
       </ul>
